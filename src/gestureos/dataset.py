@@ -34,7 +34,7 @@ def read_object(data):
     return obj
 
 
-def load_capture(directory, root, labels):
+def load_capture(directory, root, labels, *, include_rows=False):
     directory, root = Path(directory), Path(root)
     relative = directory.relative_to(root)
     require(len(relative.parts) == 3, "Expected subject/session/capture_id layout")
@@ -89,12 +89,14 @@ def load_capture(directory, root, labels):
     # Ignore absolute device time and IDs so renamed copies still collide.
     origin = parser.rows[0][1]
     content = [[r[1] - origin, *r[2:8]] for r in parser.rows]
-    return {"capture_id": request.capture_id, "label": request.label,
+    entry = {"capture_id": request.capture_id, "label": request.label,
             "subject_id": req["subject_id"], "session_id": req["session_id"],
             "path": relative.as_posix(), "samples": request.samples,
             "rate_hz": request.rate_hz, "source_kind": "hardware",
             "file_sha256": {name: fingerprint(data) for name, data in files.items()},
             "content_sha256": fingerprint(json.dumps(content, separators=(",", ":")).encode())}
+    # Return the exact validated snapshot, without rereading mutable CSV files.
+    return (entry, parser.rows) if include_rows else entry
 
 
 def scan(root, labels):

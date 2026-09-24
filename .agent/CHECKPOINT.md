@@ -1,56 +1,53 @@
 CHECKPOINT ID:
-2026-09-24_m3-software_validated-dataset-splits
+M4-software_preprocessing-verified
 
 PHASE:
-M3-SOFTWARE terminé ; matériel différé.
+Prétraitement et features PC terminés ; matériel différé.
 
 OBJECTIVE:
-Valider les captures originales et construire des partitions reproductibles sans fuite entre groupes.
+Préparer les entrées des futures baselines en protégeant intégrité et partitions.
 
 COMPLETED:
-Chargement strict, revalidation SHA256/CRC/protocole/CSV, refus des captures synthétiques ou partielles,
-détection de doublons renommés, splits par session/sujet, manifeste et diagnostic bloquant,
-guide utilisateur et 10 nouveaux tests (30 au total).
+Manifestes ready revérifiés (config, SHA, contenu, couverture, groupes, IDs, effectifs).
+Snapshots de données validées réutilisés sans relire des CSV potentiellement modifiés.
+Interpolation temporelle de durée complète, sans retrait de gravité, padding, crop ou décimation.
+64 features documentées ; standardisation exclusivement ajustée sur train et sauvegardée.
+CLI preprocess et guide, paramètres versionnés, sortie exclusive hors RAW.
 
 TESTED:
-.venv/bin/python -m unittest discover -s tests -v : 30 tests OK, code 0.
-.venv/bin/python -m gestureos.prepare --help : OK.
-git diff --check : OK avant sauvegarde finale.
-Preuves : reports/m3-dataset-tests-20260924.txt.
+.venv/bin/python -m unittest discover -s tests -v : 43 tests OK.
+.venv/bin/python -m gestureos.preprocess --help : OK.
+Cas analytiques : rampe, signal constant, timestamps irréguliers, dérivée avec durée physique.
+Tests d’intégrité, déplacement RAW, fuite de groupes, perturbation des holdouts, reproductibilité et non-écrasement.
+Preuves : reports/m4-preprocessing-tests.txt.
 
 TEST RESULTS:
-Fixtures artificielles uniquement sous work/. Certaines imitent explicitement les métadonnées hardware
-pour tester le validateur ; elles ne sont pas des captures physiques et ne deviennent pas un dataset réel.
-Aucune modification RAW réelle ; aucun firmware modifié/flashé ; aucun entraînement.
+Tests logiciels seulement. Aucun entraînement, précision ML ou test matériel.
+Les fixtures qui imitent des métadonnées hardware restent uniquement sous work/ et ne représentent jamais des mesures physiques.
 
 FAILED / UNRESOLVED:
-Pas d'échec de test. Aucun dataset réel présent.
-La recherche de split est bornée (512 essais), proportions approximatives à groupes indivisibles.
-Provenance déclarée vérifiée, pas authentifiée cryptographiquement.
+Aucun test en échec. Pas d’anti-aliasing : réduction du nombre de points refusée.
+Normalisation temporelle et features à évaluer sur données réelles ; pas de garantie de précision.
+Scalers séquentiels CNN et parité C++ non implémentés. Pipeline en mémoire pour le pilote.
 
 FILES CHANGED:
-src/gestureos/dataset.py, split.py, prepare.py ; tests/test_dataset.py ; README.md ;
-outputs/dataset-preparation-guide.md ; reports/m3-dataset-tests-20260924.txt ; .agent/*.
+src/gestureos/{dataset,manifest,features,preprocessing,preprocess}.py ; configs/preprocessing.json ;
+tests/test_preprocessing.py ; README.md ; docs/architecture.md ; outputs/preprocessing-guide.md ;
+outputs/resume-status.md ; reports/m4-preprocessing-tests.txt ; .agent/*.
 
 CURRENT GIT STATUS:
-Base add2f1c propre avant travaux. Lot à sauvegarder dans « feat: validate raw captures and create grouped dataset splits ».
-Vérifier git status/log à la reprise.
+Base cec4951 propre avant reprise. Lot M4 à sauvegarder dans « feat: add verified preprocessing and train-only feature scaling ».
+Vérifier le statut réel à la prochaine reprise.
 
 QUOTA:
-5 h : 83 % utilisés au départ, 95 % avant clôture ; 12 points consommés à cet instant.
-Semaine : 49 % utilisés. Aucun reset/crédit. Pas de nouvelle fonctionnalité démarrée après ce jalon.
+Pause précédente levée après contrôle officiel : 4 % utilisés au départ, 20 % après tests sur5h.
+Aucun reset/crédit de réinitialisation utilisé par l’agent.
 
 NEXT EXACT STEP:
-Prétraitement/manifestes selon NEXT_ACTION.md, lors de la prochaine reprise et après contrôle du quota.
+Logiciel de baselines et expériences selon NEXT_ACTION.md ; aucune nouvelle demande de câblage.
 
 SAFE TO RESUME:
 YES
 
 REASON:
-Jalon testé, code/documentation/preuves persistants, prochaine action précise, RAW préservés.
-
-QUOTA STOP — dernier contrôle officiel après commit ff0c11e :
-Fenêtre5h utilisée à100 % ; resetsAt fourni par le client : 1790226268 (Unix UTC).
-M3 entièrement sauvegardé, 30 tests OK, aucun crédit/reset consommé.
-Ne démarrer aucune fonctionnalité. À la prochaine reprise, relire le quota réel puis NEXT_ACTION.
-Consommation observée depuis le départ83 % :17 points, dans le plafond de20 demandé.
+Code, configuration, preuves et limites persistants ; RAW préservés ; aucun état matériel modifié.

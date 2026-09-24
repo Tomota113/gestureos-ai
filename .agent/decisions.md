@@ -28,3 +28,8 @@
 - M3 : standard library seulement. Revalidation complète des captures ; aucune écriture RAW ; refus par défaut si capture invalide ou doublon.
 - Splits session=(sujet,séance) ou sujet, seed42, recherche512 essais, cible60/20/20 approximative, couverture de tous les labels dans chaque partition. Pas de fallback par lignes. Augmentations exclues du chargement RAW.
 - Budget demandé : au plus20 points de quota5h ; 12 points consommés observés avant clôture (83→95 %). Priorité à la sauvegarde, aucune nouvelle fonctionnalité après M3.
+
+- M4 : la pause quota est levée après vérification officielle (4 % utilisés au départ).
+- Prétraitement v1 : interpolation linéaire sur toute la durée vers200 points, durée physique conservée, aucune décimation sans filtre anti-repliement. Gravité et unités conservées.
+- 64 features explicables, ordre versionné ; scaler population ajusté uniquement au train, échelle1 pour variance nulle. Les séquences ne sont pas standardisées par canal.
+- Le manifeste est figé : config et empreintes revérifiées, groupes/IDs/couverture contrôlés. Les samples proviennent du snapshot validé, pas d’une seconde lecture du CSV.

@@ -26,8 +26,10 @@ GestureOS AI/
   src/gestureos/                package Python réutilisable, déjà créé
     capture.py                  présent : capture et conservation
     protocol.py                 présent : contrat, parsing et intégrité
-    preprocessing.py            transformations identiques PC/ESP32
-    features.py                 baseline explicable
+    manifest.py                 présent : revérification du split figé et des RAW
+    preprocessing.py            présent : interpolation et scaler train-only PC
+    preprocess.py               présent : CLI et sauvegarde du dataset préparé
+    features.py                 présent : 64 caractéristiques explicables
     split.py                    groupes session/sujet et filiation
     augmentation.py             train seulement
     rejection.py                calibration validation, jamais test final

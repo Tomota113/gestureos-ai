@@ -8,14 +8,16 @@ ROBOT, SMART CONTROL, PRESENTATION, GAME, MACRO et CUSTOM.
 Les branchements et validations physiques seront réalisés plus tard selon la
 demande de l'utilisateur. Le MPU6050 n'est pas encore testé.
 La carte répond au bootloader : ESP32-D0WDQ6 révision 1, Flash 4 Mo, CP2102.
-Les deux firmwares compilent ; trente tests Python et les tests C++ natifs passent. Aucun modèle,
+Les deux firmwares compilent ; 43 tests Python et les tests C++ natifs passent. Aucun modèle,
 dataset de gestes, score de précision ou test d'actionneur n'existe encore.
 
-Le chargeur de captures et les splits par session/sujet sont également prêts.
+Le chargeur, les splits par session/sujet et le prétraitement à 64 caractéristiques
+avec normalisation ajustée sur le train sont également prêts.
 Aucun entraînement n’a été lancé.
 
 ## Lire en premier
 
+- [Prétraitement et caractéristiques](outputs/preprocessing-guide.md)
 - [Préparation et partitions du dataset](outputs/dataset-preparation-guide.md)
 - [Audit et architecture proposée](outputs/phase-0-audit.md)
 - [Premier test : câblage, commandes, critères](outputs/first-mpu6050-test.md)
@@ -47,6 +49,7 @@ pio run -d firmware -e dataset
 .venv/bin/python -m unittest discover -s tests -v
 .venv/bin/python scripts/check_stream.py --help
 .venv/bin/python -m gestureos.capture --help
+.venv/bin/python -m gestureos.preprocess --help
 ```
 
 Le flashage et les mesures restent à effectuer lors de la future phase matérielle.

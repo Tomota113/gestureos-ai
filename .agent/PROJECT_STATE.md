@@ -1,34 +1,34 @@
 PROJECT: GestureOS AI
 
 CURRENT PHASE:
-Développement logiciel sans matériel. Audit, logger et préparation des partitions implémentés.
+Développement logiciel sans matériel. M4 prétraitement et features terminé.
 
 CURRENT MILESTONE:
-M3-SOFTWARE terminé : lecture contrôlée des captures et splits groupés. Tests physiques toujours différés.
+M4-SOFTWARE : manifeste revérifié, interpolation, 64 features et scaler train-only. Validations physiques différées.
 
 STATUS:
-PAUSED_QUOTA_CODEX. M3 terminé ; quota5h officiellement à100 % au dernier contrôle.
+READY_FOR_NEXT_SOFTWARE_MILESTONE. Le quota est revenu ; ancienne pause levée après contrôle officiel.
 
 LAST COMPLETED TASK:
-Chargeur dataset.py, split.py et CLI prepare.py ; contrôles identité/SHA/CRC/CSV/doublons ; partitions reproductibles par groupe. 30 tests logiciels OK.
+M4 : snapshots validés sans relecture CSV, contrôle des partitions, interpolation sur durée entière sans décimation, 64 caractéristiques, scaler ajusté uniquement au train. Guide et tests sauvegardés.
 
 CURRENT TASK:
-Jalon M3 terminé, documentation et checkpoint sauvegardés. Ne pas démarrer une autre fonctionnalité dans cette session.
+M4 terminé. Préparer ensuite le logiciel d’expérimentation des baselines, sans entraîner sur des fixtures.
 
 LAST SUCCESSFUL COMMAND:
 .venv/bin/python -m unittest discover -s tests -v
-.venv/bin/python -m gestureos.prepare --help
+.venv/bin/python -m gestureos.preprocess --help
 git diff --check
 
 LAST SUCCESSFUL TEST:
-30 tests Python OK ; preuves reports/m3-dataset-tests-20260924.txt. Firmware inchangé, pas de nouveau build ou flashage. Aucun test physique ni résultat ML.
+43 tests Python OK. Preuves reports/m4-preprocessing-tests.txt. Aucun changement firmware, aucune nouvelle mesure physique. Les builds et tests C++ du précédent jalon restent les derniers effectués.
 
 FILES MODIFIED:
-src/gestureos/{dataset,split,prepare}.py ; tests/test_dataset.py ; README.md ; outputs/dataset-preparation-guide.md ; reports/m3-dataset-tests-20260924.txt ; .agent/*.
+src/gestureos/dataset.py, manifest.py, features.py, preprocessing.py, preprocess.py ; configs/preprocessing.json ; tests/test_preprocessing.py ; README.md ; docs/architecture.md ; outputs/preprocessing-guide.md ; outputs/resume-status.md ; reports/m4-preprocessing-tests.txt ; .agent/*.
 
 HARDWARE CURRENTLY TESTED:
 USB/ROM ESP32 seulement, précédemment ESP32-D0WDQ6 revision 1.0, Flash 4 Mo, CP2102.
-CP2102 encore énuméré sur /dev/ttyUSB0 à la reprise. Aucun flashage effectué.
+CP2102 énuméré sur /dev/ttyUSB0 lors des jalons précédents. Aucun nouveau contrôle matériel ou flashage pendant M4.
 
 HARDWARE NOT YET TESTED:
 MPU6050, LCD1602 16 broches, tous les actionneurs et autres composants.
@@ -69,7 +69,7 @@ Ne jamais présenter compilation, fixtures ou tests simulés comme de vraies per
 Ne pas supprimer les captures réelles ; les sauvegarder séparément de Git dès qu'elles existent.
 
 NEXT ACTION:
-Prétraitement reproductible et features, puis baselines selon disponibilité des données. Lire NEXT_ACTION.md ; ne pas demander le câblage pendant le développement logiciel.
+Lire NEXT_ACTION.md : baselines PC et journal expérimental, vérification de la disponibilité des bibliothèques avant installation. Aucun apprentissage ou résultat réel sans dataset.
 
 ENVIRONMENT:
 Ubuntu26.04 x86_64, Python3.14.4, Git2.53.0, PlatformIO6.2.0, espressif32 7.0.1 / Arduino2.0.17.
@@ -83,10 +83,4 @@ Revue du code à la reprise : délai 60s atteint sans avis, malgré exit0. INCOM
 pas une revue réussie ou une preuve de quota. Aucun retry automatique. Détails reports/resume-stream-check-20260924.txt.
 
 CODEX QUOTA:
-Instantanés officiels de cette session : 83 % utilisés au départ, puis 90 %, enfin 95 % (5 % restants sur 5 h) avant clôture. Semaine : 49 % utilisés au dernier contrôle. Aucun crédit/reset consommé. Arrêt après ce jalon, pas de nouvelle fonctionnalité.
-
-QUOTA STOP — dernier contrôle officiel après commit ff0c11e :
-Fenêtre5h utilisée à100 % ; resetsAt fourni par le client : 1790226268 (Unix UTC).
-M3 entièrement sauvegardé, 30 tests OK, aucun crédit/reset consommé.
-Ne démarrer aucune fonctionnalité. À la prochaine reprise, relire le quota réel puis NEXT_ACTION.
-Consommation observée depuis le départ83 % :17 points, dans le plafond de20 demandé.
+Reprise : 4 % utilisés sur 5 h (96 % restants), 50 % semaine. Contrôle après tests : 20 % utilisés sur 5 h (80 % restants). Aucun crédit ou reset consommé par l’agent. Ancienne pause 100 % levée par retour effectif du quota.

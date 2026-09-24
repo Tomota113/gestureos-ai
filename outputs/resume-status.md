@@ -1,14 +1,13 @@
 # Reprise GestureOS AI
 
-Jalon M3 terminé : captures contrôlées et splits par groupe ; 30 tests logiciels réussis.
-Commit du jalon : `ff0c11e`. Aucun test physique ou entraînement ML réalisé.
+M4 logiciel terminé : prétraitement et64 caractéristiques, normalisation ajustée
+uniquement sur train. **43 tests logiciels réussis.** Aucun entraînement ou test
+physique réalisé. [Guide M4](preprocessing-guide.md).
 
-Dernier contrôle officiel : quota5h utilisé à100 %, contre83 % au début de session
-(17 points consommés). Aucun crédit de réinitialisation utilisé.
+Le quota est revenu et l’ancienne pause est levée. Dernier contrôle après tests :
+20 % utilisés sur5h (80 % restants), contre4 % au départ. Aucun crédit/reset consommé.
 
-Mémoire persistante : `.agent/PROJECT_STATE.md`, `.agent/NEXT_ACTION.md`,
-`.agent/CHECKPOINT.md`, `.agent/decisions.md`.
-
-Lorsque le quota est disponible, écrire **continue**. La reprise doit vérifier le
-quota réel, les checkpoints et Git, puis préparer le prétraitement sans fuite
-de données. Pas de demande de branchement à cette étape logicielle.
+La mémoire persistante reste dans les quatre fichiers `.agent/`. Écrire
+**continue** reprendra le logiciel de baselines et journalisation expérimentale,
+après vérification de l’état du dépôt et des dépendances. Les branchements
+seront faits ultérieurement selon ta demande.
