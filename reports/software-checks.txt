@@ -19,4 +19,3 @@ Exit code: 0
 $ .venv/bin/python -m pip freeze
 pyserial==3.5
 Exit code: 0
-

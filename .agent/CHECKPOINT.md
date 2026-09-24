@@ -26,6 +26,7 @@ FAILED / UNRESOLVED:
 - git rev-parse initial : pas de dépôt (résolu par initialisation).
 - Ouverture web du PDF TDK échouée via outil ; index de recherche et sources officielles utilisés.
 - Aucun échec de compilation, quota ou authentification Antigravity observé.
+- Contrôle Git final : espaces de fin de ligne dans les logs importés, corrigés sans changer les résultats ; sorties brutes conservées dans work/.
 - Module MPU6050 et alimentation non identifiés ; câblage différé par l'utilisateur.
 
 FILES CHANGED:
@@ -47,8 +48,9 @@ git rev-parse avant initialisation : état initial attendu, résolu.
 CURRENT GIT STATUS:
 Dépôt local main, aucun remote. Ce fichier appartient au lot de checkpoint
 « checkpoint: prepare verified MPU6050 bench test and phase zero audit ».
-Le contrôle git status après commit est consigné dans la fin de session ;
-toujours recontrôler le statut réel à la reprise.
+git status --short était vide après a0f80e3 (code, documentation et tests).
+Un commit de suivi normalise uniquement les espaces des logs et consigne ce contrôle.
+Toujours recontrôler le statut réel à la reprise.
 Premier commit : 83de740 (brief + protocole + audit initial).
 
 NEXT EXACT STEP:
