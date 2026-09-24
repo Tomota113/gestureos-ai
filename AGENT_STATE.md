@@ -12,7 +12,7 @@ Terminer M9 : augmentation IMU optionnelle, limitée au train, avec provenance d
 
 ## Tâches en attente
 - Revue Antigravity M9 restée sans sortie à cause d’une permission de commande refusée en mode headless. Reprendre seulement avec une autorisation étroite ; aucune conclusion de quota.
-- Effectuer le commit ciblé M9 si non présent, puis comparer sur captures réelles seulement lorsque le dataset sera suffisant.
+- Commit M9 `786271e` effectué. Comparer sur captures réelles seulement lorsque le dataset sera suffisant.
 - Comparaison ML réelle et tests physiques lorsque données et câblage seront disponibles.
 
 ## Décisions d'architecture
@@ -31,4 +31,4 @@ Terminer M9 : augmentation IMU optionnelle, limitée au train, avec provenance d
 `.venv/bin/python -m unittest discover -s tests` : 102 tests OK, 2026-09-24.
 
 ## Prochaine action recommandée
-Vérifier le commit M9. À la prochaine phase, reprendre la première tâche inachevée, puis comparer avec/sans augmentation uniquement sur un vrai dataset suffisant. Toute nouvelle revue Antigravity doit disposer d’une autorisation de commande étroite, sans édition des fichiers.
+À la prochaine phase, reprendre la première tâche inachevée : vérifier si une revue Antigravity en lecture seule peut être autorisée étroitement ; ensuite préparer la comparaison avec/sans augmentation seulement lorsque le vrai dataset sera suffisant. Toute nouvelle revue Antigravity doit disposer d’une autorisation de commande étroite, sans édition des fichiers.

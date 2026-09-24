@@ -1,4 +1,4 @@
-CURRENT: M9 software complete; 102 Python tests OK. Read AGENT_STATE.md first on continuation.
+CURRENT: M9 software complete in commit 786271e; 102 Python tests OK. Read AGENT_STATE.md first on continuation.
 
 1. Preserve existing user changes in capture.py, dataset.py, test_dataset.py and reports/hardware/.
 2. Antigravity M9 review was attempted in read-only plan mode but headless command permission was denied. This is not quota exhaustion. Do not use blanket auto-approval; retry only with a narrow authorized permission path.

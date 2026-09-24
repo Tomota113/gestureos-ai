@@ -4,6 +4,9 @@ CURRENT PHASE: M9 train-only augmentation software complete; physical collection
 STATUS: M9_SOFTWARE_VERIFIED / REAL_ML_AND_HARDWARE_PENDING
 
 LAST COMPLETED TASK:
+M9 optional train-only IMU rotation, commit 786271e; see M9 COMPLETE below.
+
+PREVIOUS TASK:
 M8 adds a pure LCD 1602 presentation layer in firmware/src/lcd_ui.*, with fixed two-row, 16-character frames for boot, ready, recording, accepted, UNKNOWN and sensor error. Labels are bounded/sanitized. No uncalibrated score is shown as a confidence percentage. There is no LCD GPIO adapter or pin mapping yet.
 
 LAST SUCCESSFUL COMMANDS/TESTS:

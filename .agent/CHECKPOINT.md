@@ -13,4 +13,6 @@ USER DATA: Preserve preexisting uncommitted src/gestureos/capture.py, src/gestur
 
 QUOTA: Official latest check during M9: 84% 5h used, 78% weekly used; no reset or credit consumed. Snapshot may change.
 
+GIT: M9 commit 786271e. Existing user modifications remain uncommitted and excluded.
+
 SAFE TO RESUME: YES. Read AGENT_STATE.md and NEXT_ACTION.md.
