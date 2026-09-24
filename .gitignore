@@ -1,0 +1,12 @@
+.venv/
+.pio/
+__pycache__/
+.pytest_cache/
+work/
+data/raw/
+data/processed/
+data/augmented/
+data/external/
+models/
+experiments/
+*.pyc
