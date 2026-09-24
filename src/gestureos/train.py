@@ -16,6 +16,7 @@ from .baselines import (MODEL_NAMES, feature_field, load_prepared, make_estimato
                         matrix, validate_config, validation_metrics)
 from .capture import write_json
 from .dataset import fingerprint, read_object, require
+from .augment import augment_train, validate_config as validate_augmentation_config
 
 
 def utc_now():
@@ -67,14 +68,20 @@ def pc_latency(estimator, values):
             "p95_nearest_rank": sorted(timings)[math.ceil(.95 * len(timings)) - 1]}
 
 
-def run_experiment(prepared, provenance, config, output):
+def run_experiment(prepared, provenance, config, output, augmentation_config=None):
     """Internal runner: prepared/provenance must come from load_prepared."""
     from sklearn.exceptions import ConvergenceWarning
     from threadpoolctl import threadpool_limits
     validate_config(config)
+    if augmentation_config is not None:
+        validate_augmentation_config(augmentation_config)
     require(not output.resolve().is_relative_to(Path(provenance["raw_root"])),
             "Experiment output must be outside RAW root")
     runtime = environment()  # missing ML dependencies fail before allocating output
+    train_rows = prepared["partitions"]["train"]
+    lineage = []
+    if augmentation_config is not None:
+        train_rows, lineage = augment_train(prepared, augmentation_config)
     output.mkdir(parents=True, exist_ok=False)
     try:
         write_json(output / "run.json", {"schema_version": 1, "status": "started",
@@ -82,15 +89,21 @@ def run_experiment(prepared, provenance, config, output):
                    "provenance": provenance, "environment": runtime,
                    "fit_partition": "train", "evaluation_partition": "validation",
                    "test_evaluated": False, "cpu_thread_limit": 1,
-                   "rejection": "not_implemented"})
+                   "rejection": "not_implemented",
+                   "augmentation": "train_only" if lineage else "disabled"})
         write_json(output / "config.json", config)
+        if augmentation_config is not None:
+            write_json(output / "augmentation.json", {"schema_version": 1,
+                       "config": augmentation_config, "fit_partition": "train",
+                       "original_train_count": len(prepared["partitions"]["train"]),
+                       "augmented_count": len(lineage), "lineage": lineage,
+                       "scaler_fit": "original_train_only", "test_evaluated": False})
         contract = {key: prepared[key] for key in ("pipeline", "labels", "feature_names", "scaler",
                    "source_captures", "source_partitions", "group_by", "source_manifest_sha256")}
         write_json(output / "data_contract.json", contract)
         reports = {}
         # Only these two partitions can reach a model. The test partition was read
         # for integrity/preprocessing verification, never fit, scored or selected on.
-        train_rows = prepared["partitions"]["train"]
         validation_rows = prepared["partitions"]["validation"]
         for name in MODEL_NAMES:
             folder = output / name
@@ -160,6 +173,8 @@ def main():
     parser.add_argument("--manifest", required=True, type=Path)
     parser.add_argument("--collection-config", type=Path, default=Path("configs/collection.json"))
     parser.add_argument("--config", type=Path, default=Path("configs/baselines.json"))
+    parser.add_argument("--augmentation-config", type=Path,
+                        help="Optional train-only sensor rotation configuration")
     parser.add_argument("--raw-root", type=Path, help="Relocated RAW root, still reverified")
     parser.add_argument("--output", required=True, type=Path, help="New experiment directory")
     args = parser.parse_args()
@@ -167,9 +182,13 @@ def main():
         require(not args.output.exists(), "Experiment already exists; choose a new directory")
         config = read_object(args.config.read_bytes())
         validate_config(config)
+        augmentation_config = (read_object(args.augmentation_config.read_bytes())
+                               if args.augmentation_config else None)
+        if augmentation_config is not None:
+            validate_augmentation_config(augmentation_config)
         prepared, provenance = load_prepared(args.prepared, args.manifest, args.collection_config,
                                             raw_root=args.raw_root)
-        result = run_experiment(prepared, provenance, config, args.output)
+        result = run_experiment(prepared, provenance, config, args.output, augmentation_config)
         print(json.dumps({"output": str(args.output), **result}, indent=2))
         return 0
     except KeyboardInterrupt:

@@ -11,6 +11,7 @@ import warnings
 
 from gestureos.baselines import (MODEL_NAMES, feature_field, load_prepared, make_estimator,
                                 validate_config, validation_metrics)
+from gestureos.augment import augment_train, validate_config as validate_augmentation_config
 from gestureos.capture import write_json
 from gestureos.dataset import fingerprint
 from gestureos.preprocessing import prepare_partitions
@@ -170,6 +171,50 @@ class BaselinesTest(unittest.TestCase):
             run_experiment(self.prepared, self.provenance, self.config, self.output)
         self.assertEqual(snapshots, {p.relative_to(self.output): p.read_bytes()
                                     for p in self.output.rglob("*") if p.is_file()})
+
+    def test_optional_augmentation_has_train_lineage_and_frozen_holdouts(self):
+        settings = json.loads(Path("configs/augmentation-rotation-v1.json").read_text())
+        before = copy.deepcopy(self.prepared)
+        first, lineage = augment_train(self.prepared, settings)
+        again, again_lineage = augment_train(self.prepared, settings)
+        self.assertEqual((first, lineage), (again, again_lineage))
+        self.assertEqual(self.prepared, before)
+        self.assertEqual(first[:len(before["partitions"]["train"])], before["partitions"]["train"])
+        self.assertEqual(len(lineage), len(before["partitions"]["train"]))
+        for child, trace in zip(first[len(before["partitions"]["train"]):], lineage):
+            parent = next(row for row in before["partitions"]["train"]
+                          if row["capture_id"] == trace["parent_capture_id"])
+            self.assertEqual(len(child["sequence"]), len(parent["sequence"]))
+            for a, b in zip(child["sequence"], parent["sequence"]):
+                self.assertAlmostEqual(sum(x*x for x in a[:3]), sum(x*x for x in b[:3]))
+                self.assertAlmostEqual(sum(x*x for x in a[3:]), sum(x*x for x in b[3:]))
+                self.assertEqual((a[2], a[5]), (b[2], b[5]))
+            self.assertEqual(child["label_index"], parent["label_index"])
+            self.assertEqual(child["duration_s"], parent["duration_s"])
+            self.assertLessEqual(abs(trace["rotation_degrees_z"]), settings["max_rotation_degrees"])
+            self.assertEqual(trace["partition"], "train")
+        fakes = {name: RecordingEstimator() for name in MODEL_NAMES}
+        with patch("gestureos.train.make_estimator", side_effect=lambda name, _: fakes[name]):
+            run_experiment(self.prepared, self.provenance, self.config, self.output, settings)
+        artifact = json.loads((self.output / "augmentation.json").read_text())
+        self.assertEqual(artifact["lineage"], lineage)
+        self.assertEqual(artifact["scaler_fit"], "original_train_only")
+        for name, fake in fakes.items():
+            self.assertEqual(len(fake.fit_calls[0][0]), len(first))
+            self.assertEqual(fake.predict_calls[0], [row[feature_field(name)]
+                                                     for row in before["partitions"]["validation"]])
+
+    def test_augmentation_rejects_unsafe_parameters_before_output(self):
+        settings = json.loads(Path("configs/augmentation-rotation-v1.json").read_text())
+        for key, value in (("max_rotation_degrees", 0), ("max_rotation_degrees", 50),
+                           ("copies_per_capture", 0), ("seed", True)):
+            with self.subTest(key=key):
+                bad = {**settings, key: value}
+                with self.assertRaises(ValueError):
+                    validate_augmentation_config(bad)
+                with self.assertRaises(ValueError):
+                    run_experiment(self.prepared, self.provenance, self.config, self.output, bad)
+                self.assertFalse(self.output.exists())
 
     def test_convergence_warning_excludes_model_from_selection(self):
         with patch("gestureos.train.make_estimator", side_effect=lambda name, _: RecordingEstimator(name == "random_forest")):

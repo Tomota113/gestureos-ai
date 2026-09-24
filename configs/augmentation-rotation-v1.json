@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "seed": 42,
+  "copies_per_capture": 1,
+  "max_rotation_degrees": 3
+}

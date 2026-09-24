@@ -1,7 +1,7 @@
 PROJECT: GestureOS AI
 DATE: 2026-09-24
-CURRENT PHASE: M8-SOFTWARE complete; physical collection remains in progress.
-STATUS: READY_FOR_NEXT_SOFTWARE_MILESTONE / REAL_ML_AND_HARDWARE_PENDING
+CURRENT PHASE: M9 train-only augmentation software complete; physical collection remains in progress.
+STATUS: M9_SOFTWARE_VERIFIED / REAL_ML_AND_HARDWARE_PENDING
 
 LAST COMPLETED TASK:
 M8 adds a pure LCD 1602 presentation layer in firmware/src/lcd_ui.*, with fixed two-row, 16-character frames for boot, ready, recording, accepted, UNKNOWN and sensor error. Labels are bounded/sanitized. No uncalibrated score is shown as a confidence percentage. There is no LCD GPIO adapter or pin mapping yet.
@@ -27,10 +27,12 @@ KNOWN LIMITATIONS:
 The LCD renderer is not used by a physical display driver. It provides no hardware UI, latency or reliability measurement. No confidence percentage is justified. Continuous segmentation, safe augmentation, embedded ML export, modes/actions and test-final assessment remain pending.
 
 ANTIGRAVITY:
-User said to proceed without Antigravity for now. Previous M7 read-only review completed and all four findings addressed. Do not call it again unless user requests it.
+User now authorizes Antigravity delegation when useful. M9 read-only review attempted via verified CLI; headless command permission was denied, so no review received. Do not use blanket auto-approval. Previous M7 review completed and all four findings addressed.
 
 QUOTA:
-Official Codex check near M8 end: 77% used in 5h window (23% remaining), 77% weekly used. No reset/credit consumed. Snapshot may change.
+Official Codex check during M9: 84% used in 5h window (16% remaining), 78% weekly used. No reset/credit consumed. Snapshot may change.
 
 NEXT ACTION:
-Read .agent/NEXT_ACTION.md. Continue with one bounded software-only milestone; prioritize checkpoint and avoid new long operations while quota is limited.
+Read AGENT_STATE.md and .agent/NEXT_ACTION.md; prioritize checkpoint with limited quota. Real comparison and physical validation await sufficient data and user wiring.
+
+M9 COMPLETE: optional bounded sensor-frame Z rotation after split, with parent capture lineage; disabled by default. 102 Python tests OK. No real training or physical measurements. Antigravity review attempted but headless command permission was denied; no review received, not a quota finding.

@@ -80,6 +80,10 @@ Pour explorer des paramètres, copier/modifier la configuration et choisir un
 nouveau dossier d’expérience, en gardant le même split. La recherche automatique
 et l’agrégation de plusieurs seeds ne sont pas implémentées dans ce jalon.
 
+Une augmentation train-only optionnelle est décrite dans
+[augmentation-guide.md](augmentation-guide.md). Elle requiert un nouveau dossier
+d'expérience et l'option `--augmentation-config configs/augmentation-rotation-v1.json`.
+
 ## Fichiers conservés par expérience
 
 ```text
@@ -135,6 +139,6 @@ et marge, désactivant toute acceptation tant que la politique est non configur�
 Les seuils et leur évaluation restent à réaliser. La classe
 `unknown` du dataset est une classe supervisée, elle ne prouve pas la capacité
 à rejeter tout mouvement inconnu. Calibration des scores, lissage temporel,
-tests finaux, augmentation, KNN/CNN, conversion TinyML et parité C++ restent des
+tests finaux, validation réelle de l'augmentation, KNN/CNN, conversion TinyML et parité C++ restent des
 jalons distincts. Les branchements seront effectués lorsque tu passeras aux
 essais ou à la collecte, comme convenu.

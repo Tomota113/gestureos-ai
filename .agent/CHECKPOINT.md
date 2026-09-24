@@ -1,25 +1,16 @@
-CHECKPOINT ID: M8-software-lcd1602-presentation-verified
+CHECKPOINT ID: M9-train-only-rotation-software-verified
 DATE: 2026-09-24
 
-COMPLETED:
-Pure C++ LCD 16x2 frame formatter for boot, ready, recording, accepted, UNKNOWN and sensor error. Bounded ASCII/sanitized labels; no uncalibrated confidence percentage. Included in both ESP32 build profiles, but no physical display driver or pin mapping.
+COMPLETED: Optional post-split train-only sensor-frame Z rotation, bounded to at most 5 degrees and disabled by default. Both acceleration including gravity and gyroscope rotate consistently. Child records carry parent capture IDs; frozen scaler remains fit on original train captures. Validation, test and RAW are unchanged. Configuration and lineage saved per experiment.
 
-TESTED:
-Native C++11 -Wall -Wextra -Werror compile and renderer assertions passed. Both PlatformIO ESP32 profiles built successfully. See reports/m8-lcd-software-tests.txt. Previous M7 Python suite: 100 tests OK. No upload/flash or hardware LCD test.
+TESTED: .venv/bin/python -m unittest discover -s tests : 102 tests OK. git diff --check : clean. Test estimators are fakes; no real model was fit.
 
-FAILED/RESOLVED:
-Initial native test compile lacked <initializer_list>; fixed and retested. No unresolved software test failure.
+ANTIGRAVITY: Read-only M9 review attempted with agy --mode plan. Headless command permission auto-denied; no review output. Not a quota finding. No blanket auto-approval used.
 
-REAL STATE:
-Three swipe_left captures over two sessions at last read-only scan; no real gesture model or ML score. Long bench report remains failed (imu_init, zero samples). Physical LCD and IMU validations remain pending.
+REAL STATE: Last read-only inventory had three swipe_left captures over two sessions. No real gesture model or ML score. Long IMU bench remains failed (imu_init). LCD 16-pin untested physically; wiring later per user.
 
-GIT/USER DATA:
-Base 7197394. Preserve preexisting capture.py/dataset.py/test_dataset.py edits and untracked reports/hardware/ outside M8 commit; keep RAW/pending/notes intact.
+USER DATA: Preserve preexisting uncommitted src/gestureos/capture.py, src/gestureos/dataset.py, tests/test_dataset.py and untracked reports/hardware/; none belongs to M9. RAW/pending/notes untouched.
 
-ANTIGRAVITY:
-Not used in M8 per user request. Prior M7 review completed and recorded.
+QUOTA: Official latest check during M9: 84% 5h used, 78% weekly used; no reset or credit consumed. Snapshot may change.
 
-QUOTA:
-Official latest check: 77% 5h used, 77% weekly used; no credit/reset consumed. Snapshot may change.
-
-SAFE TO RESUME: YES. See NEXT_ACTION.md.
+SAFE TO RESUME: YES. Read AGENT_STATE.md and NEXT_ACTION.md.

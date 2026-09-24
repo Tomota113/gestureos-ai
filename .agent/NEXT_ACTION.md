@@ -1,8 +1,7 @@
-CURRENT: M8 LCD1602 presentation software complete and compiled. See .agent/PROJECT_STATE.md and reports/m8-lcd-software-tests.txt.
+CURRENT: M9 software complete; 102 Python tests OK. Read AGENT_STATE.md first on continuation.
 
-1. On resume, read the four .agent files, inspect git status and the five latest commits. Preserve preexisting capture.py/dataset.py/test_dataset.py edits and reports/hardware/.
-2. Do not call Antigravity for now; user explicitly requested work without it.
-3. With quota available, inspect M5 train path and project augmentation requirements. Next bounded software candidate: safe train-only augmentation with capture lineage, after split, with physically justified transformations. No real ML comparison until dataset is adequate. Document precise scope before implementation; do not alter RAW or test/validation.
-4. Before any real training or threshold selection, rescan real RAW and verify enough labels and disjoint groups. Keep final test untouched. No synthetic fixture is a performance result.
-5. Physical pending: repeat the failed 60-second bench, characterize IMU, then verify 16-pin LCD controller/levels/pin mapping and implement its hardware adapter. User will connect later; do not ask again during software work or flash automatically.
-6. Update PROJECT_STATE.md, NEXT_ACTION.md and CHECKPOINT.md before long operations, after significant tests and before session end. No quota guessing or paid credits/account changes.
+1. Preserve existing user changes in capture.py, dataset.py, test_dataset.py and reports/hardware/.
+2. Antigravity M9 review was attempted in read-only plan mode but headless command permission was denied. This is not quota exhaustion. Do not use blanket auto-approval; retry only with a narrow authorized permission path.
+3. When sufficient real captures and disjoint groups exist, compare baseline vs optional train-only rotation on the same split. Do not claim an improvement before measurement. Keep final test reserved.
+4. Physical pending: repeat failed 60-second IMU bench and verify LCD controller, levels and pin mapping after user wiring; no automatic flash.
+5. Update PROJECT_STATE.md, NEXT_ACTION.md, CHECKPOINT.md and AGENT_STATE.md before long operations and at session end.
