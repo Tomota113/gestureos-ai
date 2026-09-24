@@ -39,3 +39,7 @@
 - M5 : fit train, comparaison macro F1 validation, test jamais évalué. ConvergenceWarning conserve les artefacts mais exclut le modèle du choix automatique. Aucun candidat ne vaut validation embarquée.
 - M5 : journal/paramètres/provenance par expérience, publication des bundles sans écrasement et sauvegarde progressive par modèle. Pas de relance automatique d’un lot interrompu.
 - M5 : tests du lanceur avec estimateurs factices sans apprentissage, aucun classificateur réel entraîné sur les fixtures. Aucun score ML réel publié faute de données.
+
+- Priorité utilisateur : préparer la collecte hors ligne avant son départ, avec cet ordinateur + ESP32 + MPU6050. M6 conservé en cours, non terminé.
+- Collecte hors ligne : chaque prise reste dans pending ; seule une prise techniquement revalidée et humainement confirmée est copiée dans raw, sans supprimer les originaux. Notes de séance séparées et identifiants conservés.
+- Deux images fusionnées issues des builds M2 existants sont disponibles localement ; l’installation sauvegarde d’abord les4Mo de Flash. Aucun flashage effectué par l’agent.

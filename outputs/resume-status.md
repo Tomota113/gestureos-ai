@@ -1,16 +1,13 @@
 # Reprise GestureOS AI
 
-M5 logiciel terminé : lanceur **Random Forest, SVM et MLP**, vérification des
-entrées, comparaison sur validation et journal d’expérience. **56 tests
-logiciels réussis.** [Guide M5](baselines-guide.md).
+Le [kit de collecte sans Wi-Fi](COLLECTE_SANS_WIFI.md) est prêt côté logiciel
+pour cet ordinateur avec ESP32 et MPU6050. **69 tests logiciels réussis.**
+Le capteur et les branchements restent à tester ; aucun flashage réalisé.
 
-Aucun modèle de gestes entraîné, aucune précision ML ou mesure matérielle.
-Les tests du lanceur utilisent des estimateurs factices sans apprentissage.
-Le jeu de test final reste réservé. Les dépendances ML sont installées et figées.
+Lanceur : `bash outputs/LANCER_COLLECTE.sh`, depuis le dossier du projet.
+Les mesures sont saisies automatiquement par USB ; tu choisis/confirme le geste.
+Les prises confirmées vont dans data/raw, les originaux/tentatives dans data/pending.
 
-Dernier contrôle officiel avant clôture : 57 % utilisés sur5h, soit43 % restants.
-Aucun crédit ni reset consommé par l’agent.
-
-La reprise est décrite dans les quatre fichiers `.agent/`. Écrire **continue**
-reprendra la préparation de l’inférence PC et du rejet UNKNOWN. Les branchements
-et la collecte seront faits ultérieurement, selon ta demande.
+M5 baselines terminé ; M6 inférence/rejet sauvegardé en cours mais pas terminé.
+Aucun modèle de gestes entraîné et aucune précision ML mesurée.
+Dernier quota observé :92 % utilisés sur5h. Aucun crédit/reset consommé.

@@ -8,7 +8,7 @@ ROBOT, SMART CONTROL, PRESENTATION, GAME, MACRO et CUSTOM.
 Les branchements et validations physiques seront réalisés plus tard selon la
 demande de l'utilisateur. Le MPU6050 n'est pas encore testé.
 La carte répond au bootloader : ESP32-D0WDQ6 révision 1, Flash 4 Mo, CP2102.
-Les deux firmwares compilent ; 56 tests Python et les tests C++ natifs passent. Aucun modèle,
+Les deux firmwares compilent ; 69 tests Python et les tests C++ natifs passent. Aucun modèle,
 dataset de gestes, score de précision ou test d'actionneur n'existe encore.
 
 Le chargeur, les splits par session/sujet et le prétraitement à 64 caractéristiques
@@ -18,6 +18,8 @@ sur validation et test final réservé. Aucun entraînement réel n’a été la
 
 ## Lire en premier
 
+- [Collecter tes gestes sans Wi-Fi](outputs/COLLECTE_SANS_WIFI.md)
+- Lanceur local : `bash outputs/LANCER_COLLECTE.sh` (premier test matériel à réaliser selon le guide).
 - [Baselines RF/SVM/MLP et expériences](outputs/baselines-guide.md)
 - [Prétraitement et caractéristiques](outputs/preprocessing-guide.md)
 - [Préparation et partitions du dataset](outputs/dataset-preparation-guide.md)

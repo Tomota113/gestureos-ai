@@ -1,0 +1,21 @@
+{
+  "chip": "esp32",
+  "flash_size_bytes": 4194304,
+  "flash_mode": "dio",
+  "flash_freq": "40m",
+  "source": "Previously compiled and validated M2 software builds; no physical validation",
+  "images": {
+    "bench": {
+      "file": "bench.bin",
+      "sha256": "e93b6d2f0e8ece1cd3542f629b4023e8e18fb16c48918bbe93bf79352c250be8",
+      "bytes": 353488,
+      "offset": 0
+    },
+    "dataset": {
+      "file": "dataset.bin",
+      "sha256": "54523517bf4582bd9517124ee2577135cb2f9572624f5d2c96c03c60230a9cba",
+      "bytes": 381840,
+      "offset": 0
+    }
+  }
+}

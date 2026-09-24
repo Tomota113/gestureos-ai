@@ -4,6 +4,9 @@ __pycache__/
 .pytest_cache/
 work/
 data/raw/
+data/pending/
+data/session_notes/
+backups/
 data/processed/
 data/augmented/
 data/external/

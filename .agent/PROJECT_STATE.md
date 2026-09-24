@@ -1,10 +1,10 @@
 PROJECT: GestureOS AI
 
 CURRENT PHASE:
-Développement logiciel sans matériel. M5 baselines et expériences terminé.
+Développement logiciel sans matériel. M5 terminé ; kit de collecte hors ligne terminé côté logiciel. M6 non terminé.
 
 CURRENT MILESTONE:
-M5-SOFTWARE : RF/SVM/MLP configurés, lanceur vérifié et journal expérimental. Aucun entraînement réel.
+OFFLINE-COLLECTION : menu français, confirmation des prises, RAW/pending séparés, notes, firmwares fusionnés et installateur local avec sauvegarde Flash. 69 tests OK.
 
 STATUS:
 READY_FOR_NEXT_SOFTWARE_MILESTONE
@@ -13,7 +13,7 @@ LAST COMPLETED TASK:
 Dépendances ML vérifiées/installées sur Python3.14.4. Entrée préparée recalculée depuis les RAW revérifiés. Fit train, métriques et sélection sur validation uniquement. Paramètres, versions, empreintes, prédictions, bundles et interruptions conservés sans écrasement. Guide baselines disponible.
 
 CURRENT TASK:
-M5 terminé. Prochain jalon proposé : contrat d’inférence PC et logique de rejet UNKNOWN, tests sans entraînement ni scores réels.
+Kit hors ligne prêt pour cet ordinateur + ESP32/MPU6050, comme confirmé par l’utilisateur. Guide outputs/COLLECTE_SANS_WIFI.md. Aucun port USB détecté ni test capteur/flashage réalisé. M6 sauvegardé en cours, pas prêt : inference.py, rejection.py, predict.py, configs/rejection.json. Syntaxe seulement vérifiée ; tests fonctionnels à écrire.
 
 LAST SUCCESSFUL COMMAND:
 .venv/bin/python -m unittest discover -s tests -v
@@ -22,7 +22,7 @@ LAST SUCCESSFUL COMMAND:
 git diff --check
 
 LAST SUCCESSFUL TEST:
-56 tests Python OK, dont 13 nouveaux pour M5. Preuves reports/m5-baselines-tests.txt.
+69 tests Python OK, dont13 nouveaux pour la collecte hors ligne. Preuves reports/offline-collection-tests.txt. Lanceurs --check et intégrité des deux images OK.
 Estimateurs réels importés/paramètres contrôlés seulement ; estimateurs factices pour les tests du lanceur.
 Aucun changement firmware : builds et tests C++ du précédent jalon restent les derniers effectués.
 
@@ -88,4 +88,4 @@ Ancienne revue de code : timeout60s sans avis malgré exit0, INCOMPLETE_TIMEOUT 
 Aucune relance automatique pendant M5, conformément à la décision persistante.
 
 CODEX QUOTA:
-Contrôle officiel M5 : 31 % utilisés au début ; 57 % au dernier contrôle avant clôture (43 % restants sur5h), semaine58 % utilisés. Aucun crédit/reset consommé par l’agent. Ancienne pause quota levée par retour effectif de disponibilité.
+Dernier contrôle officiel : 92 % utilisés sur5h, 8 % restants ; semaine64 % utilisés. Aucune nouvelle fonctionnalité après sauvegarde de ce kit. Aucun crédit/reset consommé.
