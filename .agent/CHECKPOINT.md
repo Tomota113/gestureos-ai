@@ -1,22 +1,25 @@
-CHECKPOINT ID: M7-software-threshold-selection-verified
+CHECKPOINT ID: M8-software-lcd1602-presentation-verified
 DATE: 2026-09-24
 
 COMPLETED:
-Validation-only threshold selector, CLI and experimental policy binding to model/manifest/validation IDs. Explicit constraints, observed-breakpoint search, known/unknown denominators and blocked outcomes. Guide and architecture updated. No real model trained, calibrated or deployed.
+Pure C++ LCD 16x2 frame formatter for boot, ready, recording, accepted, UNKNOWN and sensor error. Bounded ASCII/sanitized labels; no uncalibrated confidence percentage. Included in both ESP32 build profiles, but no physical display driver or pin mapping.
 
-VERIFICATION:
-100 Python tests OK after review follow-up; .venv/bin/python -m gestureos.select_thresholds --help OK; git diff --check OK. Evidence reports/m7-antigravity-followup-tests.txt. Tests use analytical scores and fake estimators, not real ML results. Firmware/hardware unchanged this milestone.
+TESTED:
+Native C++11 -Wall -Wextra -Werror compile and renderer assertions passed. Both PlatformIO ESP32 profiles built successfully. See reports/m8-lcd-software-tests.txt. Previous M7 Python suite: 100 tests OK. No upload/flash or hardware LCD test.
+
+FAILED/RESOLVED:
+Initial native test compile lacked <initializer_list>; fixed and retested. No unresolved software test failure.
 
 REAL STATE:
-Last read-only inventory found 3 valid real swipe_left captures from 2 sessions. No full dataset or model. Existing 60-second bench report failed imu_init with zero samples. User will wire/test hardware later. No test-final scores or real UNKNOWN false-accept rates.
+Three swipe_left captures over two sessions at last read-only scan; no real gesture model or ML score. Long bench report remains failed (imu_init, zero samples). Physical LCD and IMU validations remain pending.
 
 GIT/USER DATA:
-Base 0396d1b. Keep preexisting capture.py/dataset.py/test_dataset.py edits and untracked reports/hardware outside M7 commit. Preserve all RAW/pending/notes.
+Base 7197394. Preserve preexisting capture.py/dataset.py/test_dataset.py edits and untracked reports/hardware/ outside M8 commit; keep RAW/pending/notes intact.
 
 ANTIGRAVITY:
-Read-only agy plan review of 862af07 completed after OAuth login. Its independent suite passed 98 tests. Four findings were verified and addressed, then 100 tests passed. See reports/m7-antigravity-review.md. No files edited by agy.
+Not used in M8 per user request. Prior M7 review completed and recorded.
 
 QUOTA:
-Official latest check: 64% 5h used, 75% weekly used; no credit/reset consumed. These values are a snapshot.
+Official latest check: 77% 5h used, 77% weekly used; no credit/reset consumed. Snapshot may change.
 
 SAFE TO RESUME: YES. See NEXT_ACTION.md.

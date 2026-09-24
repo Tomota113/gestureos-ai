@@ -1,8 +1,8 @@
-CURRENT: M7 software and Antigravity review follow-up are complete; 100 tests pass. See .agent/PROJECT_STATE.md and reports/m7-threshold-tests.txt.
+CURRENT: M8 LCD1602 presentation software complete and compiled. See .agent/PROJECT_STATE.md and reports/m8-lcd-software-tests.txt.
 
-1. At resumption, read .agent/PROJECT_STATE.md, NEXT_ACTION.md, CHECKPOINT.md, decisions.md; inspect git status and last five commits. Preserve the existing user collection edits and hardware reports.
-2. Review report: reports/m7-antigravity-review.md. Four findings were handled and the full Python suite passed. Do not repeat this completed provider review automatically.
-3. Keep Antigravity read-only for any future bounded review and never permit concurrent edits. Stop provider calls if its quota is actually exhausted.
-4. Continue real collection offline as the user chooses. Rescan the actual RAW and preserve pending/original captures. Do not run a real baseline/threshold selection until the labels and disjoint groups support it. Explicitly set acceptable validation constraints; leave the final test reserved.
-5. Hardware validations remain separate: repeat 60-second bench, characterize axes/bias/fixation, then LCD16/actuators. No automatic flash or repeated wiring questions during software work.
-6. Update all three checkpoint files before long operations, after significant tests, and before session end. No invented ML performance or quotas; no paid credits/account changes.
+1. On resume, read the four .agent files, inspect git status and the five latest commits. Preserve preexisting capture.py/dataset.py/test_dataset.py edits and reports/hardware/.
+2. Do not call Antigravity for now; user explicitly requested work without it.
+3. With quota available, inspect M5 train path and project augmentation requirements. Next bounded software candidate: safe train-only augmentation with capture lineage, after split, with physically justified transformations. No real ML comparison until dataset is adequate. Document precise scope before implementation; do not alter RAW or test/validation.
+4. Before any real training or threshold selection, rescan real RAW and verify enough labels and disjoint groups. Keep final test untouched. No synthetic fixture is a performance result.
+5. Physical pending: repeat the failed 60-second bench, characterize IMU, then verify 16-pin LCD controller/levels/pin mapping and implement its hardware adapter. User will connect later; do not ask again during software work or flash automatically.
+6. Update PROJECT_STATE.md, NEXT_ACTION.md and CHECKPOINT.md before long operations, after significant tests and before session end. No quota guessing or paid credits/account changes.

@@ -4,6 +4,10 @@
 La suite Python passe avec 100 tests après la revue Antigravity.
 [Guide M7](threshold-selection-guide.md).
 
+**M8 logiciel :** les états du LCD 16×2 sont formatés et testés sur ordinateur ;
+les deux profils ESP32 compilent. Aucun LCD réel n’a été piloté.
+[Guide LCD](lcd1602-software-guide.md).
+
 Trois captures réelles de gauche, sur deux séances, ont été revérifiées à la
 reprise. Les données existantes sont intactes. Aucun modèle de gestes n’est
 entraîné et aucun score ML n’est disponible. Le banc60s conservé est en échec ;

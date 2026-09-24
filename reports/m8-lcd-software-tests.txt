@@ -1,0 +1,15 @@
+M8 LCD 1602 software preparation — 2026-09-24
+Base Git 7197394. No hardware connected or flashed by this milestone.
+
+Native command:
+g++ -std=c++11 -Wall -Wextra -Werror -Ifirmware/src tests/native/lcd_ui_test.cpp firmware/src/lcd_ui.cpp -o work/lcd_ui_test
+./work/lcd_ui_test
+Result: LCD 16x2 presentation tests passed (software only).
+
+Firmware commands:
+pio run -d firmware -e esp32dev
+pio run -d firmware -e dataset
+Results: both SUCCESS; esp32dev Flash 287585/1310720 bytes, dataset Flash 315941/1310720 bytes. Build sizes are compilation outputs, not LCD, IMU, or latency measurements.
+
+Initial native compile error: missing <initializer_list> in test code; fixed and rerun successfully.
+No ML model, dataset, or policy was changed. LCD physical wiring, voltage levels, adapter and timing remain untested.

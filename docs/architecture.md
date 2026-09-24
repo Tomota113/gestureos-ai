@@ -19,7 +19,7 @@ GestureOS AI/
       imu.*                     acquisition, diagnostics, puis calibration
       gesture_engine.*          segmentation et fenêtre temporelle
       model.*                   interface d'inférence et rejet
-      lcd_ui.*                  écran logique 2 × 16, unique accès au LCD
+      lcd_ui.*                  présent : écran logique 2 × 16 ; adaptateur matériel à venir
       menu.*                    navigation sans dépendance au modèle
       modes.*                   geste accepté → action selon mode
       macro_engine.*            séquences, timeout, annulation

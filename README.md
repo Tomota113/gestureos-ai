@@ -21,11 +21,14 @@ M6 ajoute le diagnostic sur capture, les scores RF/SVM/MLP et le rejet UNKNOWN,
 avec une politique non configurée par défaut et aucune action matérielle.
 M7 ajoute la recherche de seuils sur validation, bloquée sans contraintes
 explicites ou sans données et modèle réels adéquats.
+M8 prépare les textes du LCD 1602 et compile les deux profils ESP32 ;
+l’affichage physique reste à tester après le câblage.
 
 ## Lire en premier
 
 - [Inférence PC et rejet UNKNOWN](outputs/inference-guide.md)
 - [Sélection des seuils UNKNOWN](outputs/threshold-selection-guide.md)
+- [Préparation logicielle du LCD 1602](outputs/lcd1602-software-guide.md)
 - [Collecter tes gestes sans Wi-Fi](outputs/COLLECTE_SANS_WIFI.md)
 - Lanceur local : `bash outputs/LANCER_COLLECTE.sh` (premier test matériel à réaliser selon le guide).
 - [Baselines RF/SVM/MLP et expériences](outputs/baselines-guide.md)

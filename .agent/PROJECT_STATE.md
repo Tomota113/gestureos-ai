@@ -1,26 +1,36 @@
 PROJECT: GestureOS AI
 DATE: 2026-09-24
-PHASE: M7-SOFTWARE complete; physical collection remains in progress.
+CURRENT PHASE: M8-SOFTWARE complete; physical collection remains in progress.
 STATUS: READY_FOR_NEXT_SOFTWARE_MILESTONE / REAL_ML_AND_HARDWARE_PENDING
 
-COMPLETED:
-M7 selects experimental UNKNOWN score/margin thresholds from frozen validation IDs only. It revalidates RAW snapshots, prepared data, manifest, trusted model and provenance, then scores only validation captures. Explicit false-accept and correct-accept constraints are required. Reports known/unknown denominators and blocks impossible or missing-class selections. Policy binds model, score convention, manifest and validation IDs; inference checks these bindings. No probability calibration, test evaluation or action authorization is implied.
-M6 PC inference/rejection and earlier offline collection, preprocessing and RF/SVM/MLP training infrastructure remain in place.
+LAST COMPLETED TASK:
+M8 adds a pure LCD 1602 presentation layer in firmware/src/lcd_ui.*, with fixed two-row, 16-character frames for boot, ready, recording, accepted, UNKNOWN and sensor error. Labels are bounded/sanitized. No uncalibrated score is shown as a confidence percentage. There is no LCD GPIO adapter or pin mapping yet.
 
-TESTED:
-.venv/bin/python -m unittest discover -s tests -v: 100 tests OK after independent Antigravity review and follow-up corrections, with analytical scores/fake estimators and no classifier fit on fixtures. CLI help and git diff --check OK. Evidence: reports/m7-threshold-tests.txt and reports/m7-antigravity-followup-tests.txt. No firmware build/flash or physical test in M7.
+LAST SUCCESSFUL COMMANDS/TESTS:
+g++ -std=c++11 -Wall -Wextra -Werror -Ifirmware/src tests/native/lcd_ui_test.cpp firmware/src/lcd_ui.cpp -o work/lcd_ui_test
+./work/lcd_ui_test : passed (software only).
+pio run -d firmware -e esp32dev : SUCCESS.
+pio run -d firmware -e dataset : SUCCESS.
+Evidence: reports/m8-lcd-software-tests.txt. No upload/flash or physical test.
+Previous M7 full Python suite: 100 tests OK after Antigravity read-only review and corrections; reports/m7-antigravity-review.md and reports/m7-antigravity-followup-tests.txt.
 
-REAL DATA AND HARDWARE:
-Last read-only inventory: 3 valid swipe_left captures from 2 sessions. Rescan before training; current labels/groups are insufficient. No real gesture model, ML score, rejection rate or selected threshold exists. The retained 60-second bench report reports passed:false, imu_init and zero samples; shorter valid captures do not establish long-run stability. ESP32-D0WDQ6/4 MB/CP2102 and 16-pin LCD identified. Wiring and further physical checks will be done later per user.
+REAL DATA / MODEL:
+Last read-only inventory: 3 valid swipe_left captures over 2 sessions. Rescan before training. Not enough labels/groups for real training. No gesture model, real ML accuracy, rejection rate or selected threshold exists. M5-M7 train/inference/threshold software is prepared but cannot provide real results yet. The final test split remains reserved.
 
-USER CHANGES:
-Preexisting uncommitted src/gestureos/capture.py, src/gestureos/dataset.py, tests/test_dataset.py and untracked reports/hardware/ remain intact and excluded from M7 commit. RAW, pending and session notes were not overwritten.
+HARDWARE:
+ESP32-D0WDQ6, 4 MB Flash, CP2102 and a 16-pin LCD identified. The retained 60-second bench report is passed:false with imu_init and zero samples; short valid captures do not prove long-run stability. LCD controller, voltage levels, wiring, adapter and actual display remain untested. User will do connections later. No physical action in M8.
 
-LIMITATIONS/NEXT:
-Collect balanced real known and unknown captures across disjoint groups, create verified manifest/prepared data, train a real baseline, then set explicit threshold objectives and run M7. Keep final test untouched until development is fixed. Continuous-stream false triggers, segmentation, embedded inference, LCD/actions and long physical bench remain pending. No quota reset/credit purchase.
+EXISTING USER CHANGES:
+Preexisting uncommitted src/gestureos/capture.py, src/gestureos/dataset.py, tests/test_dataset.py and untracked reports/hardware/ remain intact and excluded from M8 commit. Do not overwrite RAW, pending or notes.
+
+KNOWN LIMITATIONS:
+The LCD renderer is not used by a physical display driver. It provides no hardware UI, latency or reliability measurement. No confidence percentage is justified. Continuous segmentation, safe augmentation, embedded ML export, modes/actions and test-final assessment remain pending.
 
 ANTIGRAVITY:
-User completed OAuth login. Antigravity reviewed commit 862af07 in read-only plan mode and independently ran 98 tests successfully. Four findings were verified and addressed: contract manifest SHA guard, positive bound-policy path, SVM score tests, and blocked CLI test. See reports/m7-antigravity-review.md. No edits by agy.
+User said to proceed without Antigravity for now. Previous M7 read-only review completed and all four findings addressed. Do not call it again unless user requests it.
 
 QUOTA:
-Official Codex check after review: 64% used in 5h window (36% remaining), 75% weekly used. No reset consumed. These values may change.
+Official Codex check near M8 end: 77% used in 5h window (23% remaining), 77% weekly used. No reset/credit consumed. Snapshot may change.
+
+NEXT ACTION:
+Read .agent/NEXT_ACTION.md. Continue with one bounded software-only milestone; prioritize checkpoint and avoid new long operations while quota is limited.
