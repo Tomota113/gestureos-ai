@@ -33,3 +33,9 @@
 - Prétraitement v1 : interpolation linéaire sur toute la durée vers200 points, durée physique conservée, aucune décimation sans filtre anti-repliement. Gravité et unités conservées.
 - 64 features explicables, ordre versionné ; scaler population ajusté uniquement au train, échelle1 pour variance nulle. Les séquences ne sont pas standardisées par canal.
 - Le manifeste est figé : config et empreintes revérifiées, groupes/IDs/couverture contrôlés. Les samples proviennent du snapshot validé, pas d’une seconde lecture du CSV.
+
+- M5 : bibliothèques ML optionnelles installées dans .venv, wheels Linux/Python3.14 vérifiées et versions figées ; PlatformIO inchangé.
+- M5 : chaque entrée préparée est recalculée depuis les RAW revérifiés. RF sur features brutes ; SVM/MLP sur scaler train figé. Pas de validation interne MLP ni de probabilités SVM calculées via folds aléatoires.
+- M5 : fit train, comparaison macro F1 validation, test jamais évalué. ConvergenceWarning conserve les artefacts mais exclut le modèle du choix automatique. Aucun candidat ne vaut validation embarquée.
+- M5 : journal/paramètres/provenance par expérience, publication des bundles sans écrasement et sauvegarde progressive par modèle. Pas de relance automatique d’un lot interrompu.
+- M5 : tests du lanceur avec estimateurs factices sans apprentissage, aucun classificateur réel entraîné sur les fixtures. Aucun score ML réel publié faute de données.

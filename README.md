@@ -8,15 +8,17 @@ ROBOT, SMART CONTROL, PRESENTATION, GAME, MACRO et CUSTOM.
 Les branchements et validations physiques seront réalisés plus tard selon la
 demande de l'utilisateur. Le MPU6050 n'est pas encore testé.
 La carte répond au bootloader : ESP32-D0WDQ6 révision 1, Flash 4 Mo, CP2102.
-Les deux firmwares compilent ; 43 tests Python et les tests C++ natifs passent. Aucun modèle,
+Les deux firmwares compilent ; 56 tests Python et les tests C++ natifs passent. Aucun modèle,
 dataset de gestes, score de précision ou test d'actionneur n'existe encore.
 
 Le chargeur, les splits par session/sujet et le prétraitement à 64 caractéristiques
 avec normalisation ajustée sur le train sont également prêts.
-Aucun entraînement n’a été lancé.
+Le lanceur RF/SVM/MLP et ses journaux d’expériences sont prêts, avec comparaison
+sur validation et test final réservé. Aucun entraînement réel n’a été lancé.
 
 ## Lire en premier
 
+- [Baselines RF/SVM/MLP et expériences](outputs/baselines-guide.md)
 - [Prétraitement et caractéristiques](outputs/preprocessing-guide.md)
 - [Préparation et partitions du dataset](outputs/dataset-preparation-guide.md)
 - [Audit et architecture proposée](outputs/phase-0-audit.md)
@@ -40,8 +42,13 @@ Il est séparé du Python interne de PlatformIO. Pour le recréer s'il manque :
 ```
 
 PlatformIO 6.2.0 est installé. Le projet fixe `espressif32@7.0.1`, dont le
-framework présent est Arduino ESP32 2.0.17. Aucun package ML installé dans le
-venv ; leur compatibilité Python sera vérifiée avant la phase d'entraînement.
+framework présent est Arduino ESP32 2.0.17. L’option ML est installée dans `.venv`
+(scikit-learn 1.9.1, dépendances figées). Pour la recréer et lancer tous les tests :
+
+```bash
+.venv/bin/python -m pip install --only-binary=:all: -r requirements-ml.txt
+.venv/bin/python -m pip check
+```
 
 ```bash
 pio run -d firmware
@@ -50,6 +57,7 @@ pio run -d firmware -e dataset
 .venv/bin/python scripts/check_stream.py --help
 .venv/bin/python -m gestureos.capture --help
 .venv/bin/python -m gestureos.preprocess --help
+.venv/bin/python -m gestureos.train --help
 ```
 
 Le flashage et les mesures restent à effectuer lors de la future phase matérielle.
@@ -65,7 +73,8 @@ un flux CSV de banc. `firmware/include/config.h` centralise sa configuration.
 `src/gestureos/` valide les captures et conserve leur provenance. Le guide
 de collecte explique les deux profils de firmware, le CRC et les sorties.
 Les fixtures de `tests/` sont artificielles, utilisées uniquement pour tester
-le protocole. Elles ne constituent jamais des données ML.
+le code. Les tests du lanceur emploient des estimateurs factices sans apprentissage.
+Elles ne constituent jamais des données ML ou des résultats de reconnaissance.
 
 Le logger de gestes labellisés est implémenté et testé hors matériel. La
 calibration, le LCD, le ML, le déploiement TinyML et les modes seront ajoutés

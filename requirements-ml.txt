@@ -1,0 +1,7 @@
+# Versions verified as binary wheels on Linux x86_64 / CPython 3.14.
+-e .[ml]
+numpy==2.5.3
+scipy==1.18.1
+narwhals==2.26.0
+threadpoolctl==3.7.0
+cloudpickle==3.1.2

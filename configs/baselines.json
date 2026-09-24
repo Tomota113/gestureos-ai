@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "seed": 42,
+  "selection_metric": "validation_macro_f1",
+  "models": {
+    "random_forest": {"n_estimators": 200, "max_depth": 12, "min_samples_leaf": 2},
+    "svm": {"C": 1.0, "gamma": "scale", "max_iter": 100000},
+    "mlp": {"hidden_layer_sizes": [64, 32], "alpha": 0.001, "max_iter": 500}
+  }
+}

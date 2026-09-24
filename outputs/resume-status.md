@@ -1,13 +1,16 @@
 # Reprise GestureOS AI
 
-M4 logiciel terminé : prétraitement et64 caractéristiques, normalisation ajustée
-uniquement sur train. **43 tests logiciels réussis.** Aucun entraînement ou test
-physique réalisé. [Guide M4](preprocessing-guide.md).
+M5 logiciel terminé : lanceur **Random Forest, SVM et MLP**, vérification des
+entrées, comparaison sur validation et journal d’expérience. **56 tests
+logiciels réussis.** [Guide M5](baselines-guide.md).
 
-Le quota est revenu et l’ancienne pause est levée. Dernier contrôle après tests :
-20 % utilisés sur5h (80 % restants), contre4 % au départ. Aucun crédit/reset consommé.
+Aucun modèle de gestes entraîné, aucune précision ML ou mesure matérielle.
+Les tests du lanceur utilisent des estimateurs factices sans apprentissage.
+Le jeu de test final reste réservé. Les dépendances ML sont installées et figées.
 
-La mémoire persistante reste dans les quatre fichiers `.agent/`. Écrire
-**continue** reprendra le logiciel de baselines et journalisation expérimentale,
-après vérification de l’état du dépôt et des dépendances. Les branchements
-seront faits ultérieurement selon ta demande.
+Dernier contrôle officiel avant clôture : 57 % utilisés sur5h, soit43 % restants.
+Aucun crédit ni reset consommé par l’agent.
+
+La reprise est décrite dans les quatre fichiers `.agent/`. Écrire **continue**
+reprendra la préparation de l’inférence PC et du rejet UNKNOWN. Les branchements
+et la collecte seront faits ultérieurement, selon ta demande.

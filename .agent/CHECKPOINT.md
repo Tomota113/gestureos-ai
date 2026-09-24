@@ -1,53 +1,57 @@
 CHECKPOINT ID:
-M4-software_preprocessing-verified
+M5-software-baselines-verified
 
 PHASE:
-Prétraitement et features PC terminés ; matériel différé.
+Baselines et journalisation PC terminés côté logiciel ; tests matériels différés.
 
 OBJECTIVE:
-Préparer les entrées des futures baselines en protégeant intégrité et partitions.
+Préparer des expériences reproductibles sur captures réelles, sans fuite de données ni résultats inventés.
 
 COMPLETED:
-Manifestes ready revérifiés (config, SHA, contenu, couverture, groupes, IDs, effectifs).
-Snapshots de données validées réutilisés sans relire des CSV potentiellement modifiés.
-Interpolation temporelle de durée complète, sans retrait de gravité, padding, crop ou décimation.
-64 features documentées ; standardisation exclusivement ajustée sur train et sauvegardée.
-CLI preprocess et guide, paramètres versionnés, sortie exclusive hors RAW.
+Dépendances ML compatibles Python3.14 installées depuis wheels et versions figées.
+RF, SVM RBF, MLP configurés ; entrée préparée recalculée depuis RAW/manifeste validés.
+Fit train uniquement ; métriques/predictions/latence PC sur validation, test final jamais évalué.
+Scalers figés, seeds/configuration/versions/code SHA et provenance sauvegardés.
+Bundles atomiquement publiés sans écrasement, sauvegarde par modèle, journal d’interruption.
+Sélection macro F1 validation, avertissements de convergence conservés et modèle exclu.
+Guide outputs/baselines-guide.md et documentation mis à jour.
 
 TESTED:
-.venv/bin/python -m unittest discover -s tests -v : 43 tests OK.
-.venv/bin/python -m gestureos.preprocess --help : OK.
-Cas analytiques : rampe, signal constant, timestamps irréguliers, dérivée avec durée physique.
-Tests d’intégrité, déplacement RAW, fuite de groupes, perturbation des holdouts, reproductibilité et non-écrasement.
-Preuves : reports/m4-preprocessing-tests.txt.
+.venv/bin/python -m unittest discover -s tests -v : 56 tests OK, dont13 nouveaux.
+.venv/bin/python -m pip check : No broken requirements found.
+.venv/bin/python -m gestureos.train --help : OK.
+git diff --check : OK avant clôture.
+Données préparées/RAW altérés refusés ; routage train/validation exclusif et scaler vérifié ; test remplacé par sentinel inutilisable ; sauvegarde/relecture de bundles factices ; refus d’écrasement ; interruptions et avertissements.
+Preuves : reports/m5-baselines-tests.txt. Logs bruts : work/m5-tests.log et work/m5-install.log.
 
 TEST RESULTS:
-Tests logiciels seulement. Aucun entraînement, précision ML ou test matériel.
-Les fixtures qui imitent des métadonnées hardware restent uniquement sous work/ et ne représentent jamais des mesures physiques.
+Tests logiciels uniquement, avec estimateurs factices sans apprentissage. Paramètres/constructeurs des vrais estimateurs vérifiés sans fit.
+Aucun dataset réel, entraînement de gestes, score ML, mesure physique ou flashage.
 
 FAILED / UNRESOLVED:
-Aucun test en échec. Pas d’anti-aliasing : réduction du nombre de points refusée.
-Normalisation temporelle et features à évaluer sur données réelles ; pas de garantie de précision.
-Scalers séquentiels CNN et parité C++ non implémentés. Pipeline en mémoire pour le pilote.
+Aucun test en échec. Entraînement réel à exercer après collecte.
+Inférence utilisateur, rejet/calibration, test final, CNN/KNN, export TinyML et parité C++ non implémentés.
+Pas de reprise à mi-entraînement. Arrêt brutal/disque plein peut empêcher failure.json : exiger un result.json final valide.
+Modèles PC compressés et latence predict seule ne mesurent pas les ressources ESP32.
 
 FILES CHANGED:
-src/gestureos/{dataset,manifest,features,preprocessing,preprocess}.py ; configs/preprocessing.json ;
-tests/test_preprocessing.py ; README.md ; docs/architecture.md ; outputs/preprocessing-guide.md ;
-outputs/resume-status.md ; reports/m4-preprocessing-tests.txt ; .agent/*.
+src/gestureos/{baselines,train}.py ; tests/test_baselines.py ; configs/baselines.json ;
+pyproject.toml ; requirements-ml.txt ; README.md ; docs/architecture.md ;
+outputs/{baselines-guide,resume-status}.md ; reports/m5-baselines-tests.txt ; .agent/*.
 
 CURRENT GIT STATUS:
-Base cec4951 propre avant reprise. Lot M4 à sauvegarder dans « feat: add verified preprocessing and train-only feature scaling ».
-Vérifier le statut réel à la prochaine reprise.
+Base38dfc00 propre avant M5. Lot à sauvegarder dans « feat: add verified PC baselines and experiment logging ».
+Vérifier le statut et le commit réel à la prochaine reprise.
 
 QUOTA:
-Pause précédente levée après contrôle officiel : 4 % utilisés au départ, 20 % après tests sur5h.
+Contrôle officiel : 31 % utilisés au début de M5 ; 57 % avant clôture sur5h (43 % restants), semaine58 % utilisés.
 Aucun reset/crédit de réinitialisation utilisé par l’agent.
 
 NEXT EXACT STEP:
-Logiciel de baselines et expériences selon NEXT_ACTION.md ; aucune nouvelle demande de câblage.
+Préparer le logiciel d’inférence PC et de rejet UNKNOWN selon .agent/NEXT_ACTION.md, sans demander de branchements.
 
 SAFE TO RESUME:
 YES
 
 REASON:
-Code, configuration, preuves et limites persistants ; RAW préservés ; aucun état matériel modifié.
+Code, versions, paramètres, preuves et limites persistants ; aucune donnée utilisateur écrasée ; aucun état matériel modifié.

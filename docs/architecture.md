@@ -2,7 +2,8 @@
 
 Ce plan décrit la destination du dépôt, pas des modules déjà implémentés.
 Le firmware de banc, le firmware de collecte bornée, le package PC de collecte,
-leurs configurations et tests sont implémentés. Les autres modules restent à
+le prétraitement et le lanceur de baselines PC sont implémentés avec leurs
+configurations et tests. Les autres modules restent à
 développer. Les tests physiques sont reportés selon la demande utilisateur.
 
 ```text
@@ -30,14 +31,14 @@ GestureOS AI/
     preprocessing.py            présent : interpolation et scaler train-only PC
     preprocess.py               présent : CLI et sauvegarde du dataset préparé
     features.py                 présent : 64 caractéristiques explicables
+    baselines.py                présent : entrée vérifiée, RF/SVM/MLP, métriques
+    train.py                    présent : fit train, évaluation validation, journal
     split.py                    groupes session/sujet et filiation
     augmentation.py             train seulement
     rejection.py                calibration validation, jamais test final
   scripts/
     check_stream.py             présent : vérification de banc uniquement
     capture_serial.py           présent : entrée du logger labellisé
-    preprocess.py
-    train.py
     evaluate.py
     export_tflite.py
     test_realtime.py
