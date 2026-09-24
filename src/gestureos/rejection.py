@@ -3,6 +3,7 @@ import math
 import re
 
 from .dataset import require
+from .protocol import LABEL
 
 SCORE_KINDS = {"predict_proba_uncalibrated_v1", "svc_binary_signed_v1", "svc_ovr_decision_v1"}
 POLICY_KEYS = {"schema_version", "status", "model_sha256", "score_kind", "min_score", "min_margin"}
@@ -35,6 +36,20 @@ def decide(scored, policy, model_sha256):
     validate_policy(policy)
     require(scored["score_kind"] in SCORE_KINDS and finite_number(scored["score"])
             and finite_number(scored["margin"]), "Invalid scored prediction")
+    scores = scored["scores"]
+    require(isinstance(scores, dict) and len(scores) >= 2
+            and all(isinstance(label, str) and LABEL.fullmatch(label) and finite_number(value)
+                    for label, value in scores.items()), "Invalid class score vector")
+    labels = list(scores)
+    index = scored["candidate_index"]
+    require(type(index) is int and 0 <= index < len(labels)
+            and labels[index] == scored["candidate_label"], "Invalid scored class index")
+    require(scored["score"] == scores[labels[index]]
+            and scored["margin"] == scored["score"] - max(v for k, v in scores.items() if k != labels[index]),
+            "Score/margin differs from class score vector")
+    if scored["score_kind"] == "predict_proba_uncalibrated_v1":
+        require(all(0 <= x <= 1 for x in scores.values()) and math.isclose(sum(scores.values()), 1, abs_tol=1e-6),
+                "Invalid probability score range/sum")
     reasons = []
     if policy["status"] == "unconfigured":
         reasons.append("policy_unconfigured")
@@ -50,7 +65,7 @@ def decide(scored, policy, model_sha256):
     if scored["margin"] <= 0:
         reasons.append("tie_or_score_conflict")
     accepted = not reasons
-    return {"schema_version": 1, "event": "gesture_decision", **scored,
+    return {**scored, "schema_version": 1, "event": "gesture_decision",
             "label": scored["candidate_label"] if accepted else "unknown",
             "decision": "ACCEPTED" if accepted else "UNKNOWN", "accepted": accepted,
             "reasons": reasons, "policy_status": policy["status"],

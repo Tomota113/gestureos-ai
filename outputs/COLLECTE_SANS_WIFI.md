@@ -4,9 +4,10 @@ Tout le logiciel nécessaire est présent sur **cet ordinateur**. Tu feras les
 gestes devant le capteur, puis choisiras/confirmeras leurs étiquettes. Tu n’as
 pas à saisir les mesures à la main : les six axes sont enregistrés par USB.
 
-**69 tests logiciels réussis. Le MPU6050 n’a pas encore été testé physiquement.**
-La carte n’était pas détectée lors de la préparation du kit. Aucun flashage n’a
-été effectué. Le premier essai matériel ci-dessous reste nécessaire.
+À la préparation du kit : 69 tests logiciels réussis, aucun test MPU6050 réalisé.
+**Mise à jour M6 : trois captures réelles de gauche revérifiées, 87 tests logiciels
+réussis.** Le rapport de banc de 60 s conservé est en échec ; le refaire avec
+de nouveaux noms. Aucun flashage n’a été effectué par l’agent pendant M6.
 
 ## Avant de partir
 

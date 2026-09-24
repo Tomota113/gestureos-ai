@@ -130,7 +130,9 @@ préparés et les expériences sont exclus de Git : les sauvegarder séparément
 
 ## Ce qui reste à faire
 
-Le rejet UNKNOWN par seuil/marge n’est pas encore implémenté : la classe
+Le [diagnostic M6](inference-guide.md) implémente maintenant le rejet par seuil
+et marge, désactivant toute acceptation tant que la politique est non configurée.
+Les seuils et leur évaluation restent à réaliser. La classe
 `unknown` du dataset est une classe supervisée, elle ne prouve pas la capacité
 à rejeter tout mouvement inconnu. Calibration des scores, lissage temporel,
 tests finaux, augmentation, KNN/CNN, conversion TinyML et parité C++ restent des

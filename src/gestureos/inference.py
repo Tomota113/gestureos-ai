@@ -6,6 +6,8 @@ import math
 from numbers import Integral
 from pathlib import Path
 import platform
+import pickle
+import re
 
 from .baselines import MODEL_NAMES, canonical, feature_field
 from .dataset import fingerprint, read_object, require
@@ -17,6 +19,7 @@ from .split import PARTITIONS, group_key
 
 
 def validate_contract(contract):
+    require(isinstance(contract, dict), "Expected inference contract object")
     validate_config(contract["pipeline"])
     labels = contract["labels"]
     require(isinstance(labels, list) and len(labels) >= 2 and "unknown" in labels
@@ -51,12 +54,26 @@ def validate_contract(contract):
     captures = contract["source_captures"]
     require(isinstance(captures, list) and len(captures) == len(seen)
             and {c["capture_id"] for c in captures} == seen, "Incomplete source capture contract")
+    require(all(c["source_kind"] == "hardware" and c["label"] in labels
+                and isinstance(c["content_sha256"], str)
+                and re.fullmatch(r"[0-9a-f]{64}", c["content_sha256"])
+                for c in captures), "Invalid source capture provenance")
+    require(len({c["content_sha256"] for c in captures}) == len(captures), "Duplicate source signal")
     lookup = {c["capture_id"]: c for c in captures}
     groups = set()
     for ids in partitions.values():
         current = {group_key(lookup[i], contract["group_by"]) for i in ids}
         require(groups.isdisjoint(current), "Source groups overlap")
+        require({lookup[i]["label"] for i in ids} == set(labels), "Incomplete source label coverage")
         groups.update(current)
+
+
+def validate_layout(estimator, labels):
+    classes = list(estimator.classes_)
+    require(all(isinstance(x, Integral) and not isinstance(x, bool) for x in classes)
+            and classes == list(range(len(labels))), "Estimator class order differs from labels")
+    require(isinstance(estimator.n_features_in_, Integral)
+            and estimator.n_features_in_ == len(FEATURE_NAMES), "Estimator input dimension mismatch")
 
 
 def validate_estimator(name, estimator, labels):
@@ -67,10 +84,7 @@ def validate_estimator(name, estimator, labels):
     expected = dict(zip(MODEL_NAMES, (RandomForestClassifier, SVC, MLPClassifier)))
     require(type(estimator) is expected[name], "Estimator type differs from model name")
     check_is_fitted(estimator)
-    classes = list(estimator.classes_)
-    require(all(isinstance(x, Integral) and not isinstance(x, bool) for x in classes)
-            and classes == list(range(len(labels))), "Estimator class order differs from labels")
-    require(estimator.n_features_in_ == len(FEATURE_NAMES), "Estimator input dimension mismatch")
+    validate_layout(estimator, labels)
     if name == "svm":
         require(estimator.decision_function_shape == "ovr", "Only OVR SVC scores are supported")
         require(estimator.fit_status_ == 0, "SVM did not converge")
@@ -87,14 +101,21 @@ def load_baseline(experiment, name):
     contract = read_object((experiment / "data_contract.json").read_bytes())
     require(type(run["schema_version"]) is int and run["schema_version"] == 1
             and run["purpose"] == "real_capture_baselines", "Invalid experiment schema")
+    require(run["fit_partition"] == "train" and run["evaluation_partition"] == "validation"
+            and run["test_evaluated"] is False, "Unsupported experiment partition usage")
     require(type(report["schema_version"]) is int and report["schema_version"] == 1
             and report["model"] == name and report["status"] == "complete"
-            and report["selection_eligible"] is True, "Model is incomplete or needs review")
+            and report["selection_eligible"] is True and report["test_evaluated"] is False
+            and report["input_field"] == feature_field(name), "Model is incomplete or needs review")
     packages = run["environment"]["packages"]
     required = {"gestureos", "scikit-learn", "numpy", "scipy", "joblib", "threadpoolctl", "narwhals", "cloudpickle"}
     require(set(packages) == required, "Missing or unsupported runtime package contract")
     require(run["environment"]["python"] == platform.python_version(), "Python version mismatch")
     require(all(version(key) == value for key, value in packages.items()), "Runtime package version mismatch")
+    for module in ("features.py", "preprocessing.py"):
+        require(run["environment"]["source_sha256"][module]
+                == fingerprint(Path(__file__).with_name(module).read_bytes()),
+                "Preprocessing implementation changed since training")
     validate_contract(contract)
     require(contract["source_manifest_sha256"] == run["provenance"]["manifest_sha256"],
             "Source manifest differs from experiment")
@@ -104,7 +125,11 @@ def load_baseline(experiment, name):
     require(len(data) == artifact["bytes"] and fingerprint(data) == artifact["sha256"],
             "Model artifact checksum/size mismatch")
     # Deserialize the very bytes whose hash was checked, without a second file read.
-    bundle = joblib.load(io.BytesIO(data))
+    try:
+        bundle = joblib.load(io.BytesIO(data))
+    except (pickle.UnpicklingError, EOFError, IndexError) as exc:
+        raise ValueError("Unreadable local model artifact") from exc
+    require(isinstance(bundle, dict), "Expected model bundle object")
     require(type(bundle["schema_version"]) is int and bundle["schema_version"] == 1
             and bundle["name"] == name and bundle["input_field"] == feature_field(name),
             "Invalid model bundle schema/input")
@@ -113,7 +138,18 @@ def load_baseline(experiment, name):
     require(bundle["packages"] == packages and bundle["provenance"] == run["provenance"],
             "Bundle environment/provenance mismatch")
     validate_estimator(name, bundle["estimator"], contract["labels"])
+    parameters = read_object((folder / "parameters.json").read_bytes())
+    require(canonical(bundle["estimator"].get_params(deep=False)) == canonical(parameters),
+            "Estimator parameters differ from experiment")
     return FrozenBaseline(name, bundle["estimator"], contract, artifact["sha256"])
+
+
+def numeric_output(raw, shape):
+    import numpy as np
+    values = np.asarray(raw)
+    require(values.shape == shape and values.dtype.kind in "iuf" and np.isfinite(values).all(),
+            "Invalid numeric model score shape/type/values")
+    return values.astype(float).tolist()
 
 
 class FrozenBaseline:
@@ -121,6 +157,9 @@ class FrozenBaseline:
     def __init__(self, name, estimator, contract, model_sha256):
         require(name in MODEL_NAMES, "Unknown model")
         validate_contract(contract)
+        validate_layout(estimator, contract["labels"])
+        require(isinstance(model_sha256, str) and re.fullmatch(r"[0-9a-f]{64}", model_sha256),
+                "Invalid model fingerprint")
         self.name, self.estimator = name, estimator
         self.contract = copy.deepcopy(contract)
         self.model_sha256 = model_sha256
@@ -147,16 +186,13 @@ class FrozenBaseline:
         if self.name == "svm":
             raw = self.estimator.decision_function([features])
             if len(labels) == 2:
-                require(len(raw) == 1, "Invalid binary SVM score shape")
-                distance = float(raw[0])
+                distance = numeric_output(raw, (1,))[0]
                 scores, kind = [-distance, distance], "svc_binary_signed_v1"
             else:
-                require(len(raw) == 1 and len(raw[0]) == len(labels), "Invalid OVR SVM score shape")
-                scores, kind = [float(x) for x in raw[0]], "svc_ovr_decision_v1"
+                scores, kind = numeric_output(raw, (1, len(labels)))[0], "svc_ovr_decision_v1"
         else:
             raw = self.estimator.predict_proba([features])
-            require(len(raw) == 1 and len(raw[0]) == len(labels), "Invalid probability score shape")
-            scores, kind = [float(x) for x in raw[0]], "predict_proba_uncalibrated_v1"
+            scores, kind = numeric_output(raw, (1, len(labels)))[0], "predict_proba_uncalibrated_v1"
             require(all(0 <= x <= 1 for x in scores) and math.isclose(sum(scores), 1, abs_tol=1e-6),
                     "Invalid probability score range/sum")
         require(all(math.isfinite(x) for x in scores), "Non-finite model scores")

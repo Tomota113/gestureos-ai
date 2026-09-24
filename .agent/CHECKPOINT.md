@@ -1,25 +1,34 @@
 CHECKPOINT ID:
-OFFLINE-COLLECTION-ready-M6-in-progress
+M6-software-inference-rejection-verified
 
 COMPLETED:
-M5 baselines reste terminé. Nouvelle priorité utilisateur satisfaite : kit de collecte entièrement local sur cet ordinateur, menu français, notes de séance, confirmation o/n, publication des prises valides dans raw, conservation de toutes les tentatives dans pending.
-Firmwares bench/dataset fusionnés depuis les builds déjà validés, empreintes sauvegardées. Installateur local avec backup intégral avant écriture, sans téléchargement. Guide outputs/COLLECTE_SANS_WIFI.md et deux lanceurs.
+Modèles PC locaux : version Python/paquets, code features/prétraitement, SHA/taille, contrats, paramètres et classes contrôlés.
+Features identiques au train, standardisation figée, jamais de fit. Scores RF/MLP non calibrés, SVM binaire signé/multiclasses OVR explicites.
+Rejet UNKNOWN par politique non configurée ou seuils expérimentaux liés au modèle ; inconnus/égalités/conflits toujours rejetés, aucune action matérielle.
+CLI sur capture RAW revérifiée, protège test final par ID/contenu/groupe, préserve fichiers existants.
+Guide outputs/inference-guide.md et documentation à jour.
 
 TESTED:
-69 tests Python OK, incluant13 tests nouveaux (acceptation, rejet, interruption, reprise sans écrasement, corruption, provenance synthétique exclue, absence de réseau au check, sauvegarde avant flash et arrêt sur backup incomplet).
-LANCER_COLLECTE.sh --check et INSTALLER_ESP32.sh bench/dataset --check : OK, esptool4.11.0.
-Preuves reports/offline-collection-tests.txt ; log brut work/offline-tests.log.
-M6 : py_compile uniquement. Aucun modèle entraîné, aucun geste physique collecté, aucun capteur testé, aucun flashage.
+.venv/bin/python -m unittest discover -s tests -v :87 tests OK dont17 M6.
+CLI predict --help et git diff --check OK. Preuves reports/m6-inference-tests.txt ; log brut work/m6-all-tests.log.
+87 inclut les tests des corrections de collecte déjà présentes chez l’utilisateur, laissées inchangées.
+81 fichiers data/rapports matériels présents au départ : aucun modifié/manquant après tests.
 
-UNFINISHED:
-M6 inférence/rejet commencé avant demande du kit ; quatre nouveaux fichiers sauvegardés sans validation fonctionnelle. Reprendre leurs tests et revue selon NEXT_ACTION.md.
-La référence/tension du module MPU et le premier test physique restent à confirmer avant collecte. Aucun port USB détecté pendant ce jalon.
+REAL DATA:
+3 swipe_left valides sur2 séances,0 rejet au scan. Aucun autre geste, aucun entraînement ou score ML.
+Rapport bench-offline-001.json en échec imu_init/0 sample. Ne pas annoncer un banc60s réussi. Captures courtes seules validées.
+
+UNRESOLVED:
+Choix/évaluation des seuils sur validation, calibration probabiliste, test final, temps réel/segmentation/lissage, CNN/KNN/augmentation, TinyML et tests des actionneurs restent à venir.
+Pas de seuil optimal inventé, politique livrée unconfigured. Aucun modèle réel disponible pour un essai d’inférence physique.
 
 GIT:
-Base8bba07f propre avant session. Sauvegarder M6 en commit checkpoint séparé, puis kit hors ligne en commit cohérent. Vérifier git status/log à la reprise.
+Base59a9d74. Commit M6 à créer : feat: validate frozen PC inference and UNKNOWN rejection.
+Changements préexistants laissés non committés : capture.py/dataset.py/test_dataset.py ; reports/hardware/ non suivi.
+Vérifier git status/log à la reprise, ne pas prétendre au dépôt propre.
 
 QUOTA:
-Dernier contrôle officiel92 % utilisés sur5h (8 % restants), semaine64 %. Aucun reset/crédit utilisé. Priorité à la sauvegarde, pas de nouvelle fonctionnalité maintenant.
+0 % utilisés au départ,24 % au dernier contrôle sur5h, semaine69 %. Aucun crédit/reset consommé par l’agent.
 
 SAFE TO RESUME:
-YES — données utilisateur préservées ; kit documenté ; M6 explicitement inachevé.
+YES — M6 validé côté logiciel, captures et modifications utilisateur préservées, limites physiques explicites.

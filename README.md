@@ -4,20 +4,24 @@ Contrôleur gestuel TinyML sur ESP32 + MPU6050, avec interface LCD 1602.
 L'objectif est une reconnaissance locale fiable, avec rejet UNKNOWN et modes
 ROBOT, SMART CONTROL, PRESENTATION, GAME, MACRO et CUSTOM.
 
-**État réel : audit terminé, test de banc et logger de collecte prêts côté logiciel.**
-Les branchements et validations physiques seront réalisés plus tard selon la
-demande de l'utilisateur. Le MPU6050 n'est pas encore testé.
+**État réel : collecte physique commencée, logiciels de collecte et d’inférence PC prêts.**
+Trois captures MPU6050 réelles de gauche ont été revérifiées à la reprise M6.
+Le rapport de banc de 60 s conservé est en échec ; sa validation reste à refaire.
 La carte répond au bootloader : ESP32-D0WDQ6 révision 1, Flash 4 Mo, CP2102.
-Les deux firmwares compilent ; 69 tests Python et les tests C++ natifs passent. Aucun modèle,
-dataset de gestes, score de précision ou test d'actionneur n'existe encore.
+Les deux firmwares compilent ; les tests C++ natifs du précédent jalon passent.
+La suite Python passe : **87 tests**, dont 17 pour l’inférence et le rejet.
+Aucun modèle de gestes entraîné, score de précision ou test d’actionneur n’existe encore.
 
 Le chargeur, les splits par session/sujet et le prétraitement à 64 caractéristiques
 avec normalisation ajustée sur le train sont également prêts.
 Le lanceur RF/SVM/MLP et ses journaux d’expériences sont prêts, avec comparaison
 sur validation et test final réservé. Aucun entraînement réel n’a été lancé.
+M6 ajoute le diagnostic sur capture, les scores RF/SVM/MLP et le rejet UNKNOWN,
+avec une politique non configurée par défaut et aucune action matérielle.
 
 ## Lire en premier
 
+- [Inférence PC et rejet UNKNOWN](outputs/inference-guide.md)
 - [Collecter tes gestes sans Wi-Fi](outputs/COLLECTE_SANS_WIFI.md)
 - Lanceur local : `bash outputs/LANCER_COLLECTE.sh` (premier test matériel à réaliser selon le guide).
 - [Baselines RF/SVM/MLP et expériences](outputs/baselines-guide.md)
@@ -60,11 +64,12 @@ pio run -d firmware -e dataset
 .venv/bin/python -m gestureos.capture --help
 .venv/bin/python -m gestureos.preprocess --help
 .venv/bin/python -m gestureos.train --help
+.venv/bin/python -m gestureos.predict --help
 ```
 
-Le flashage et les mesures restent à effectuer lors de la future phase matérielle.
-Le guide indique les commandes ; le firmware actuellement dans la carte n'a
-pas été remplacé. Le LCD disponible possède 16 broches, sans adaptateur I2C.
+La collecte physique a commencé ; le banc long et les autres mesures restent
+à valider. Aucun flashage n’a été effectué pendant M6. Le LCD disponible
+possède 16 broches, sans adaptateur I2C.
 
 ## Périmètre actuel
 
@@ -78,7 +83,7 @@ Les fixtures de `tests/` sont artificielles, utilisées uniquement pour tester
 le code. Les tests du lanceur emploient des estimateurs factices sans apprentissage.
 Elles ne constituent jamais des données ML ou des résultats de reconnaissance.
 
-Le logger de gestes labellisés est implémenté et testé hors matériel. La
+Le logger de gestes labellisés fonctionne sur les premières captures courtes. La
 calibration, le LCD, le ML, le déploiement TinyML et les modes seront ajoutés
 par jalons logiciels successifs, avec leurs contrôles physiques reportés.
 Les deux firmwares conservent gravité et biais : ils ne sont pas une calibration.

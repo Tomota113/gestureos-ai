@@ -33,9 +33,11 @@ GestureOS AI/
     features.py                 présent : 64 caractéristiques explicables
     baselines.py                présent : entrée vérifiée, RF/SVM/MLP, métriques
     train.py                    présent : fit train, évaluation validation, journal
+    inference.py                présent : modèle local vérifié, prétraitement figé, scores
+    predict.py                  présent : diagnostic d’une capture hors test final
     split.py                    groupes session/sujet et filiation
     augmentation.py             train seulement
-    rejection.py                calibration validation, jamais test final
+    rejection.py                présent : UNKNOWN par score/marge ; seuils à choisir sur validation
   scripts/
     check_stream.py             présent : vérification de banc uniquement
     capture_serial.py           présent : entrée du logger labellisé

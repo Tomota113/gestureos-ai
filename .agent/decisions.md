@@ -43,3 +43,8 @@
 - Priorité utilisateur : préparer la collecte hors ligne avant son départ, avec cet ordinateur + ESP32 + MPU6050. M6 conservé en cours, non terminé.
 - Collecte hors ligne : chaque prise reste dans pending ; seule une prise techniquement revalidée et humainement confirmée est copiée dans raw, sans supprimer les originaux. Notes de séance séparées et identifiants conservés.
 - Deux images fusionnées issues des builds M2 existants sont disponibles localement ; l’installation sauvegarde d’abord les4Mo de Flash. Aucun flashage effectué par l’agent.
+
+- M6 : trois captures réelles swipe_left revérifiées en lecture seule sur deux séances. Le seul rapport de banc60s disponible reste en échec ; ne pas confondre acquisition courte valide et validation matérielle complète.
+- M6 : empreintes et versions strictes au chargement, code features/prétraitement figé ; aucun fit à l’inférence. SVM conserve le candidat predict et rejette les égalités/conflits de scores.
+- M6 : politique unconfigured = UNKNOWN ; seuils experimental liés au modèle/convention, action_authorized toujours false. La CLI protège IDs, copies et groupes du test final. Calibration/choix automatique des seuils à venir sur validation seulement.
+- M6 : les modifications de collecte déjà présentes à la reprise restent intactes et hors du commit M6 ;87 tests passent dans cet état de travail.
