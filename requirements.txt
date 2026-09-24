@@ -1,0 +1,2 @@
+# Environnement d'acquisition seulement ; dépendances ML à choisir à leur phase.
+pyserial==3.5

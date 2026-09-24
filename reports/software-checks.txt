@@ -1,0 +1,22 @@
+$ .venv/bin/python -m unittest discover -s tests -v
+test_corruption_nonfinite_short_and_missing_header (test_stream.StreamTest.test_corruption_nonfinite_short_and_missing_header) ... ok
+test_dropped_serial_frame (test_stream.StreamTest.test_dropped_serial_frame) ... ok
+test_i2c_errors_and_clipping (test_stream.StreamTest.test_i2c_errors_and_clipping) ... ok
+test_reboot (test_stream.StreamTest.test_reboot) ... ok
+test_regular_stream (test_stream.StreamTest.test_regular_stream) ... ok
+test_sensor_gap_despite_contiguous_serial_sequence (test_stream.StreamTest.test_sensor_gap_despite_contiguous_serial_sequence) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.007s
+
+OK
+Exit code: 0
+
+$ .venv/bin/python -m pip check
+No broken requirements found.
+Exit code: 0
+
+$ .venv/bin/python -m pip freeze
+pyserial==3.5
+Exit code: 0
+
