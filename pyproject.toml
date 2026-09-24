@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools==80.9.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gestureos"
+version = "0.1.0"
+description = "GestureOS AI acquisition tools"
+requires-python = ">=3.11"
+dependencies = ["pyserial==3.5"]
+
+[project.scripts]
+gestureos-capture = "gestureos.capture:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

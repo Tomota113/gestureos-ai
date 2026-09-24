@@ -1,0 +1,3 @@
+# Editable Git install with no remote (gestureos==0.1.0)
+-e /home/ibrahim-tomota/Documents/Codex/2026-09-24/tu
+pyserial==3.5

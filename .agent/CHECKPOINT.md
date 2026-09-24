@@ -1,68 +1,59 @@
 CHECKPOINT ID:
-2026-09-24_resume_startup-frame-check
+2026-09-24_m2-software_capture-logger
 
 PHASE:
-M0 terminé ; M1 acquisition réelle préparé, non validé.
+Collecte logicielle prête ; validations physiques reportées par demande utilisateur.
 
 OBJECTIVE:
-Reprendre l'état persistant et fiabiliser le contrôle de capture avant le test physique.
+Préparer les futures acquisitions sans attendre les branchements et sans inventer de données.
 
 COMPLETED:
-- Quatre fichiers de reprise, sources et guide relus, Git propre au départ (a02bf6b).
-- Versions inchangées ; CP2102 toujours sur /dev/ttyUSB0, aucun log physique existant.
-- Défaut reproduit : une capture démarrant en séquence 1 pouvait être acceptée.
-- Correction : séquence zéro exigée ; first_sequence inclus dans le rapport.
-- Documentation actualisée. Question marquage et câblage MPU6050 envoyée.
+Package Python installé, protocole versionné borné avec CRC, firmware dataset,
+logger conservant provenance/log brut/CSV validé/résultat, guides et tests.
 
 TESTED:
-Fixture artificielle omettant la première mesure ; test de régression ajouté.
-.venv/bin/python -m unittest discover -s tests -v : 7 tests OK.
-git diff --check : OK avant mise à jour documentaire.
-Firmware C++ inchangé ; pas de recompile ou flashage inutile.
+- pio run -d firmware -e esp32dev -e dataset : 2 builds SUCCESS.
+- .venv/bin/python -m unittest discover -s tests -v : 20 tests OK.
+- g++ -std=c++11 -Wall -Wextra -Werror -Ifirmware/src tests/native/capture_protocol_test.cpp firmware/src/capture_protocol.cpp -o work/capture_protocol_test
+- ./work/capture_protocol_test : parsing de commande et CRC OK.
+- Installation pip éditable, aide CLI, pip check réussis.
 
 TEST RESULTS:
-Le flux artificiel incomplet passe de passed=True (défaut) à passed=False (attendu).
-Détails : reports/resume-stream-check-20260924.txt.
-Aucune donnée MPU6050 réelle, précision ML ou validation électrique inventée.
+Preuves conservées dans reports/logger-validation-20260924/.
+Banc : RAM statique21808 / Flash application287585 octets.
+Dataset : RAM statique22016 / Flash application315941 octets.
+Aucun capteur, flashage, calibration, dataset réel ou modèle ML testé.
 
 FAILED / UNRESOLVED:
-Antigravity a rendu le code 0 mais le seul texte indique :
-[agy] print timeout after 1m0s with turn in progress; returning partial output
-Revue INCOMPLETE_TIMEOUT ; aucune conclusion, aucun retry, aucun quota supposé épuisé.
-Référence/module et branchements actuels toujours inconnus.
+- setuptools absent du venv au contrôle initial ; backend80.9.0 installé par pip en build isolé, installation réussie.
+- Revue Antigravity à la reprise : timeout60s sans réponse exploitable, pas de retry.
+- Matériel et données réels volontairement différés, pas un blocage logiciel.
 
 FILES CHANGED:
-scripts/check_stream.py, tests/test_stream.py, README.md,
-outputs/first-mpu6050-test.md, outputs/phase-0-audit.md,
-reports/resume-stream-check-20260924.txt, .agent/*.
+pyproject.toml, requirements.txt, .gitignore, configs/collection.json, src/gestureos/*,
+scripts/capture_serial.py, firmware/platformio.ini, firmware/src/capture_protocol.*,
+firmware/src/dataset_main.cpp, tests/test_capture.py, tests/native/*,
+README.md, docs/architecture.md, docs/dataset-protocol.md,
+outputs/dataset-collection-guide.md, reports/logger-validation-20260924/*, .agent/*.
 
 COMMANDS THAT WORKED:
-.venv/bin/python --version ; import serial et énumération list_ports
-pio --version ; agy --help
-git status --short ; git log --oneline -n 5
-.venv/bin/python -m unittest discover -s tests -v
+Voir TESTED et les logs persistants.
 
 COMMANDS THAT FAILED:
-Revue agy --mode plan --print-timeout 60s : incomplète par délai, malgré code retour 0.
+pip show setuptools : package absent (pas une panne de quota).
+Revue agy : délai atteint (code0 ne constitue pas un succès de revue).
 
 CURRENT GIT STATUS:
-Base de reprise a02bf6b, propre avant travail. Modifications de cette reprise
-regroupées dans le commit « fix: reject captures missing startup frames ».
-Toujours vérifier git status et log à la reprise, ne pas déduire le statut des seuls textes.
+Base3d8dc7c. Ce jalon sera sauvegardé dans « feat: add bounded gesture capture protocol and PC logger ».
+Vérifier le statut réel à la reprise ; ne pas se fier à une ancienne observation.
 
 NEXT EXACT STEP:
-Obtenir marquage et câblage du MPU6050 ; appliquer .agent/NEXT_ACTION.md avant upload.
-Si aucun matériel prêt, expliquer ce prérequis sans anticiper LCD/ML/actionneurs.
+Chargement contrôlé des captures et splits par groupe, selon NEXT_ACTION.md.
+Aucune nouvelle demande de branchement pour cette étape logicielle.
 
 SAFE TO RESUME:
 YES
 
 REASON:
-Correction testée, capture brute protégée, firmware matériel inchangé,
-état et prochaine action sauvegardés. Les mesures physiques restent explicitement non réalisées.
-
-USER STEERING — priorité sur le précédent prérequis de câblage :
-L’utilisateur fera les branchements plus tard, lors des tests ou de l’ajout des données.
-Poursuivre les jalons logiciels sans attendre cette information. Aucun flashage.
-NEXT SOFTWARE MILESTONE: protocole de capture bornée + logger PC avec provenance,
-protection contre l’écrasement et tests sans capteur. Ne pas prétendre M1 physique validé.
+Code et tests enregistrés, logs préservés, aucun firmware physique remplacé,
+aucune donnée réelle écrasée, prochaine action définie et validations différées explicites.

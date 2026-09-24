@@ -1,0 +1,18 @@
+Obtaining file:///home/ibrahim-tomota/Documents/Codex/2026-09-24/tu
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Getting requirements to build editable: started
+  Getting requirements to build editable: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Requirement already satisfied: pyserial==3.5 in ./.venv/lib/python3.14/site-packages (from gestureos==0.1.0) (3.5)
+Building wheels for collected packages: gestureos
+  Building editable for gestureos (pyproject.toml): started
+  Building editable for gestureos (pyproject.toml): finished with status 'done'
+  Created wheel for gestureos: filename=gestureos-0.1.0-0.editable-py3-none-any.whl size=1531 sha256=428eac9606cd6c52a0ac5e100b5a7432879cca4cdf70b5bd5e234a1c62464c37
+  Stored in directory: /tmp/pip-ephem-wheel-cache-h1ln8e9l/wheels/56/5e/68/bfe9d126300bcf3a02b037d761ddf7b9ac3b19a485c559ae6d
+Successfully built gestureos
+Installing collected packages: gestureos
+Successfully installed gestureos-0.1.0

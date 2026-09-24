@@ -1,0 +1,4 @@
+Command: g++ -std=c++11 -Wall -Wextra -Werror -Ifirmware/src tests/native/capture_protocol_test.cpp firmware/src/capture_protocol.cpp -o work/capture_protocol_test
+Command: ./work/capture_protocol_test
+Observed output: Native command parser and CRC tests passed (artificial protocol fixtures).
+Exit code: 0

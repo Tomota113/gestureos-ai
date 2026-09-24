@@ -10,3 +10,6 @@ data/external/
 models/
 experiments/
 *.pyc
+*.egg-info/
+build/
+dist/

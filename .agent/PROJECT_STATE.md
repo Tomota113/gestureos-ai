@@ -1,98 +1,103 @@
 PROJECT: GestureOS AI
 
 CURRENT PHASE:
-Phase 0 terminée ; préparation minimale du test de phase 2 réalisée.
-Les phases suivantes ne sont PAS validées.
+Développement logiciel par jalons, matériel reporté à la demande utilisateur.
+Audit achevé ; banc MPU6050 et logger labellisé implémentés côté logiciel.
 
 CURRENT MILESTONE:
-M0 audit terminé. M1 à valider : ESP32 + MPU6050, six axes réels, 100 Hz stable.
+M2-SOFTWARE : collecte bornée ESP32/PC avec provenance et intégrité, tests hors matériel réussis.
+M1-PHYSICAL : acquisition réelle MPU6050, toujours non validée.
 
 STATUS:
-AWAITING_HARDWARE_DETAILS — marquage du MPU6050 et câblage actuel demandés à la reprise, réponse non reçue.
+READY_FOR_NEXT_SOFTWARE_MILESTONE. Ne pas attendre ou redemander le câblage maintenant.
 
 LAST COMPLETED TASK:
-Reprise depuis a02bf6b, environnement et port USB vérifiés. Perte des premières trames
-reproduite puis détectée correctement après correction. Sept tests logiciels passent.
-Nouvelle revue Antigravity incomplète après délai de 60 s, sans conclusion reçue.
+- Reprise depuis a02bf6b et correction du contrôle des premières trames perdues (3d8dc7c).
+- Ajout profil firmware dataset et protocole CAPTURE/begin/D/end, compteur + CRC32 IEEE.
+- Package Python gestureos 0.1.0 installé en mode éditable, CLI capture et conservation des données.
+- Guides, tests et traces de vérification enregistrés.
 
 CURRENT TASK:
-Attendre le marquage du module et le détail du câblage pour préparer le test physique réel.
+Jalon de collecte logiciel terminé ; prochain jalon : chargement contrôlé des captures et splits ML.
 
 LAST SUCCESSFUL COMMAND:
+pio run -d firmware -e esp32dev -e dataset
 .venv/bin/python -m unittest discover -s tests -v
+./work/capture_protocol_test
+.venv/bin/python -m gestureos.capture --help
 .venv/bin/python -m pip check
-pio run -d firmware
 
 LAST SUCCESSFUL TEST:
-7 tests logiciels OK après correction du vérificateur série. Firmware inchangé, compilation précédente conservée.
-RAM statique 21808 octets ; Flash application 287585 octets.
-Ce ne sont PAS des mesures runtime, de modèle ML ou du MPU6050.
+20 tests Python OK ; tests C++ natifs de parsing/CRC OK ; 2 builds ESP32 SUCCESS.
+Banc : RAM statique 21808 octets, Flash application 287585 octets.
+Dataset : RAM statique 22016 octets, Flash application 315941 octets.
+Ces tailles viennent du linker, pas d'une mesure runtime ou d'un modèle ML.
+Preuves : reports/logger-validation-20260924/.
 
 FILES MODIFIED:
-.agent/* ; AGENTS.md ; .gitignore ; README.md ; requirements.txt ;
-firmware/platformio.ini ; firmware/include/config.h ; firmware/src/{main.cpp,imu.h,imu.cpp} ;
-scripts/check_stream.py ; tests/test_stream.py ; docs/* ; outputs/* ; reports/*.
+pyproject.toml, requirements.txt, .gitignore, configs/collection.json,
+src/gestureos/{__init__,protocol,capture}.py, scripts/capture_serial.py,
+firmware/platformio.ini, firmware/src/{capture_protocol.h,capture_protocol.cpp,dataset_main.cpp},
+tests/test_capture.py, tests/native/capture_protocol_test.cpp, README.md,
+docs/{architecture,dataset-protocol}.md, outputs/dataset-collection-guide.md,
+reports/logger-validation-20260924/*, .agent/*.
 
 HARDWARE CURRENTLY TESTED:
-Énumération USB et interrogation ROM ESP32 uniquement : ESP32-D0WDQ6 revision 1.0,
-Flash 4 Mo, quartz 40 MHz, CP2102 sur /dev/ttyUSB0. Aucun flashage effectué.
+USB/ROM ESP32 seulement, précédemment ESP32-D0WDQ6 revision 1.0, Flash 4 Mo, CP2102.
+CP2102 encore énuméré sur /dev/ttyUSB0 à la reprise. Aucun flashage effectué.
 
 HARDWARE NOT YET TESTED:
-MPU6050, LCD 1602 16 broches, actionneurs et autres composants.
+MPU6050, LCD1602 16 broches, tous les actionneurs et autres composants.
+Le câblage réel, la calibration, la stabilité de cadence, les axes et la collecte restent à mesurer.
 
 MODEL CURRENTLY USED:
-Aucun modèle de reconnaissance gestuelle.
+Aucun modèle de reconnaissance entraîné, exporté ou embarqué.
 
 DATASET STATUS:
-Aucune donnée physique de gestes collectée ; aucun dataset externe téléchargé.
-Fixtures artificielles de tests uniquement dans tests/test_stream.py, pas utilisables comme dataset.
+Aucune séquence physique collectée, aucun dataset externe téléchargé.
+Fixtures exclusivement artificielles pour tests de code : source_kind=synthetic_test,
+éligibilité entraînement false, dossiers temporaires sous work/ (jamais data/raw/).
+Captures réelles futures : data/raw/<subject>/<session>/<capture_id>/.
 
 KNOWN BUGS:
-Défaut de validation des premières trames perdues corrigé et testé. Tests physiques non réalisés.
-Polling sans FIFO/compteur INT ; limites documentées, absence absolue de pertes internes non prouvée.
+Perte de trames initiales dans le vérificateur de banc : corrigée et testée.
+Aucun autre défaut identifié par les contrôles actuels, limites physiques non testées.
+Polling sans FIFO/INT. Un arrêt brutal peut laisser un result.json absent/invalide : ne pas considérer la capture valide.
 
 BLOCKERS:
-Référence exacte et schéma du module MPU6050 non fournis ; alimentation/pull-ups à confirmer.
-Le dernier souhait était de câbler plus tard ; état actuel demandé, encore inconnu.
-Ne pas flasher ou lancer une collecte avant vérification.
+Aucun blocage pour le prochain jalon logiciel.
+Tests matériels et entraînement/évaluation réels attendent branchements et données réelles.
+Référence/tension du module MPU6050 à confirmer UNIQUEMENT à l'étape matérielle.
 
 IMPORTANT DECISIONS:
-PlatformIO 6.2.0 + espressif32 7.0.1 (Arduino ESP32 2.0.17), cible esp32dev.
-I2C 100 kHz sur GPIO21/22 ; DATA_RDY ; cadence 100 Hz ; UART 230400.
-LCD 16 broches conservé ; aucun achat ni ajout d'adaptateur I2C nécessaire maintenant.
-Venv indépendant depuis /usr/bin/python3 3.14.4 avec pyserial 3.5 seulement.
-Calibration et logger de gestes labellisés NON implémentés ; mesures actuelles prévues non calibrées.
+Instruction utilisateur prioritaire : avancer côté logiciel maintenant ; branchements plus tard.
+Deux environnements PlatformIO : esp32dev (banc par défaut), dataset (collecte bornée).
+I2C 100kHz, 100Hz par défaut, UART230400, +/-4g et +/-500 deg/s, pas de calibration.
+Capture PC avec sujet/session/label, UUID, CRC et SHA256 du log ; jamais d'écrasement.
+Les captures incomplètes et les fixtures sont inéligibles à l'entraînement.
+Conserver LCD16 broches ; pas d'achat imposé.
 
 DO NOT FORGET:
-Lire les quatre fichiers .agent et git status/log avant toute modification.
-Ne pas recréer le projet, réinstaller les dépendances ou recommencer la phase 0 sans motif.
-Inspecter tout log, modèle ou expérience déjà présent avant de relancer.
-Préserver firmware existant avant flash si nécessaire et conserver les captures réelles sans écrasement.
-Un test de protocole artificiel ou une compilation n'est jamais une mesure physique ni un résultat ML.
+Lire les quatre fichiers .agent et git status/log avant modification.
+Ne pas réinstaller, recompiler ou relancer les tests déjà réussis sans motif.
+Ne pas redemander le câblage lors des jalons logiciels.
+Ne jamais présenter compilation, fixtures ou tests simulés comme de vraies performances ML/matérielles.
+Ne pas supprimer les captures réelles ; les sauvegarder séparément de Git dès qu'elles existent.
 
 NEXT ACTION:
-Suivre .agent/NEXT_ACTION.md ; identifier module MPU6050 puis valider câblage et M1.
+Suivre .agent/NEXT_ACTION.md : pipeline de lecture/validation et partitionnement sans fuite de données.
 
 ENVIRONMENT:
-Ubuntu 26.04 LTS x86_64 ; Python 3.14.4 ; Git 2.53.0.
-Python par défaut = venv interne PlatformIO ; employer .venv/bin/python pour ce projet.
-arduino-cli et idf.py absents de PATH ; IDF_PATH absent.
-Port stable observé : /dev/serial/by-id/usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0
+Ubuntu26.04 x86_64, Python3.14.4, Git2.53.0, PlatformIO6.2.0, espressif32 7.0.1 / Arduino2.0.17.
+Venv .venv indépendant, pyserial3.5 et gestureos0.1.0 éditable installés.
+Build Python utilise setuptools80.9.0 dans un environnement isolé (pyproject.toml).
+Aucune dépendance ML installée dans .venv ; compatibilité à vérifier avant ajout.
 
 ANTIGRAVITY:
-agy --help, agy models et revue --mode plan --print-timeout 60s réussis.
-Revue conservée dans docs/antigravity-review.md ; aucune édition concurrente.
-Quota inconnu ; /usage, /quota et /resume non confirmés, non exécutés.
-Revue de code à la reprise : INCOMPLETE_TIMEOUT. Agy a rendu code 0 mais uniquement
-le message de délai 60 s atteint ; aucune conclusion. Pas de preuve de quota épuisé,
-pas de relance automatique. Détails : reports/resume-stream-check-20260924.txt.
+Revue initiale de conception réussie (docs/antigravity-review.md).
+Revue du code à la reprise : délai 60s atteint sans avis, malgré exit0. INCOMPLETE_TIMEOUT,
+pas une revue réussie ou une preuve de quota. Aucun retry automatique. Détails reports/resume-stream-check-20260924.txt.
 
 CODEX QUOTA:
-Instantané officiel initial : 6 % de la fenêtre 5 h et 35 % de la semaine utilisés.
-Aucun crédit consommé ni reset lancé ; ne pas extrapoler cet instantané.
-
-USER STEERING — priorité sur le précédent prérequis de câblage :
-L’utilisateur fera les branchements plus tard, lors des tests ou de l’ajout des données.
-Poursuivre les jalons logiciels sans attendre cette information. Aucun flashage.
-NEXT SOFTWARE MILESTONE: protocole de capture bornée + logger PC avec provenance,
-protection contre l’écrasement et tests sans capteur. Ne pas prétendre M1 physique validé.
+Ancien instantané officiel au début du projet : 6% utilisé sur 5h et 35% sur semaine.
+Ne pas extrapoler à l'état actuel. Aucun crédit ou reset consommé.

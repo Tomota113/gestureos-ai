@@ -20,3 +20,7 @@
 - 2026-09-24, reprise — Le vérificateur exige la séquence initiale zéro après l’en-tête, pour rejeter aussi les pertes au démarrage. Sept tests logiciels passent.
 - Une sortie agy de code 0 accompagnée de « print timeout » n’est pas une revue réussie. Aucun avis reçu à la reprise, aucun quota déduit, pas de relance automatique.
 - Clarification utilisateur à la reprise : les branchements seront faits après le développement, lors des tests ou de la collecte. Cette instruction remplace le blocage des étapes logicielles par le matériel. Avancer par jalons testés hors matériel ; ne plus redemander le câblage pendant ces étapes. Les validations physiques et l'évaluation ML réelle restent en attente explicite.
+
+- M2-SOFTWARE : profil dataset séparé du banc, commande CAPTURE bornée et CRC32 sur chaque ligne D (LF inclus). Les deux profils compilent, aucune écriture matérielle.
+- Captures UUID par sujet/session, RAW immuables, CSV publié après validation, captures partielles conservées. Fixtures sous work/ uniquement avec provenance synthetic_test et entraînement interdit.
+- Le jalon suivant traite le chargement/split reproductible avant tout entraînement réel. Les branchements ne seront demandés que lorsque l’utilisateur voudra passer aux essais physiques.

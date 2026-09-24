@@ -1,0 +1,11 @@
+{
+  "protocol": "gestureos-capture-v1",
+  "sample_rate_hz": 100,
+  "samples_per_capture": 200,
+  "baudrate": 230400,
+  "countdown_seconds": 3,
+  "labels": [
+    "swipe_left", "swipe_right", "swipe_up", "swipe_down",
+    "circle_clockwise", "shake", "unknown"
+  ]
+}

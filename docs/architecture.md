@@ -1,8 +1,9 @@
 # Architecture proposée — évolution par phases
 
 Ce plan décrit la destination du dépôt, pas des modules déjà implémentés.
-Seuls le firmware de banc, sa configuration, le vérificateur série, les tests
-de protocole et la documentation sont créés à ce stade.
+Le firmware de banc, le firmware de collecte bornée, le package PC de collecte,
+leurs configurations et tests sont implémentés. Les autres modules restent à
+développer. Les tests physiques sont reportés selon la demande utilisateur.
 
 ```text
 GestureOS AI/
@@ -11,7 +12,9 @@ GestureOS AI/
     platformio.ini
     include/config.h
     src/
-      main.cpp                  orchestration
+      main.cpp                  présent : banc continu
+      dataset_main.cpp          présent : collecte bornée sur commande
+      capture_protocol.*        présent : commande et CRC
       imu.*                     acquisition, diagnostics, puis calibration
       gesture_engine.*          segmentation et fenêtre temporelle
       model.*                   interface d'inférence et rejet
@@ -20,8 +23,9 @@ GestureOS AI/
       modes.*                   geste accepté → action selon mode
       macro_engine.*            séquences, timeout, annulation
       actuators/                servo, LED, buzzer ; drivers conditionnels
-  src/gestureos/                futur package Python réutilisable
-    protocol.py                 contrat acquisition et métadonnées
+  src/gestureos/                package Python réutilisable, déjà créé
+    capture.py                  présent : capture et conservation
+    protocol.py                 présent : contrat, parsing et intégrité
     preprocessing.py            transformations identiques PC/ESP32
     features.py                 baseline explicable
     split.py                    groupes session/sujet et filiation
@@ -29,7 +33,7 @@ GestureOS AI/
     rejection.py                calibration validation, jamais test final
   scripts/
     check_stream.py             présent : vérification de banc uniquement
-    capture_serial.py           futur logger labellisé, protocole versionné
+    capture_serial.py           présent : entrée du logger labellisé
     preprocess.py
     train.py
     evaluate.py
