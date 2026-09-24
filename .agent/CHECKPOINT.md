@@ -14,7 +14,7 @@ GIT/USER DATA:
 Base 0396d1b. Keep preexisting capture.py/dataset.py/test_dataset.py edits and untracked reports/hardware outside M7 commit. Preserve all RAW/pending/notes.
 
 ANTIGRAVITY:
-Read-only review requested, but agy timed out awaiting authentication. User says they are connecting; no review content or quota result yet. Retry only on confirmation.
+Read-only review requested, but OAuth rejected the supplied code 1 as malformed (invalid_grant). No review content or quota result. Retry after successful browser login confirmation.
 
 QUOTA:
 Official latest check: 42% 5h used, 71% weekly used; no credit/reset consumed. These values are a snapshot.

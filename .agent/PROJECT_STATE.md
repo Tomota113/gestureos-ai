@@ -20,7 +20,7 @@ LIMITATIONS/NEXT:
 Collect balanced real known and unknown captures across disjoint groups, create verified manifest/prepared data, train a real baseline, then set explicit threshold objectives and run M7. Keep final test untouched until development is fixed. Continuous-stream false triggers, segmentation, embedded inference, LCD/actions and long physical bench remain pending. No quota reset/credit purchase.
 
 ANTIGRAVITY:
-User requested collaboration. Read-only agy M7 review attempt timed out waiting for account authentication; no advice was received, and no quota conclusion follows. User is connecting; retry only after confirmation, without concurrent edits.
+User requested collaboration. The read-only agy review requested OAuth authorization; the supplied code 1 was rejected as malformed (invalid_grant). No advice was received, and no quota conclusion follows. Retry after successful browser login confirmation, without concurrent edits.
 
 QUOTA:
 Official Codex check near M7 completion: 42% used in 5h window (58% remaining), 71% weekly used. No reset consumed. These values may change.
