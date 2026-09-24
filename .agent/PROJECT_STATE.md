@@ -7,7 +7,7 @@ CURRENT MILESTONE:
 M3-SOFTWARE terminé : lecture contrôlée des captures et splits groupés. Tests physiques toujours différés.
 
 STATUS:
-READY_FOR_NEXT_SOFTWARE_MILESTONE. Arrêt de session pour préserver le quota restant.
+PAUSED_QUOTA_CODEX. M3 terminé ; quota5h officiellement à100 % au dernier contrôle.
 
 LAST COMPLETED TASK:
 Chargeur dataset.py, split.py et CLI prepare.py ; contrôles identité/SHA/CRC/CSV/doublons ; partitions reproductibles par groupe. 30 tests logiciels OK.
@@ -84,3 +84,9 @@ pas une revue réussie ou une preuve de quota. Aucun retry automatique. Détails
 
 CODEX QUOTA:
 Instantanés officiels de cette session : 83 % utilisés au départ, puis 90 %, enfin 95 % (5 % restants sur 5 h) avant clôture. Semaine : 49 % utilisés au dernier contrôle. Aucun crédit/reset consommé. Arrêt après ce jalon, pas de nouvelle fonctionnalité.
+
+QUOTA STOP — dernier contrôle officiel après commit ff0c11e :
+Fenêtre5h utilisée à100 % ; resetsAt fourni par le client : 1790226268 (Unix UTC).
+M3 entièrement sauvegardé, 30 tests OK, aucun crédit/reset consommé.
+Ne démarrer aucune fonctionnalité. À la prochaine reprise, relire le quota réel puis NEXT_ACTION.
+Consommation observée depuis le départ83 % :17 points, dans le plafond de20 demandé.

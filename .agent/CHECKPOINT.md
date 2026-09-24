@@ -48,3 +48,9 @@ YES
 
 REASON:
 Jalon testé, code/documentation/preuves persistants, prochaine action précise, RAW préservés.
+
+QUOTA STOP — dernier contrôle officiel après commit ff0c11e :
+Fenêtre5h utilisée à100 % ; resetsAt fourni par le client : 1790226268 (Unix UTC).
+M3 entièrement sauvegardé, 30 tests OK, aucun crédit/reset consommé.
+Ne démarrer aucune fonctionnalité. À la prochaine reprise, relire le quota réel puis NEXT_ACTION.
+Consommation observée depuis le départ83 % :17 points, dans le plafond de20 demandé.
