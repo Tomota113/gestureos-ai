@@ -41,3 +41,5 @@ Read AGENT_STATE.md and .agent/NEXT_ACTION.md; prioritize checkpoint with limite
 M9 COMPLETE: optional bounded sensor-frame Z rotation after split, with parent capture lineage; disabled by default. 102 Python tests OK. No real training or physical measurements. Antigravity targeted read-only review received: no concrete findings in augment.py/train.py. Full Python suite 102 tests OK afterward.
 
 AGY FIXED 2026-09-24: targeted M9 read-only review succeeded with view_file, no command permission change; see reports/m9-antigravity-review.md. 102 Python tests OK afterward.
+
+HANDOFF PROTOCOL: AGENT_STATE.md is the first resume file; update it after every major task and before stopping, including tool or quota failure.

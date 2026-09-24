@@ -7,3 +7,5 @@ CURRENT: M9 software complete in commit 786271e; 102 Python tests OK. Read AGENT
 5. Update PROJECT_STATE.md, NEXT_ACTION.md, CHECKPOINT.md and AGENT_STATE.md before long operations and at session end.
 
 AGY FIXED 2026-09-24: targeted review succeeded; no global permission change. Next independent work: assess real capture sufficiency before ML comparison; keep test reserved.
+
+6. Maintain AGENT_STATE.md after every major completed task and before stopping; keep the first unfinished action explicit.
