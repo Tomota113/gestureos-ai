@@ -24,3 +24,7 @@
 - M2-SOFTWARE : profil dataset séparé du banc, commande CAPTURE bornée et CRC32 sur chaque ligne D (LF inclus). Les deux profils compilent, aucune écriture matérielle.
 - Captures UUID par sujet/session, RAW immuables, CSV publié après validation, captures partielles conservées. Fixtures sous work/ uniquement avec provenance synthetic_test et entraînement interdit.
 - Le jalon suivant traite le chargement/split reproductible avant tout entraînement réel. Les branchements ne seront demandés que lorsque l’utilisateur voudra passer aux essais physiques.
+
+- M3 : standard library seulement. Revalidation complète des captures ; aucune écriture RAW ; refus par défaut si capture invalide ou doublon.
+- Splits session=(sujet,séance) ou sujet, seed42, recherche512 essais, cible60/20/20 approximative, couverture de tous les labels dans chaque partition. Pas de fallback par lignes. Augmentations exclues du chargement RAW.
+- Budget demandé : au plus20 points de quota5h ; 12 points consommés observés avant clôture (83→95 %). Priorité à la sauvegarde, aucune nouvelle fonctionnalité après M3.

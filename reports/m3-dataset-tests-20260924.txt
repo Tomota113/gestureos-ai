@@ -1,0 +1,39 @@
+Artificial test fixtures only; no physical dataset or ML metrics.
+Command: .venv/bin/python -m unittest discover -s tests -v
+test_disconnect_preserves_partial_and_marks_incomplete (test_capture.CaptureTest.test_disconnect_preserves_partial_and_marks_incomplete) ... GO: swipe_left
+ok
+test_existing_capture_never_overwritten (test_capture.CaptureTest.test_existing_capture_never_overwritten) ... ok
+test_full_host_flow_preserves_frames_and_provenance (test_capture.CaptureTest.test_full_host_flow_preserves_frames_and_provenance) ... GO: swipe_left
+ok
+test_keyboard_interrupt_retains_log (test_capture.CaptureTest.test_keyboard_interrupt_retains_log) ... ok
+test_missing_ready_times_out_without_command (test_capture.CaptureTest.test_missing_ready_times_out_without_command) ... ok
+test_complete_capture_and_crc (test_capture.ParserTest.test_complete_capture_and_crc) ... ok
+test_gap_even_with_correct_crc (test_capture.ParserTest.test_gap_even_with_correct_crc) ... ok
+test_invalid_values (test_capture.ParserTest.test_invalid_values) ... ok
+test_missing_duplicate_or_initial_frame (test_capture.ParserTest.test_missing_duplicate_or_initial_frame) ... ok
+test_request_rejects_injection_and_bad_count (test_capture.ParserTest.test_request_rejects_injection_and_bad_count) ... ok
+test_reset_device_error_and_truncated_line (test_capture.ParserTest.test_reset_device_error_and_truncated_line) ... ok
+test_valid_numeric_corruption_fails_crc (test_capture.ParserTest.test_valid_numeric_corruption_fails_crc) ... ok
+test_wrong_identity_units_rate_and_count (test_capture.ParserTest.test_wrong_identity_units_rate_and_count) ... ok
+test_cli_blocked_report_for_insufficient_data (test_dataset.DatasetTest.test_cli_blocked_report_for_insufficient_data) ... ok
+test_cli_manifest_and_refusal_to_overwrite (test_dataset.DatasetTest.test_cli_manifest_and_refusal_to_overwrite) ... ok
+test_insufficient_groups_or_label_coverage_never_fallback (test_dataset.DatasetTest.test_insufficient_groups_or_label_coverage_never_fallback) ... ok
+test_missing_file_and_symlink (test_dataset.DatasetTest.test_missing_file_and_symlink) ... ok
+test_raw_checksum_csv_and_result_tampering (test_dataset.DatasetTest.test_raw_checksum_csv_and_result_tampering) ... ok
+test_reject_synthetic_incomplete_derived_and_bad_identity (test_dataset.DatasetTest.test_reject_synthetic_incomplete_derived_and_bad_identity) ... ok
+test_renamed_duplicate_signals_reject_both (test_dataset.DatasetTest.test_renamed_duplicate_signals_reject_both) ... ok
+test_sessions_are_scoped_by_subject_and_subject_split_is_stronger (test_dataset.DatasetTest.test_sessions_are_scoped_by_subject_and_subject_split_is_stronger) ... ok
+test_split_disjoint_complete_balanced_and_reproducible (test_dataset.DatasetTest.test_split_disjoint_complete_balanced_and_reproducible) ... ok
+test_validated_dossier_and_raw_immutability (test_dataset.DatasetTest.test_validated_dossier_and_raw_immutability) ... ok
+test_corruption_nonfinite_short_and_missing_header (test_stream.StreamTest.test_corruption_nonfinite_short_and_missing_header) ... ok
+test_dropped_serial_frame (test_stream.StreamTest.test_dropped_serial_frame) ... ok
+test_i2c_errors_and_clipping (test_stream.StreamTest.test_i2c_errors_and_clipping) ... ok
+test_missing_startup_frames_even_with_full_duration (test_stream.StreamTest.test_missing_startup_frames_even_with_full_duration) ... ok
+test_reboot (test_stream.StreamTest.test_reboot) ... ok
+test_regular_stream (test_stream.StreamTest.test_regular_stream) ... ok
+test_sensor_gap_despite_contiguous_serial_sequence (test_stream.StreamTest.test_sensor_gap_despite_contiguous_serial_sequence) ... ok
+
+----------------------------------------------------------------------
+Ran 30 tests in 0.741s
+
+OK

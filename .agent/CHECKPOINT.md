@@ -1,59 +1,50 @@
 CHECKPOINT ID:
-2026-09-24_m2-software_capture-logger
+2026-09-24_m3-software_validated-dataset-splits
 
 PHASE:
-Collecte logicielle prête ; validations physiques reportées par demande utilisateur.
+M3-SOFTWARE terminé ; matériel différé.
 
 OBJECTIVE:
-Préparer les futures acquisitions sans attendre les branchements et sans inventer de données.
+Valider les captures originales et construire des partitions reproductibles sans fuite entre groupes.
 
 COMPLETED:
-Package Python installé, protocole versionné borné avec CRC, firmware dataset,
-logger conservant provenance/log brut/CSV validé/résultat, guides et tests.
+Chargement strict, revalidation SHA256/CRC/protocole/CSV, refus des captures synthétiques ou partielles,
+détection de doublons renommés, splits par session/sujet, manifeste et diagnostic bloquant,
+guide utilisateur et 10 nouveaux tests (30 au total).
 
 TESTED:
-- pio run -d firmware -e esp32dev -e dataset : 2 builds SUCCESS.
-- .venv/bin/python -m unittest discover -s tests -v : 20 tests OK.
-- g++ -std=c++11 -Wall -Wextra -Werror -Ifirmware/src tests/native/capture_protocol_test.cpp firmware/src/capture_protocol.cpp -o work/capture_protocol_test
-- ./work/capture_protocol_test : parsing de commande et CRC OK.
-- Installation pip éditable, aide CLI, pip check réussis.
+.venv/bin/python -m unittest discover -s tests -v : 30 tests OK, code 0.
+.venv/bin/python -m gestureos.prepare --help : OK.
+git diff --check : OK avant sauvegarde finale.
+Preuves : reports/m3-dataset-tests-20260924.txt.
 
 TEST RESULTS:
-Preuves conservées dans reports/logger-validation-20260924/.
-Banc : RAM statique21808 / Flash application287585 octets.
-Dataset : RAM statique22016 / Flash application315941 octets.
-Aucun capteur, flashage, calibration, dataset réel ou modèle ML testé.
+Fixtures artificielles uniquement sous work/. Certaines imitent explicitement les métadonnées hardware
+pour tester le validateur ; elles ne sont pas des captures physiques et ne deviennent pas un dataset réel.
+Aucune modification RAW réelle ; aucun firmware modifié/flashé ; aucun entraînement.
 
 FAILED / UNRESOLVED:
-- setuptools absent du venv au contrôle initial ; backend80.9.0 installé par pip en build isolé, installation réussie.
-- Revue Antigravity à la reprise : timeout60s sans réponse exploitable, pas de retry.
-- Matériel et données réels volontairement différés, pas un blocage logiciel.
+Pas d'échec de test. Aucun dataset réel présent.
+La recherche de split est bornée (512 essais), proportions approximatives à groupes indivisibles.
+Provenance déclarée vérifiée, pas authentifiée cryptographiquement.
 
 FILES CHANGED:
-pyproject.toml, requirements.txt, .gitignore, configs/collection.json, src/gestureos/*,
-scripts/capture_serial.py, firmware/platformio.ini, firmware/src/capture_protocol.*,
-firmware/src/dataset_main.cpp, tests/test_capture.py, tests/native/*,
-README.md, docs/architecture.md, docs/dataset-protocol.md,
-outputs/dataset-collection-guide.md, reports/logger-validation-20260924/*, .agent/*.
-
-COMMANDS THAT WORKED:
-Voir TESTED et les logs persistants.
-
-COMMANDS THAT FAILED:
-pip show setuptools : package absent (pas une panne de quota).
-Revue agy : délai atteint (code0 ne constitue pas un succès de revue).
+src/gestureos/dataset.py, split.py, prepare.py ; tests/test_dataset.py ; README.md ;
+outputs/dataset-preparation-guide.md ; reports/m3-dataset-tests-20260924.txt ; .agent/*.
 
 CURRENT GIT STATUS:
-Base3d8dc7c. Ce jalon sera sauvegardé dans « feat: add bounded gesture capture protocol and PC logger ».
-Vérifier le statut réel à la reprise ; ne pas se fier à une ancienne observation.
+Base add2f1c propre avant travaux. Lot à sauvegarder dans « feat: validate raw captures and create grouped dataset splits ».
+Vérifier git status/log à la reprise.
+
+QUOTA:
+5 h : 83 % utilisés au départ, 95 % avant clôture ; 12 points consommés à cet instant.
+Semaine : 49 % utilisés. Aucun reset/crédit. Pas de nouvelle fonctionnalité démarrée après ce jalon.
 
 NEXT EXACT STEP:
-Chargement contrôlé des captures et splits par groupe, selon NEXT_ACTION.md.
-Aucune nouvelle demande de branchement pour cette étape logicielle.
+Prétraitement/manifestes selon NEXT_ACTION.md, lors de la prochaine reprise et après contrôle du quota.
 
 SAFE TO RESUME:
 YES
 
 REASON:
-Code et tests enregistrés, logs préservés, aucun firmware physique remplacé,
-aucune donnée réelle écrasée, prochaine action définie et validations différées explicites.
+Jalon testé, code/documentation/preuves persistants, prochaine action précise, RAW préservés.

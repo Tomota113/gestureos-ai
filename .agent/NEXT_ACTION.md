@@ -1,40 +1,25 @@
 CURRENT PHASE:
-Progression logicielle sans branchement. M2-SOFTWARE collecte terminé ; M1-PHYSICAL en attente volontaire.
+M3-SOFTWARE terminé. Matériel et données réelles différés par demande utilisateur.
 
 NEXT OBJECTIVE:
-Créer le chargement fiable des futurs datasets réels et les partitions train/validation/test.
-Ne pas lancer un entraînement sur des fixtures ni produire de faux résultats ML.
+Prétraitement et caractéristiques reproductibles, sans entraîner sur de fausses données.
 
 NEXT ACTION:
 1. Lire les quatre fichiers .agent ; git status ; git log --oneline -n 5.
-2. Lire src/gestureos/protocol.py, capture.py, configs/collection.json,
-   docs/dataset-protocol.md et tests/test_capture.py. Vérifier ce qui existe déjà sous data/.
-3. Implémenter le chargement des dossiers de capture : result.json complet, provenance hardware,
-   eligible_for_training=true, identité cohérente, vérification de SHA256 et des données.
-   Refuser par défaut fixtures, captures partielles, doublons et incohérences ; conserver les RAW.
-4. Ajouter manifests et splits reproductibles par session et, si possible, par sujet.
-   Aucun sample parent ou augmentation ne doit franchir les partitions.
-   Si données/groupes insuffisants, produire un diagnostic explicite, pas un split fuyant.
-5. Tester les invariants sur fixtures sous work/ uniquement. Aucun dataset de gestes inventé.
-6. Documenter les commandes et mettre à jour checkpoint avant le jalon suivant.
-7. Plus tard : preprocessing train-only, baselines RF/SVM/MLP puis CNN selon données réelles.
-   Vérifier les dépendances Python disponibles avant installation et conserver les versions.
+2. Vérifier le quota réel avant une opération longue : il restait 5 % sur 5 h avant clôture M3.
+3. Lire dataset.py, split.py, prepare.py, tests/test_dataset.py et le guide outputs/dataset-preparation-guide.md.
+4. Implémenter la lecture d'un manifeste ready en revérifiant les empreintes avant emploi.
+5. Ajouter resampling/fenêtre et features nécessaires aux baselines. Scaler ajusté exclusivement sur train ; aucune augmentation du test.
+6. Tester formes, cohérence temporelle et non-fuite avec fixtures clairement artificielles sous work/.
+7. Vérifier disponibilité/compatibilité des dépendances ML avant installation ; ne produire aucune métrique de reconnaissance sans vrais exemples.
+8. Documenter, sauvegarder les résultats de tests et créer le checkpoint du prochain jalon.
 
 EXPECTED RESULT:
-Pipeline de préparation exploitable et testé, capable d'attendre les données réelles.
-Aucune accuracy, matrice de confusion réelle ou validation embarquée annoncée sans mesure.
+Pipeline logiciel prêt à recevoir les vraies données. Pas de précision fictive.
 
-IF SUCCESS:
-Commit cohérent et prochaine action logicielle précise, sans redemander le câblage.
+DO NOT REPEAT:
+Pas de réinstallation, recompile ESP32 ou demande de câblage sans nécessité.
+Ne pas relancer Antigravity automatiquement après son ancien timeout.
 
-IF FAILURE:
-Lire la cause, conserver les fichiers, corriger et tester. Aucune boucle de retry de service IA.
-
-DEFERRED HARDWARE ACTIONS:
-Quand l'utilisateur annonce vouloir câbler/tester/collecter : identifier le module,
-valider alimentation et câblage, préserver le programme précédent si nécessaire,
-flasher le profil approprié et tester de vraies mesures selon outputs/first-mpu6050-test.md
-puis outputs/dataset-collection-guide.md. Ces commandes ne sont PAS à exécuter maintenant.
-
-FILES INVOLVED:
-src/gestureos/*, tests/*, configs/*, docs/dataset-protocol.md, .agent/*.
+DEFERRED:
+Câblage, validation MPU6050, collecte réelle et entraînement/évaluation réels.

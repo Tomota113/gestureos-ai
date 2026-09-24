@@ -1,46 +1,30 @@
 PROJECT: GestureOS AI
 
 CURRENT PHASE:
-Développement logiciel par jalons, matériel reporté à la demande utilisateur.
-Audit achevé ; banc MPU6050 et logger labellisé implémentés côté logiciel.
+Développement logiciel sans matériel. Audit, logger et préparation des partitions implémentés.
 
 CURRENT MILESTONE:
-M2-SOFTWARE : collecte bornée ESP32/PC avec provenance et intégrité, tests hors matériel réussis.
-M1-PHYSICAL : acquisition réelle MPU6050, toujours non validée.
+M3-SOFTWARE terminé : lecture contrôlée des captures et splits groupés. Tests physiques toujours différés.
 
 STATUS:
-READY_FOR_NEXT_SOFTWARE_MILESTONE. Ne pas attendre ou redemander le câblage maintenant.
+READY_FOR_NEXT_SOFTWARE_MILESTONE. Arrêt de session pour préserver le quota restant.
 
 LAST COMPLETED TASK:
-- Reprise depuis a02bf6b et correction du contrôle des premières trames perdues (3d8dc7c).
-- Ajout profil firmware dataset et protocole CAPTURE/begin/D/end, compteur + CRC32 IEEE.
-- Package Python gestureos 0.1.0 installé en mode éditable, CLI capture et conservation des données.
-- Guides, tests et traces de vérification enregistrés.
+Chargeur dataset.py, split.py et CLI prepare.py ; contrôles identité/SHA/CRC/CSV/doublons ; partitions reproductibles par groupe. 30 tests logiciels OK.
 
 CURRENT TASK:
-Jalon de collecte logiciel terminé ; prochain jalon : chargement contrôlé des captures et splits ML.
+Jalon M3 terminé, documentation et checkpoint sauvegardés. Ne pas démarrer une autre fonctionnalité dans cette session.
 
 LAST SUCCESSFUL COMMAND:
-pio run -d firmware -e esp32dev -e dataset
 .venv/bin/python -m unittest discover -s tests -v
-./work/capture_protocol_test
-.venv/bin/python -m gestureos.capture --help
-.venv/bin/python -m pip check
+.venv/bin/python -m gestureos.prepare --help
+git diff --check
 
 LAST SUCCESSFUL TEST:
-20 tests Python OK ; tests C++ natifs de parsing/CRC OK ; 2 builds ESP32 SUCCESS.
-Banc : RAM statique 21808 octets, Flash application 287585 octets.
-Dataset : RAM statique 22016 octets, Flash application 315941 octets.
-Ces tailles viennent du linker, pas d'une mesure runtime ou d'un modèle ML.
-Preuves : reports/logger-validation-20260924/.
+30 tests Python OK ; preuves reports/m3-dataset-tests-20260924.txt. Firmware inchangé, pas de nouveau build ou flashage. Aucun test physique ni résultat ML.
 
 FILES MODIFIED:
-pyproject.toml, requirements.txt, .gitignore, configs/collection.json,
-src/gestureos/{__init__,protocol,capture}.py, scripts/capture_serial.py,
-firmware/platformio.ini, firmware/src/{capture_protocol.h,capture_protocol.cpp,dataset_main.cpp},
-tests/test_capture.py, tests/native/capture_protocol_test.cpp, README.md,
-docs/{architecture,dataset-protocol}.md, outputs/dataset-collection-guide.md,
-reports/logger-validation-20260924/*, .agent/*.
+src/gestureos/{dataset,split,prepare}.py ; tests/test_dataset.py ; README.md ; outputs/dataset-preparation-guide.md ; reports/m3-dataset-tests-20260924.txt ; .agent/*.
 
 HARDWARE CURRENTLY TESTED:
 USB/ROM ESP32 seulement, précédemment ESP32-D0WDQ6 revision 1.0, Flash 4 Mo, CP2102.
@@ -85,7 +69,7 @@ Ne jamais présenter compilation, fixtures ou tests simulés comme de vraies per
 Ne pas supprimer les captures réelles ; les sauvegarder séparément de Git dès qu'elles existent.
 
 NEXT ACTION:
-Suivre .agent/NEXT_ACTION.md : pipeline de lecture/validation et partitionnement sans fuite de données.
+Prétraitement reproductible et features, puis baselines selon disponibilité des données. Lire NEXT_ACTION.md ; ne pas demander le câblage pendant le développement logiciel.
 
 ENVIRONMENT:
 Ubuntu26.04 x86_64, Python3.14.4, Git2.53.0, PlatformIO6.2.0, espressif32 7.0.1 / Arduino2.0.17.
@@ -99,5 +83,4 @@ Revue du code à la reprise : délai 60s atteint sans avis, malgré exit0. INCOM
 pas une revue réussie ou une preuve de quota. Aucun retry automatique. Détails reports/resume-stream-check-20260924.txt.
 
 CODEX QUOTA:
-Ancien instantané officiel au début du projet : 6% utilisé sur 5h et 35% sur semaine.
-Ne pas extrapoler à l'état actuel. Aucun crédit ou reset consommé.
+Instantanés officiels de cette session : 83 % utilisés au départ, puis 90 %, enfin 95 % (5 % restants sur 5 h) avant clôture. Semaine : 49 % utilisés au dernier contrôle. Aucun crédit/reset consommé. Arrêt après ce jalon, pas de nouvelle fonctionnalité.
