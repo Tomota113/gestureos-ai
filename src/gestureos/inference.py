@@ -20,6 +20,9 @@ from .split import PARTITIONS, group_key
 
 def validate_contract(contract):
     require(isinstance(contract, dict), "Expected inference contract object")
+    require(isinstance(contract.get("source_manifest_sha256"), str)
+            and re.fullmatch(r"[0-9a-f]{64}", contract["source_manifest_sha256"]),
+            "Invalid contract source manifest fingerprint")
     validate_config(contract["pipeline"])
     labels = contract["labels"]
     require(isinstance(labels, list) and len(labels) >= 2 and "unknown" in labels

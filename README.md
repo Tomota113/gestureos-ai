@@ -9,7 +9,7 @@ Trois captures MPU6050 réelles de gauche ont été revérifiées à la reprise 
 Le rapport de banc de 60 s conservé est en échec ; sa validation reste à refaire.
 La carte répond au bootloader : ESP32-D0WDQ6 révision 1, Flash 4 Mo, CP2102.
 Les deux firmwares compilent ; les tests C++ natifs du précédent jalon passent.
-La suite Python passe : **98 tests**. Elle couvre aussi la sélection M7 sur scores analytiques, sans
+La suite Python passe : **100 tests**. Elle couvre aussi la sélection M7 sur scores analytiques, sans
 mesure ML réelle.
 Aucun modèle de gestes entraîné, score de précision ou test d’actionneur n’existe encore.
 

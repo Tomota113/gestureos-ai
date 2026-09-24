@@ -51,4 +51,5 @@
 
 - M7 : sélectionner les seuils uniquement sur validation du manifeste figé avec modèle et RAW revérifiés. Les deux contraintes de taux doivent être renseignées explicitement ; aucune valeur par défaut de performance n’est inventée.
 - M7 : une politique sélectionnée reste `experimental`, liée aux empreintes modèle/manifeste/IDs de validation et sans autorisation d’action. Les métriques affichent leurs dénominateurs ; absence de connus/inconnus ou contraintes impossibles bloquent sans politique. La calibration probabiliste et le test final sont distincts.
-- M7 : tests avec scores analytiques et estimateurs factices,98 tests OK, aucun modèle réel ni résultat ML. Revue Antigravity en attente d’authentification après timeout, sans interprétation de quota ; reprendre après confirmation utilisateur.
+- M7 : tests initiaux avec scores analytiques et estimateurs factices,98 tests OK, aucun modèle réel ni résultat ML. La première tentative de revue Antigravity attendait l’authentification ; ce n’était pas une preuve de quota épuisé.
+- M7, suivi : connexion Antigravity établie et revue indépendante en lecture seule reçue. Ses quatre remarques ont été vérifiées et traitées : garde du SHA manifeste dans le contrat, test de la politique liée valide, scores SVM négatifs, CLI bloquée. Suite complète :100 tests OK. Aucun chiffre ML réel ni test matériel ajouté.

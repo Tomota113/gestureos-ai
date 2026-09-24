@@ -207,7 +207,8 @@ class InferenceTest(unittest.TestCase):
                 decide({**scored, **changes}, self.experimental(), MODEL_HASH)
 
     def test_contract_and_layout_mismatches_are_refused(self):
-        for case in ("features", "scale", "mean", "fit", "ids", "groups", "labels", "duplicate", "source"):
+        for case in ("features", "scale", "mean", "fit", "ids", "groups", "labels", "duplicate",
+                     "source", "manifest_missing", "manifest_bad"):
             contract = copy.deepcopy(self.contract)
             if case == "features": contract["feature_names"].reverse()
             elif case == "scale": contract["scaler"]["scale"][0] = 0
@@ -218,7 +219,9 @@ class InferenceTest(unittest.TestCase):
                 for capture in contract["source_captures"]: capture["subject_id"] = "same"
             elif case == "labels": contract["labels"] = ["shake", "shake"]
             elif case == "duplicate": contract["source_captures"][0]["content_sha256"] = contract["source_captures"][1]["content_sha256"]
-            else: contract["source_captures"][0]["source_kind"] = "synthetic_test"
+            elif case == "source": contract["source_captures"][0]["source_kind"] = "synthetic_test"
+            elif case == "manifest_missing": contract.pop("source_manifest_sha256")
+            else: contract["source_manifest_sha256"] = "not-a-sha256"
             with self.subTest(case=case), self.assertRaises(ValueError): validate_contract(contract)
         for classes in ([1, 0], [0, 2], [0., 1.], [False, True]):
             fake = ScoreFake()

@@ -11,7 +11,7 @@ from unittest.mock import patch
 from gestureos.capture import write_json
 from gestureos.dataset import fingerprint
 from gestureos.inference import FrozenBaseline
-from gestureos.rejection import validate_policy
+from gestureos.rejection import validate_policy, validation_ids_sha256
 from gestureos.select_thresholds import main
 from gestureos.thresholds import candidates, select_policy, summarize, validate_config
 from gestureos.preprocessing import prepare_partitions
@@ -25,13 +25,17 @@ MANIFEST = "b" * 64
 
 
 def row(number, truth, scores):
+    return scored_row(number, truth, LABELS, scores, "predict_proba_uncalibrated_v1")
+
+
+def scored_row(number, truth, labels, scores, kind):
     index = max(range(len(scores)), key=lambda i: scores[i])
     score = scores[index]
     return {"capture_id": f"{number:032x}", "truth_label": truth,
-            "scored": {"candidate_label": LABELS[index], "candidate_index": index,
-                       "scores": dict(zip(LABELS, scores)), "score": score,
+            "scored": {"candidate_label": labels[index], "candidate_index": index,
+                       "scores": dict(zip(labels, scores)), "score": score,
                        "margin": score - max(x for i, x in enumerate(scores) if i != index),
-                       "score_kind": "predict_proba_uncalibrated_v1"}}
+                       "score_kind": kind}}
 
 
 class SelectionTest(unittest.TestCase):
@@ -133,6 +137,29 @@ class SelectionTest(unittest.TestCase):
         self.assertFalse(result["search"]["exact_observed_breakpoints"])
         self.assertLessEqual(result["search"]["candidate_pairs_evaluated"], 16)
 
+    def test_svm_decision_scores_can_select_negative_thresholds(self):
+        cases = (
+            (LABELS, "svc_ovr_decision_v1", [
+                scored_row(1, "shake", LABELS, [-.2, -1, -2], "svc_ovr_decision_v1"),
+                scored_row(2, "circle_clockwise", LABELS, [-1, -.4, -2], "svc_ovr_decision_v1"),
+                scored_row(3, "unknown", LABELS, [.1, 0, -1], "svc_ovr_decision_v1"),
+                scored_row(4, "unknown", LABELS, [-1, -2, .5], "svc_ovr_decision_v1")]),
+            (["shake", "unknown"], "svc_binary_signed_v1", [
+                scored_row(1, "shake", ["shake", "unknown"], [-.2, -1], "svc_binary_signed_v1"),
+                scored_row(2, "unknown", ["shake", "unknown"], [-.3, -.1], "svc_binary_signed_v1")]),
+        )
+        for labels, kind, records in cases:
+            with self.subTest(kind=kind):
+                config = {**self.config, "min_known_correct_accept_rate": 1}
+                result = select_policy(records, labels, config, MODEL, MANIFEST,
+                                       [r["capture_id"] for r in records])
+                self.assertEqual(result["status"], "selected")
+                self.assertEqual(result["policy"]["score_kind"], kind)
+                self.assertLess(result["policy"]["min_score"], 0)
+                validate_policy(result["policy"])
+                self.assertEqual(result["metrics"]["known_correct_accept_rate"], 1)
+                self.assertEqual(result["metrics"]["unknown_false_accept_rate"], 0)
+
     def test_bound_policy_rejects_other_manifest_or_validation_split(self):
         result = self.select()
         policy = result["policy"]
@@ -146,6 +173,13 @@ class SelectionTest(unittest.TestCase):
         with self.assertRaises(ValueError): prediction.predict_rows(base.rows, policy)
         policy["source_manifest_sha256"] = prediction.contract["source_manifest_sha256"]
         with self.assertRaises(ValueError): prediction.predict_rows(base.rows, policy)
+        policy["validation_ids_sha256"] = validation_ids_sha256(
+            prediction.contract["source_partitions"]["validation"])
+        event = prediction.predict_rows(base.rows, policy)
+        self.assertEqual(event["event"], "gesture_decision")
+        self.assertTrue(event["accepted"])
+        self.assertEqual(event["model_sha256"], prediction.model_sha256)
+        self.assertFalse(event["action_authorized"])
 
 
 class SelectionCLITest(unittest.TestCase):
@@ -203,6 +237,19 @@ class SelectionCLITest(unittest.TestCase):
         self.assertEqual(error.exception.code, 2)
         loader.assert_not_called()
         self.assertFalse(self.output.exists())
+
+    def test_cli_blocked_constraints_write_no_policy(self):
+        self.config.update(max_unknown_false_accept_rate=0, min_known_correct_accept_rate=1)
+        self.config_path.write_text(json.dumps(self.config))  # test-owned temporary fixture
+        with (patch.object(sys, "argv", self.arguments()),
+              patch("gestureos.select_thresholds.load_baseline", return_value=self.baseline),
+              contextlib.redirect_stdout(io.StringIO())):
+            self.assertEqual(main(), 1)
+        self.assertEqual(json.loads((self.output / "result.json").read_text())["status"], "blocked")
+        for name in ("run.json", "config.json", "validation_scores.json", "result.json"):
+            self.assertTrue((self.output / name).is_file())
+        self.assertFalse((self.output / "policy.json").exists())
+        self.assertFalse((self.output / "validation_decisions.json").exists())
 
     def test_cli_rejects_mismatch_and_raw_output_before_scoring(self):
         for case in ("manifest", "prepared", "root"):
