@@ -18,6 +18,13 @@ class StreamTest(unittest.TestCase):
         del lines[50]
         self.assertFalse(analyze(lines, min_seconds=1)["passed"])
 
+    def test_missing_startup_frames_even_with_full_duration(self):
+        lines = [HEADER] + [f"{i},{i * 10000},0,0,1,0,0,0,0" for i in range(1, 102)]
+        result = analyze(lines, min_seconds=1)
+        self.assertEqual(result["duration_sensor_s"], 1)
+        self.assertEqual(result["first_sequence"], 1)
+        self.assertFalse(result["passed"])
+
     def test_sensor_gap_despite_contiguous_serial_sequence(self):
         lines = [HEADER] + [f"{i},{i * 10000 + (30000 if i >= 50 else 0)},0,0,1,0,0,0,0"
                             for i in range(101)]

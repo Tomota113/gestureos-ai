@@ -142,6 +142,14 @@ tard ; nous nous arrêtons au jalon logiciel prêt à tester.
 
 ## Sources primaires vérifiées
 
+Mise à jour de reprise, 24 septembre 2026 : une perte des premières trames
+pouvait échapper au vérificateur si les suivantes étaient consécutives.
+Ce défaut a été reproduit sur fixture artificielle puis corrigé ; sept tests
+logiciels passent désormais. Le CP2102 reste détecté sur `/dev/ttyUSB0`.
+Aucun test du capteur réalisé. Une nouvelle tentative de revue Antigravity
+a atteint son délai de 60 s sans avis exploitable ; ce n'est pas une preuve
+de quota épuisé et aucune relance automatique n'a été faite.
+
 - Le profil de compilation et ses limites proviennent de [PlatformIO — esp32dev](https://docs.platformio.org/en/stable/boards/espressif32/esp32dev.html), complété par les manifests locaux et le build réel.
 - Les réglages de cadence, plages et registres se fondent sur le [registre MPU6000/6050 de TDK](https://invensense.tdk.com/wp-content/uploads/2015/02/MPU-6000-Register-Map1.pdf).
 - Les contraintes électriques de la puce se vérifient sur [TDK — MPU6050](https://product.tdk.com/en/search/sensor/mortion-inertial/imu/info?part_no=MPU-6050) ; elles ne remplacent pas le schéma du module acheté.

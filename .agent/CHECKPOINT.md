@@ -1,65 +1,68 @@
 CHECKPOINT ID:
-2026-09-24_phase-0_software-ready
+2026-09-24_resume_startup-frame-check
 
 PHASE:
-0 terminée ; M1 non validé physiquement.
+M0 terminé ; M1 acquisition réelle préparé, non validé.
 
 OBJECTIVE:
-Audit réel et préparation minimale du premier test MPU6050, sans application complète.
+Reprendre l'état persistant et fiabiliser le contrôle de capture avant le test physique.
 
 COMPLETED:
-- Brief/protocole archivés, mémoire persistante et Git initialisés.
-- Environnement inspecté et ESP32 identifié après branchement utilisateur.
-- Antigravity utilisé pour une revue indépendante bornée, archivée et arbitrée.
-- Venv isolé ; firmware minimal ; script de banc ; documentation et architecture proposée.
+- Quatre fichiers de reprise, sources et guide relus, Git propre au départ (a02bf6b).
+- Versions inchangées ; CP2102 toujours sur /dev/ttyUSB0, aucun log physique existant.
+- Défaut reproduit : une capture démarrant en séquence 1 pouvait être acceptée.
+- Correction : séquence zéro exigée ; first_sequence inclus dans le rapport.
+- Documentation actualisée. Question marquage et câblage MPU6050 envoyée.
 
 TESTED:
-- ROM ESP32/Flash via esptool (aucune écriture de flash).
-- Build PlatformIO réussi : 21808 octets RAM statique / 287585 octets application.
-- Six tests du protocole série ; pip check ; aide du script ; git diff --check.
+Fixture artificielle omettant la première mesure ; test de régression ajouté.
+.venv/bin/python -m unittest discover -s tests -v : 7 tests OK.
+git diff --check : OK avant mise à jour documentaire.
+Firmware C++ inchangé ; pas de recompile ou flashage inutile.
 
 TEST RESULTS:
-Réussite de ces contrôles seulement. Preuves : reports/firmware-build.txt et reports/software-checks.txt.
-Aucune reconnaissance ML ni mesure du MPU6050 testée.
+Le flux artificiel incomplet passe de passed=True (défaut) à passed=False (attendu).
+Détails : reports/resume-stream-check-20260924.txt.
+Aucune donnée MPU6050 réelle, précision ML ou validation électrique inventée.
 
 FAILED / UNRESOLVED:
-- git rev-parse initial : pas de dépôt (résolu par initialisation).
-- Ouverture web du PDF TDK échouée via outil ; index de recherche et sources officielles utilisés.
-- Aucun échec de compilation, quota ou authentification Antigravity observé.
-- Contrôle Git final : espaces de fin de ligne dans les logs importés, corrigés sans changer les résultats ; sorties brutes conservées dans work/.
-- Module MPU6050 et alimentation non identifiés ; câblage différé par l'utilisateur.
+Antigravity a rendu le code 0 mais le seul texte indique :
+[agy] print timeout after 1m0s with turn in progress; returning partial output
+Revue INCOMPLETE_TIMEOUT ; aucune conclusion, aucun retry, aucun quota supposé épuisé.
+Référence/module et branchements actuels toujours inconnus.
 
 FILES CHANGED:
-.agent/*, AGENTS.md, .gitignore, README.md, requirements.txt, firmware/*,
-scripts/check_stream.py, tests/test_stream.py, docs/*, outputs/*, reports/*.
+scripts/check_stream.py, tests/test_stream.py, README.md,
+outputs/first-mpu6050-test.md, outputs/phase-0-audit.md,
+reports/resume-stream-check-20260924.txt, .agent/*.
 
 COMMANDS THAT WORKED:
-agy --help ; agy models ; requête agy --mode plan --print-timeout 60s -p (voir revue).
-python3 /home/ibrahim-tomota/.platformio/packages/tool-esptoolpy/esptool.py --port /dev/ttyUSB0 --baud 115200 --connect-attempts 3 --no-stub flash_id
-/usr/bin/python3 -m venv .venv
-.venv/bin/python -m pip install pyserial==3.5
-pio run -d firmware
+.venv/bin/python --version ; import serial et énumération list_ports
+pio --version ; agy --help
+git status --short ; git log --oneline -n 5
 .venv/bin/python -m unittest discover -s tests -v
-.venv/bin/python -m pip check
 
 COMMANDS THAT FAILED:
-git rev-parse avant initialisation : état initial attendu, résolu.
+Revue agy --mode plan --print-timeout 60s : incomplète par délai, malgré code retour 0.
 
 CURRENT GIT STATUS:
-Dépôt local main, aucun remote. Ce fichier appartient au lot de checkpoint
-« checkpoint: prepare verified MPU6050 bench test and phase zero audit ».
-git status --short était vide après a0f80e3 (code, documentation et tests).
-Un commit de suivi normalise uniquement les espaces des logs et consigne ce contrôle.
-Toujours recontrôler le statut réel à la reprise.
-Premier commit : 83de740 (brief + protocole + audit initial).
+Base de reprise a02bf6b, propre avant travail. Modifications de cette reprise
+regroupées dans le commit « fix: reject captures missing startup frames ».
+Toujours vérifier git status et log à la reprise, ne pas déduire le statut des seuls textes.
 
 NEXT EXACT STEP:
-Lire NEXT_ACTION.md ; identifier le module MPU6050 et confirmer le câblage avant upload.
-Ne pas reconstruire l'application, ne pas inventer de données, ne pas lancer le ML.
+Obtenir marquage et câblage du MPU6050 ; appliquer .agent/NEXT_ACTION.md avant upload.
+Si aucun matériel prêt, expliquer ce prérequis sans anticiper LCD/ML/actionneurs.
 
 SAFE TO RESUME:
 YES
 
 REASON:
-Sources, documentation, dépendances et preuves enregistrées ; firmware existant non remplacé ;
-aucun dataset à risque. La suite exacte et les prérequis manquants sont explicites.
+Correction testée, capture brute protégée, firmware matériel inchangé,
+état et prochaine action sauvegardés. Les mesures physiques restent explicitement non réalisées.
+
+USER STEERING — priorité sur le précédent prérequis de câblage :
+L’utilisateur fera les branchements plus tard, lors des tests ou de l’ajout des données.
+Poursuivre les jalons logiciels sans attendre cette information. Aucun flashage.
+NEXT SOFTWARE MILESTONE: protocole de capture bornée + logger PC avec provenance,
+protection contre l’écrasement et tests sans capteur. Ne pas prétendre M1 physique validé.

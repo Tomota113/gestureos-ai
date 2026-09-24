@@ -1,6 +1,11 @@
 CURRENT PHASE:
 Phase 0 terminée ; M1 matériel préparé mais non validé.
 
+RESUME STATUS:
+Reprise effectuée depuis a02bf6b ; correction de détection des premières trames perdue testée.
+Sept tests logiciels passent ; firmware inchangé. Revue Antigravity interrompue au délai
+sans résultat : ne pas relancer automatiquement. Question matériel envoyée, encore sans réponse.
+
 NEXT OBJECTIVE:
 Identifier le module MPU6050 et obtenir une capture physique exploitable à 100 Hz.
 
@@ -38,3 +43,9 @@ Si le câblage manque encore, conserver l'état prêt et expliquer le prérequis
 
 FILES INVOLVED:
 outputs/first-mpu6050-test.md ; firmware/* ; scripts/check_stream.py ; reports/hardware/* ; .agent/*.
+
+USER STEERING — priorité sur le précédent prérequis de câblage :
+L’utilisateur fera les branchements plus tard, lors des tests ou de l’ajout des données.
+Poursuivre les jalons logiciels sans attendre cette information. Aucun flashage.
+NEXT SOFTWARE MILESTONE: protocole de capture bornée + logger PC avec provenance,
+protection contre l’écrasement et tests sans capteur. Ne pas prétendre M1 physique validé.

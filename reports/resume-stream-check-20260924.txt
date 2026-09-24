@@ -1,0 +1,27 @@
+Reprise du 2026-09-24, relevé des vérifications effectuées
+
+Environnement : Python 3.14.4, pyserial 3.5, PlatformIO 6.2.0.
+CP2102 USB présent sur /dev/ttyUSB0. Aucun log de mesures physiques existant.
+
+Régression artificielle reproduite AVANT correction :
+En-tête puis séquences 1 à 101, timestamps de 10000 à 1010000 microsecondes.
+La séquence initiale 0 manque ; les trames suivantes sont consécutives.
+analyze(..., min_seconds=1) retournait passed=True : incorrect.
+
+APRÈS correction :
+Même fixture : passed=False.
+Issue : Initial sequence is not zero (missing startup frames).
+
+Commande exécutée : .venv/bin/python -m unittest discover -s tests -v
+Résultat : 7 tests, OK, code retour 0.
+git diff --check : aucune erreur relevée.
+
+Aucune mesure du MPU6050. Firmware C++ inchangé ; pas de nouveau build ou upload.
+Les données décrites ici sont exclusivement des fixtures de protocole.
+
+Antigravity, tentative de revue du code :
+agy --mode plan --print-timeout 60s --output-format text -p <sources et demande>
+Le processus a rendu le code 0, MAIS la seule sortie est :
+[agy] print timeout after 1m0s with turn in progress; returning partial output
+Statut de la revue : INCOMPLETE_TIMEOUT, aucun avis reçu, aucune relance.
+Le code de sortie seul ne doit pas être interprété comme une revue réussie.

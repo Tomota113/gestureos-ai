@@ -4,9 +4,11 @@ Avant toute modification, lire .agent/PROJECT_STATE.md, NEXT_ACTION.md,
 CHECKPOINT.md et decisions.md ; inspecter git status et les cinq derniers commits.
 Le brief complet se trouve dans docs/requirements/.
 
-La demande actuelle porte sur la phase 0 et la préparation minimale du premier
-test MPU6050. Ne pas anticiper les phases ML, LCD ou actionneurs sans avoir
-validé le jalon précédent. Distinguer compilation et test physique.
+L'utilisateur a précisé à la reprise que le câblage sera réalisé plus tard,
+lors des tests ou de l'ajout des données. Avancer par jalons logiciels sans
+attendre le matériel. Valider chaque jalon par compilation/tests hors matériel,
+et conserver séparément les validations physiques à faire. Ne jamais présenter
+une simulation comme des mesures réelles ou des résultats ML.
 
 Mettre à jour les trois fichiers de checkpoint avant une opération longue,
 après un test significatif et avant la fin de session. Ne jamais inventer de

@@ -126,7 +126,7 @@ Le rapport doit indiquer `passed: true` pour l'intégrité du flux :
 
 - durée capteur ≥ 60 s ; fréquence moyenne 98–102 Hz ;
 - au moins 95 % des intervalles dans 8–12 ms, aucun au-delà de 20 ms ;
-- aucun compteur de séquence discontinu, redémarrage ou ligne corrompue ;
+- première séquence à zéro, puis aucun compteur discontinu, redémarrage ou ligne corrompue ;
 - aucune erreur I2C rapportée ; aucun axe proche de sa pleine échelle.
 
 Puis vérifier physiquement :

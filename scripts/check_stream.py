@@ -44,6 +44,10 @@ def analyze(lines, rate_hz=100, min_seconds=60):
 
     intervals = [b[1] - a[1] for a, b in zip(rows, rows[1:])]
     sequence_gaps = sum(b[0] != a[0] + 1 for a, b in zip(rows, rows[1:]))
+    # Firmware emits sequence zero immediately after the header. A contiguous
+    # suffix is not a complete capture if those first frames were lost.
+    if rows[0][0] != 0:
+        issues.append("Initial sequence is not zero (missing startup frames)")
     if sequence_gaps:
         issues.append("Non-consecutive sequence numbers (loss/reset)")
     if any(value <= 0 for value in intervals):
@@ -73,6 +77,7 @@ def analyze(lines, rate_hz=100, min_seconds=60):
         "interval_us_median": statistics.median(intervals),
         "fraction_intervals_within_20_percent": within_tolerance,
         "sequence_discontinuities": sequence_gaps, "i2c_errors": i2c_errors,
+        "first_sequence": rows[0][0],
         "near_full_scale_samples": saturated_samples,
         "axis_means": [statistics.mean(row[2][axis] for row in rows) for axis in range(6)],
         "axis_std": [statistics.pstdev(row[2][axis] for row in rows) for axis in range(6)],

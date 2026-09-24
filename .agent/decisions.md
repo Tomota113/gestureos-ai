@@ -16,3 +16,7 @@
 - Les noms UNKNOWN et leurs scores ne sont pas encore produits par un modèle ; ils restent un objectif d’architecture.
 - L’environnement Python 3.14.4 d’acquisition est séparé de PlatformIO. Compatibilité ML à vérifier dans un environnement dédié lors de la phase correspondante.
 - Les traces de tests synthétiques ne sont jamais des datasets ni une preuve de performance matérielle.
+
+- 2026-09-24, reprise — Le vérificateur exige la séquence initiale zéro après l’en-tête, pour rejeter aussi les pertes au démarrage. Sept tests logiciels passent.
+- Une sortie agy de code 0 accompagnée de « print timeout » n’est pas une revue réussie. Aucun avis reçu à la reprise, aucun quota déduit, pas de relance automatique.
+- Clarification utilisateur à la reprise : les branchements seront faits après le développement, lors des tests ou de la collecte. Cette instruction remplace le blocage des étapes logicielles par le matériel. Avancer par jalons testés hors matériel ; ne plus redemander le câblage pendant ces étapes. Les validations physiques et l'évaluation ML réelle restent en attente explicite.

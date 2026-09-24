@@ -8,14 +8,15 @@ CURRENT MILESTONE:
 M0 audit terminé. M1 à valider : ESP32 + MPU6050, six axes réels, 100 Hz stable.
 
 STATUS:
-READY_FOR_HARDWARE_WIRING — l'utilisateur souhaite effectuer les branchements plus tard.
+AWAITING_HARDWARE_DETAILS — marquage du MPU6050 et câblage actuel demandés à la reprise, réponse non reçue.
 
 LAST COMPLETED TASK:
-Audit réel, revue Antigravity, structure minimale, compilation, six tests de flux,
-guide de câblage conditionnel, architecture proposée et rapports de vérification.
+Reprise depuis a02bf6b, environnement et port USB vérifiés. Perte des premières trames
+reproduite puis détectée correctement après correction. Sept tests logiciels passent.
+Nouvelle revue Antigravity incomplète après délai de 60 s, sans conclusion reçue.
 
 CURRENT TASK:
-Checkpoint final avant attente du matériel câblé.
+Attendre le marquage du module et le détail du câblage pour préparer le test physique réel.
 
 LAST SUCCESSFUL COMMAND:
 .venv/bin/python -m unittest discover -s tests -v
@@ -23,7 +24,7 @@ LAST SUCCESSFUL COMMAND:
 pio run -d firmware
 
 LAST SUCCESSFUL TEST:
-6 tests logiciels OK ; firmware compilé sans warning relevé.
+7 tests logiciels OK après correction du vérificateur série. Firmware inchangé, compilation précédente conservée.
 RAM statique 21808 octets ; Flash application 287585 octets.
 Ce ne sont PAS des mesures runtime, de modèle ML ou du MPU6050.
 
@@ -47,12 +48,13 @@ Aucune donnée physique de gestes collectée ; aucun dataset externe télécharg
 Fixtures artificielles de tests uniquement dans tests/test_stream.py, pas utilisables comme dataset.
 
 KNOWN BUGS:
-Aucun défaut logiciel constaté par les contrôles actuels. Tests physiques non réalisés.
+Défaut de validation des premières trames perdues corrigé et testé. Tests physiques non réalisés.
 Polling sans FIFO/compteur INT ; limites documentées, absence absolue de pertes internes non prouvée.
 
 BLOCKERS:
 Référence exacte et schéma du module MPU6050 non fournis ; alimentation/pull-ups à confirmer.
-Utilisateur effectuera le câblage plus tard. Ne pas flasher ou lancer une collecte avant vérification.
+Le dernier souhait était de câbler plus tard ; état actuel demandé, encore inconnu.
+Ne pas flasher ou lancer une collecte avant vérification.
 
 IMPORTANT DECISIONS:
 PlatformIO 6.2.0 + espressif32 7.0.1 (Arduino ESP32 2.0.17), cible esp32dev.
@@ -81,7 +83,16 @@ ANTIGRAVITY:
 agy --help, agy models et revue --mode plan --print-timeout 60s réussis.
 Revue conservée dans docs/antigravity-review.md ; aucune édition concurrente.
 Quota inconnu ; /usage, /quota et /resume non confirmés, non exécutés.
+Revue de code à la reprise : INCOMPLETE_TIMEOUT. Agy a rendu code 0 mais uniquement
+le message de délai 60 s atteint ; aucune conclusion. Pas de preuve de quota épuisé,
+pas de relance automatique. Détails : reports/resume-stream-check-20260924.txt.
 
 CODEX QUOTA:
 Instantané officiel initial : 6 % de la fenêtre 5 h et 35 % de la semaine utilisés.
 Aucun crédit consommé ni reset lancé ; ne pas extrapoler cet instantané.
+
+USER STEERING — priorité sur le précédent prérequis de câblage :
+L’utilisateur fera les branchements plus tard, lors des tests ou de l’ajout des données.
+Poursuivre les jalons logiciels sans attendre cette information. Aucun flashage.
+NEXT SOFTWARE MILESTONE: protocole de capture bornée + logger PC avec provenance,
+protection contre l’écrasement et tests sans capteur. Ne pas prétendre M1 physique validé.

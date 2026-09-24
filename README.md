@@ -6,7 +6,7 @@ ROBOT, SMART CONTROL, PRESENTATION, GAME, MACRO et CUSTOM.
 
 **État réel : phase 0 terminée ; premier test logiciel préparé, MPU6050 non testé.**
 La carte répond au bootloader : ESP32-D0WDQ6 révision 1, Flash 4 Mo, CP2102.
-Le firmware de test compile ; six tests logiciels passent. Aucun modèle,
+Le firmware de test compile ; sept tests logiciels passent. Aucun modèle,
 dataset de gestes, score de précision ou test d'actionneur n'existe encore.
 
 ## Lire en premier
