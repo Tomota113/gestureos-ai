@@ -9,7 +9,8 @@ Trois captures MPU6050 réelles de gauche ont été revérifiées à la reprise 
 Le rapport de banc de 60 s conservé est en échec ; sa validation reste à refaire.
 La carte répond au bootloader : ESP32-D0WDQ6 révision 1, Flash 4 Mo, CP2102.
 Les deux firmwares compilent ; les tests C++ natifs du précédent jalon passent.
-La suite Python passe : **87 tests**, dont 17 pour l’inférence et le rejet.
+La suite Python passe : **98 tests**. Elle couvre aussi la sélection M7 sur scores analytiques, sans
+mesure ML réelle.
 Aucun modèle de gestes entraîné, score de précision ou test d’actionneur n’existe encore.
 
 Le chargeur, les splits par session/sujet et le prétraitement à 64 caractéristiques
@@ -18,10 +19,13 @@ Le lanceur RF/SVM/MLP et ses journaux d’expériences sont prêts, avec compara
 sur validation et test final réservé. Aucun entraînement réel n’a été lancé.
 M6 ajoute le diagnostic sur capture, les scores RF/SVM/MLP et le rejet UNKNOWN,
 avec une politique non configurée par défaut et aucune action matérielle.
+M7 ajoute la recherche de seuils sur validation, bloquée sans contraintes
+explicites ou sans données et modèle réels adéquats.
 
 ## Lire en premier
 
 - [Inférence PC et rejet UNKNOWN](outputs/inference-guide.md)
+- [Sélection des seuils UNKNOWN](outputs/threshold-selection-guide.md)
 - [Collecter tes gestes sans Wi-Fi](outputs/COLLECTE_SANS_WIFI.md)
 - Lanceur local : `bash outputs/LANCER_COLLECTE.sh` (premier test matériel à réaliser selon le guide).
 - [Baselines RF/SVM/MLP et expériences](outputs/baselines-guide.md)
@@ -65,6 +69,7 @@ pio run -d firmware -e dataset
 .venv/bin/python -m gestureos.preprocess --help
 .venv/bin/python -m gestureos.train --help
 .venv/bin/python -m gestureos.predict --help
+.venv/bin/python -m gestureos.select_thresholds --help
 ```
 
 La collecte physique a commencé ; le banc long et les autres mesures restent

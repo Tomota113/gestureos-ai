@@ -1,12 +1,18 @@
 """Explicit, model-bound rejection policies. No calibrated thresholds are invented."""
 import math
 import re
+import json
 
-from .dataset import require
+from .dataset import fingerprint, require
 from .protocol import LABEL
 
 SCORE_KINDS = {"predict_proba_uncalibrated_v1", "svc_binary_signed_v1", "svc_ovr_decision_v1"}
 POLICY_KEYS = {"schema_version", "status", "model_sha256", "score_kind", "min_score", "min_margin"}
+POLICY_BINDING_KEYS = {"source_manifest_sha256", "validation_ids_sha256"}
+
+
+def validation_ids_sha256(ids):
+    return fingerprint(json.dumps(sorted(ids), separators=(",", ":")).encode())
 
 
 def finite_number(value):
@@ -14,12 +20,14 @@ def finite_number(value):
 
 
 def validate_policy(policy):
-    require(isinstance(policy, dict) and set(policy) == POLICY_KEYS, "Invalid rejection policy keys")
+    require(isinstance(policy, dict) and set(policy) in (POLICY_KEYS, POLICY_KEYS | POLICY_BINDING_KEYS),
+            "Invalid rejection policy keys")
     require(type(policy["schema_version"]) is int and policy["schema_version"] == 1,
             "Unsupported rejection policy version")
     require(policy["status"] in ("unconfigured", "experimental"), "Unsupported policy status")
     if policy["status"] == "unconfigured":
-        require(all(policy[key] is None for key in ("model_sha256", "score_kind", "min_score", "min_margin")),
+        require(set(policy) == POLICY_KEYS
+                and all(policy[key] is None for key in ("model_sha256", "score_kind", "min_score", "min_margin")),
                 "An unconfigured policy must not contain thresholds")
     else:
         require(isinstance(policy["model_sha256"], str)
@@ -30,6 +38,9 @@ def validate_policy(policy):
         if policy["score_kind"] == "predict_proba_uncalibrated_v1":
             require(0 <= policy["min_score"] <= 1 and policy["min_margin"] <= 1,
                     "Probability-score thresholds must be within 0..1")
+        if POLICY_BINDING_KEYS <= set(policy):
+            require(all(isinstance(policy[key], str) and re.fullmatch(r"[0-9a-f]{64}", policy[key])
+                        for key in POLICY_BINDING_KEYS), "Invalid validation/manifest fingerprint")
 
 
 def decide(scored, policy, model_sha256):

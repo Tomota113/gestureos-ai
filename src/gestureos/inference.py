@@ -14,7 +14,7 @@ from .dataset import fingerprint, read_object, require
 from .features import FEATURE_NAMES, extract_features
 from .preprocessing import resample, validate_config
 from .protocol import IDENTIFIER, LABEL
-from .rejection import decide, finite_number
+from .rejection import decide, finite_number, validate_policy, validation_ids_sha256
 from .split import PARTITIONS, group_key
 
 
@@ -141,7 +141,8 @@ def load_baseline(experiment, name):
     parameters = read_object((folder / "parameters.json").read_bytes())
     require(canonical(bundle["estimator"].get_params(deep=False)) == canonical(parameters),
             "Estimator parameters differ from experiment")
-    return FrozenBaseline(name, bundle["estimator"], contract, artifact["sha256"])
+    return FrozenBaseline(name, bundle["estimator"], contract, artifact["sha256"],
+                          provenance=bundle["provenance"])
 
 
 def numeric_output(raw, shape):
@@ -154,7 +155,7 @@ def numeric_output(raw, shape):
 
 class FrozenBaseline:
     """Low-level score_rows requires capture rows already verified by load_capture/manifest."""
-    def __init__(self, name, estimator, contract, model_sha256):
+    def __init__(self, name, estimator, contract, model_sha256, *, provenance=None):
         require(name in MODEL_NAMES, "Unknown model")
         validate_contract(contract)
         validate_layout(estimator, contract["labels"])
@@ -163,6 +164,7 @@ class FrozenBaseline:
         self.name, self.estimator = name, estimator
         self.contract = copy.deepcopy(contract)
         self.model_sha256 = model_sha256
+        self.provenance = copy.deepcopy(provenance)
 
     def score_rows(self, rows):
         require(50 <= len(rows) <= 500 and all(len(row) == 9 and type(row[0]) is int
@@ -206,6 +208,12 @@ class FrozenBaseline:
                 "duration_s": duration}
 
     def predict_rows(self, rows, policy):
+        validate_policy(policy)
+        if "source_manifest_sha256" in policy:
+            require(policy["source_manifest_sha256"] == self.contract["source_manifest_sha256"],
+                    "Policy source manifest differs from model")
+            require(policy["validation_ids_sha256"] == validation_ids_sha256(
+                self.contract["source_partitions"]["validation"]), "Policy validation split differs from model")
         return decide(self.score_rows(rows), policy, self.model_sha256)
 
     def guard_final_test(self, capture):

@@ -14,7 +14,7 @@ def canonical(value):
     return json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False)
 
 
-def load_prepared(path, manifest_path, collection_config, *, raw_root=None):
+def load_prepared(path, manifest_path, collection_config, *, raw_root=None, include_rows=False):
     """Recompute from verified RAW snapshots; never trust editable feature/scaler JSON."""
     data = path.read_bytes()
     saved = read_object(data)
@@ -23,9 +23,10 @@ def load_prepared(path, manifest_path, collection_config, *, raw_root=None):
     require(canonical(saved) == canonical(expected),
             "Prepared dataset differs from verified RAW/preprocessing; regenerate it")
     require(len(expected["labels"]) >= 2, "Classification requires at least two labels")
-    return expected, {"prepared_sha256": fingerprint(data),
-                      "manifest_sha256": loaded["manifest_sha256"],
-                      "raw_root": loaded["raw_root"]}
+    provenance = {"prepared_sha256": fingerprint(data),
+                  "manifest_sha256": loaded["manifest_sha256"],
+                  "raw_root": loaded["raw_root"]}
+    return (expected, provenance, loaded["rows"]) if include_rows else (expected, provenance)
 
 
 def validate_config(config):

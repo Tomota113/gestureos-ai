@@ -37,7 +37,9 @@ GestureOS AI/
     predict.py                  présent : diagnostic d’une capture hors test final
     split.py                    groupes session/sujet et filiation
     augmentation.py             train seulement
-    rejection.py                présent : UNKNOWN par score/marge ; seuils à choisir sur validation
+    rejection.py                présent : UNKNOWN par score/marge
+    thresholds.py               présent : sélection expérimentale sur validation
+    select_thresholds.py        présent : CLI de sélection avec provenance revérifiée
   scripts/
     check_stream.py             présent : vérification de banc uniquement
     capture_serial.py           présent : entrée du logger labellisé

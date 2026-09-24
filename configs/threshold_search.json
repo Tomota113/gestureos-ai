@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "max_unknown_false_accept_rate": null,
+  "min_known_correct_accept_rate": null,
+  "max_candidates_per_axis": 128
+}

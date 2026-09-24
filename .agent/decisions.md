@@ -48,3 +48,7 @@
 - M6 : empreintes et versions strictes au chargement, code features/prétraitement figé ; aucun fit à l’inférence. SVM conserve le candidat predict et rejette les égalités/conflits de scores.
 - M6 : politique unconfigured = UNKNOWN ; seuils experimental liés au modèle/convention, action_authorized toujours false. La CLI protège IDs, copies et groupes du test final. Calibration/choix automatique des seuils à venir sur validation seulement.
 - M6 : les modifications de collecte déjà présentes à la reprise restent intactes et hors du commit M6 ;87 tests passent dans cet état de travail.
+
+- M7 : sélectionner les seuils uniquement sur validation du manifeste figé avec modèle et RAW revérifiés. Les deux contraintes de taux doivent être renseignées explicitement ; aucune valeur par défaut de performance n’est inventée.
+- M7 : une politique sélectionnée reste `experimental`, liée aux empreintes modèle/manifeste/IDs de validation et sans autorisation d’action. Les métriques affichent leurs dénominateurs ; absence de connus/inconnus ou contraintes impossibles bloquent sans politique. La calibration probabiliste et le test final sont distincts.
+- M7 : tests avec scores analytiques et estimateurs factices,98 tests OK, aucun modèle réel ni résultat ML. Revue Antigravity en attente d’authentification après timeout, sans interprétation de quota ; reprendre après confirmation utilisateur.

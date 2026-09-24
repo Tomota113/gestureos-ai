@@ -84,7 +84,9 @@ Elle ne peut pas être transférée silencieusement vers un autre modèle. Les
 deux seuils doivent être atteints ; la marge doit aussi être strictement
 positive, et la classe `unknown` est toujours rejetée. Aucun seuil « optimal »
 n’est fourni. L’optimisation sur validation et la mesure des faux acceptés
-restent le prochain jalon ; ne pas choisir les seuils sur le test final.
+font l’objet du [jalon M7](threshold-selection-guide.md) ; ne pas choisir les
+seuils sur le test final. Une politique créée par M7 porte aussi les empreintes
+du manifeste et des IDs de validation, que l’inférence contrôle.
 
 ## Événement sauvegardé
 
