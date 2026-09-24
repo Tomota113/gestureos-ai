@@ -30,12 +30,14 @@ KNOWN LIMITATIONS:
 The LCD renderer is not used by a physical display driver. It provides no hardware UI, latency or reliability measurement. No confidence percentage is justified. Continuous segmentation, safe augmentation, embedded ML export, modes/actions and test-final assessment remain pending.
 
 ANTIGRAVITY:
-User now authorizes Antigravity delegation when useful. M9 read-only review attempted via verified CLI; headless command permission was denied, so no review received. Do not use blanket auto-approval. Previous M7 review completed and all four findings addressed.
+User now authorizes Antigravity delegation when useful. M9 read-only review succeeded with `--mode plan --effort low` and `view_file` only after diagnosing headless `run_command` denial. No blanket auto-approval. See reports/m9-antigravity-review.md. Previous M7 review completed and all four findings addressed.
 
 QUOTA:
-Official Codex check during M9: 84% used in 5h window (16% remaining), 78% weekly used. No reset/credit consumed. Snapshot may change.
+Official Codex check after AGY diagnostic: 93% used in 5h window (7% remaining), 79% weekly used. No reset/credit consumed. Snapshot may change.
 
 NEXT ACTION:
 Read AGENT_STATE.md and .agent/NEXT_ACTION.md; prioritize checkpoint with limited quota. Real comparison and physical validation await sufficient data and user wiring.
 
-M9 COMPLETE: optional bounded sensor-frame Z rotation after split, with parent capture lineage; disabled by default. 102 Python tests OK. No real training or physical measurements. Antigravity review attempted but headless command permission was denied; no review received, not a quota finding.
+M9 COMPLETE: optional bounded sensor-frame Z rotation after split, with parent capture lineage; disabled by default. 102 Python tests OK. No real training or physical measurements. Antigravity targeted read-only review received: no concrete findings in augment.py/train.py. Full Python suite 102 tests OK afterward.
+
+AGY FIXED 2026-09-24: targeted M9 read-only review succeeded with view_file, no command permission change; see reports/m9-antigravity-review.md. 102 Python tests OK afterward.

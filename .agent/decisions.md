@@ -57,3 +57,4 @@
 
 - M9 : rotation rigide Z commune aux mesures accéléromètre et gyroscope, après split et uniquement pour train, désactivée par défaut ; parent identifié, scaler train original figé. L’invariance du label reste une hypothèse expérimentale.
 - Antigravity de nouveau autorisé par l’utilisateur comme collaborateur ; revue M9 en mode plan bloquée par permission de commande headless, sans preuve de quota épuisé. Aucune approbation globale automatique.
+- Diagnostic Antigravity : le mode `--print` refuse sans dialogue `run_command` non autorisé, même pour une commande composée de lecture. Pour une revue bornée, `--mode plan --effort low` avec `view_file` explicitement demandé fonctionne dans le même dépôt ; réponse finale et absence de modifications vérifiées. Aucune permission globale ni approbation automatique ajoutée.
