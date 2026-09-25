@@ -1,22 +1,16 @@
-CHECKPOINT ID: M9-train-only-rotation-software-verified
-DATE: 2026-09-24
+CHECKPOINT ID: M11-lcd-menu-software-verified
+DATE: 2026-09-25
 
-COMPLETED: Optional post-split train-only sensor-frame Z rotation, bounded to at most 5 degrees and disabled by default. Both acceleration including gravity and gyroscope rotate consistently. Child records carry parent capture IDs; frozen scaler remains fit on original train captures. Validation, test and RAW are unchanged. Configuration and lineage saved per experiment.
+COMPLETED: Pure LCD 16x2 menu navigator with eight entries and Up/Down/Press/Left navigation. Page opening only emits OpenPage; no dataset capture, motor, relay, driver or pin mapping. Code commit b4f5665.
 
-TESTED: .venv/bin/python -m unittest discover -s tests : 102 tests OK. git diff --check : clean. Test estimators are fakes; no real model was fit.
+TESTED: C++11 native menu test with -Wall -Wextra -Werror passed. PlatformIO esp32dev and dataset builds SUCCESS. Python suite 102 tests OK. See reports/m11-menu-software-tests.md. Initial test compile missed <initializer_list>; fixed and retested.
 
-ANTIGRAVITY: Initial run_command blocked in headless mode; using view_file in plan mode resolved it. Targeted M9 review of augment.py/train.py returned no concrete findings. No broad permission granted. See reports/m9-antigravity-review.md.
+REAL STATE: 3 valid swipe_left captures over 2 sessions at read-only scan, 0 rejected. No real model or ML score. IMU long bench remains failed with imu_init; LCD untested physically. No flash.
 
-REAL STATE: Last read-only inventory had three swipe_left captures over two sessions. No real gesture model or ML score. Long IMU bench remains failed (imu_init). LCD 16-pin untested physically; wiring later per user.
+USER DATA: Existing uncommitted capture.py/dataset.py/test_dataset.py and reports/hardware/ preserved and excluded from M11 commit. RAW/pending/notes untouched.
 
-USER DATA: Preserve preexisting uncommitted src/gestureos/capture.py, src/gestureos/dataset.py, tests/test_dataset.py and untracked reports/hardware/; none belongs to M9. RAW/pending/notes untouched.
+ANTIGRAVITY: General handoff prompt saved in ANTIGRAVITY_HANDOFF.md. If Codex quota ends, Antigravity takes over as sole editor and self-validates. Current user preference is no duplicate Codex verification of Antigravity's work.
 
-QUOTA: Official latest check after AGY diagnostic: 93% 5h used, 79% weekly used; no reset or credit consumed. Snapshot may change.
+QUOTA: Official latest check 14% 5h used, 82% weekly used; no reset/credit consumed. Snapshot may change.
 
-GIT: M9 commit 786271e. Existing user modifications remain uncommitted and excluded.
-
-SAFE TO RESUME: YES. Read AGENT_STATE.md and NEXT_ACTION.md.
-
-AGY FIXED 2026-09-24: targeted review received using view_file in plan mode. Full Python suite 102 tests OK afterward. No files edited by Antigravity.
-
-HANDOFF: AGENT_STATE.md refreshed with current objective, first unfinished task, user changes, validation and mandatory update cadence.
+SAFE TO RESUME: YES. First action in AGENT_STATE.md and NEXT_ACTION.md.

@@ -1,45 +1,20 @@
 PROJECT: GestureOS AI
-DATE: 2026-09-24
-CURRENT PHASE: M9 train-only augmentation software complete; physical collection remains in progress.
-STATUS: M9_SOFTWARE_VERIFIED / REAL_ML_AND_HARDWARE_PENDING
+DATE: 2026-09-25
+CURRENT PHASE: M11 LCD 1602 logical menu complete; physical collection remains pending.
+STATUS: M11_SOFTWARE_VERIFIED / REAL_ML_AND_HARDWARE_PENDING
 
-LAST COMPLETED TASK:
-M9 optional train-only IMU rotation, commit 786271e; see M9 COMPLETE below.
+LAST COMPLETED TASK: M11 menu navigator in firmware/src/menu.*, committed as b4f5665. Eight entries, two-line 16-character rendering, Up/Down/Press/Left navigation. OpenPage is a logical page request, not a physical action. No GPIO mapping, LCD driver or flash.
 
-PREVIOUS TASK:
-M8 adds a pure LCD 1602 presentation layer in firmware/src/lcd_ui.*, with fixed two-row, 16-character frames for boot, ready, recording, accepted, UNKNOWN and sensor error. Labels are bounded/sanitized. No uncalibrated score is shown as a confidence percentage. There is no LCD GPIO adapter or pin mapping yet.
+VALIDATION: C++11 native menu test with -Wall -Wextra -Werror passed. PlatformIO esp32dev and dataset builds SUCCESS. Full Python suite: 102 tests OK. See reports/m11-menu-software-tests.md. M10 validated in reports/m10-software-validation.md and committed as 7268b87.
 
-LAST SUCCESSFUL COMMANDS/TESTS:
-g++ -std=c++11 -Wall -Wextra -Werror -Ifirmware/src tests/native/lcd_ui_test.cpp firmware/src/lcd_ui.cpp -o work/lcd_ui_test
-./work/lcd_ui_test : passed (software only).
-pio run -d firmware -e esp32dev : SUCCESS.
-pio run -d firmware -e dataset : SUCCESS.
-Evidence: reports/m8-lcd-software-tests.txt. No upload/flash or physical test.
-Previous M7 full Python suite: 100 tests OK after Antigravity read-only review and corrections; reports/m7-antigravity-review.md and reports/m7-antigravity-followup-tests.txt.
+REAL DATA: Read-only 2026-09-25 scan found 3 valid swipe_left captures, 0 rejected, user01 over 2 sessions. Session and subject splits blocked by too few independent groups. No real gesture model, score or threshold evaluation; final test reserved.
 
-REAL DATA / MODEL:
-Last read-only inventory: 3 valid swipe_left captures over 2 sessions. Rescan before training. Not enough labels/groups for real training. No gesture model, real ML accuracy, rejection rate or selected threshold exists. M5-M7 train/inference/threshold software is prepared but cannot provide real results yet. The final test split remains reserved.
+HARDWARE: Last 60-second IMU bench failed with imu_init and zero samples. LCD 1602 has 16 pins; user will wire later. No physical LCD validation or flash.
 
-HARDWARE:
-ESP32-D0WDQ6, 4 MB Flash, CP2102 and a 16-pin LCD identified. The retained 60-second bench report is passed:false with imu_init and zero samples; short valid captures do not prove long-run stability. LCD controller, voltage levels, wiring, adapter and actual display remain untested. User will do connections later. No physical action in M8.
+USER CHANGES: Preserve uncommitted src/gestureos/capture.py, src/gestureos/dataset.py, tests/test_dataset.py and untracked reports/hardware/. RAW/pending/notes untouched.
 
-EXISTING USER CHANGES:
-Preexisting uncommitted src/gestureos/capture.py, src/gestureos/dataset.py, tests/test_dataset.py and untracked reports/hardware/ remain intact and excluded from M8 commit. Do not overwrite RAW, pending or notes.
+ANTIGRAVITY: General solo handoff prompt in ANTIGRAVITY_HANDOFF.md for Codex quota interruption. Per current user preference, Antigravity performs its own validation in that scenario; no duplicate Codex verification. No concurrent edits.
 
-KNOWN LIMITATIONS:
-The LCD renderer is not used by a physical display driver. It provides no hardware UI, latency or reliability measurement. No confidence percentage is justified. Continuous segmentation, safe augmentation, embedded ML export, modes/actions and test-final assessment remain pending.
+QUOTA: Official check after M11: 14% 5h used, 82% weekly used; no reset consumed. Snapshot may change.
 
-ANTIGRAVITY:
-User now authorizes Antigravity delegation when useful. M9 read-only review succeeded with `--mode plan --effort low` and `view_file` only after diagnosing headless `run_command` denial. No blanket auto-approval. See reports/m9-antigravity-review.md. Previous M7 review completed and all four findings addressed.
-
-QUOTA:
-Official Codex check after AGY diagnostic: 93% used in 5h window (7% remaining), 79% weekly used. No reset/credit consumed. Snapshot may change.
-
-NEXT ACTION:
-Read AGENT_STATE.md and .agent/NEXT_ACTION.md; prioritize checkpoint with limited quota. Real comparison and physical validation await sufficient data and user wiring.
-
-M9 COMPLETE: optional bounded sensor-frame Z rotation after split, with parent capture lineage; disabled by default. 102 Python tests OK. No real training or physical measurements. Antigravity targeted read-only review received: no concrete findings in augment.py/train.py. Full Python suite 102 tests OK afterward.
-
-AGY FIXED 2026-09-24: targeted M9 read-only review succeeded with view_file, no command permission change; see reports/m9-antigravity-review.md. 102 Python tests OK afterward.
-
-HANDOFF PROTOCOL: AGENT_STATE.md is the first resume file; update it after every major task and before stopping, including tool or quota failure.
+NEXT: Read AGENT_STATE.md. First independent software candidate: bounded continuous gesture segmentation, with no real ML or hardware claim.
