@@ -1,9 +1,9 @@
-CHECKPOINT ID: M12-gesture-candidate-segmentation-software-verified
+CHECKPOINT ID: M13-read-only-replay-software-verified
 DATE: 2026-09-25
 
-COMPLETED: Pure C++ gesture_engine with explicit experimental energy thresholds, start/stop hysteresis, bounded pre-roll/window memory, min/max sample counts, timestamp monotonicity/gap checks and rejection of invalid samples. No label/model/action, no live IMU hookup. Commit 2d6dcbb.
+COMPLETED: Read-only replay of fully revalidated RAW capture via the M12 C++ gesture engine. All thresholds explicitly supplied; open window at capture end reported. No label/model/action, no live IMU hookup. See outputs/replay-guide.md.
 
-TESTED: Native C++11 gesture_engine test passed with -Wall -Wextra -Werror. PlatformIO esp32dev and dataset builds SUCCESS. Python unchanged in M12; last full suite M11 102 tests OK. See reports/m12-gesture-segmentation-tests.md. No physical run or flash.
+TESTED: 105 Python tests OK including 3 replay tests through the native C++ engine; PlatformIO esp32dev and dataset builds SUCCESS. Existing real capture replayed read-only with illustrative thresholds (200 samples, started then unfinished_at_end). See reports/m13-replay-software-tests.md. No physical run or flash.
 
 REAL STATE: 3 valid swipe_left captures over 2 sessions at read-only scan, 0 rejected. No real model or ML score. IMU long bench failed with imu_init; LCD untested physically.
 
@@ -13,4 +13,4 @@ ANTIGRAVITY: General handoff in ANTIGRAVITY_HANDOFF.md; self-validation if Codex
 
 QUOTA: Official latest check 22% 5h used, 83% weekly used; no reset/credit consumed. Snapshot may change.
 
-SAFE TO RESUME: YES. First unfinished action in AGENT_STATE.md and NEXT_ACTION.md.
+SAFE TO RESUME: YES. Next step is new real captures / hardware when supplied by user; see AGENT_STATE.md and NEXT_ACTION.md.

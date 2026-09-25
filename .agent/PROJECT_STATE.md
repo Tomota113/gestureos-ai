@@ -1,11 +1,11 @@
 PROJECT: GestureOS AI
 DATE: 2026-09-25
-CURRENT PHASE: M12 candidate gesture segmentation software complete; real ML and hardware pending.
-STATUS: M12_SOFTWARE_VERIFIED / REAL_ML_AND_HARDWARE_PENDING
+CURRENT PHASE: M13 read-only replay software complete; real ML and hardware pending.
+STATUS: M13_SOFTWARE_VERIFIED / REAL_ML_AND_HARDWARE_PENDING
 
-LAST COMPLETED TASK: M12 pure C++ bounded IMU candidate segmentation in firmware/src/gesture_engine.*, commit 2d6dcbb. Explicit experimental energy thresholds, hysteresis, pre-roll, min/max samples and timestamp gap rejection. No model, classification, action or live IMU wiring. See outputs/gesture-segmentation-guide.md.
+LAST COMPLETED TASK: M13 read-only replay of validated RAW captures through the actual native C++ gesture engine. Explicit thresholds and an unfinished-at-end event. See outputs/replay-guide.md. M12 engine commit 2d6dcbb. No model, classification, action or live IMU wiring.
 
-VALIDATION: Native C++11 gesture engine test passed with -Wall -Wextra -Werror. Both PlatformIO profiles built successfully. See reports/m12-gesture-segmentation-tests.md. Last full Python suite: 102 OK at M11; no Python changes in M12. M11 menu commit b4f5665, M10 modes/macros commit 7268b87.
+VALIDATION: M13 full Python suite 105 OK; both PlatformIO profiles built successfully. Read-only replay of one existing validated RAW capture accepted 200 samples and reported started/unfinished_at_end with illustrative thresholds. See reports/m13-replay-software-tests.md. No physical segmentation validation.
 
 REAL DATA: Read-only 2026-09-25 scan: 3 valid swipe_left captures, 0 rejected, user01 over 2 sessions. Session and subject splits blocked by insufficient independent groups. No real gesture model, score or performance claim; final test reserved.
 
@@ -17,4 +17,4 @@ ANTIGRAVITY: General solo handoff prompt in ANTIGRAVITY_HANDOFF.md. Per user pre
 
 QUOTA: Official check after M12: 22% 5h used, 83% weekly used; no reset consumed. Snapshot may change.
 
-NEXT: Read AGENT_STATE.md. Possible independent software follow-up: read-only replay harness for recorded IMU streams; no fabricated calibration or ML metrics. Physical tests and real ML await user wiring/data.
+NEXT: Read AGENT_STATE.md. Await additional real labeled captures; then inventory, grouped split and real ML comparison with final test reserved. Physical tests await user wiring. No fabricated calibration or ML metrics.
