@@ -1,7 +1,7 @@
 CHECKPOINT ID: M13-read-only-replay-software-verified
 DATE: 2026-09-25
 
-COMPLETED: Read-only replay of fully revalidated RAW capture via the M12 C++ gesture engine. All thresholds explicitly supplied; open window at capture end reported. No label/model/action, no live IMU hookup. See outputs/replay-guide.md.
+COMPLETED: Read-only replay of fully revalidated RAW capture via the M12 C++ gesture engine, commit eb9803a. All thresholds explicitly supplied; open window at capture end reported. No label/model/action, no live IMU hookup. See outputs/replay-guide.md.
 
 TESTED: 105 Python tests OK including 3 replay tests through the native C++ engine; PlatformIO esp32dev and dataset builds SUCCESS. Existing real capture replayed read-only with illustrative thresholds (200 samples, started then unfinished_at_end). See reports/m13-replay-software-tests.md. No physical run or flash.
 

@@ -3,7 +3,7 @@ DATE: 2026-09-25
 CURRENT PHASE: M13 read-only replay software complete; real ML and hardware pending.
 STATUS: M13_SOFTWARE_VERIFIED / REAL_ML_AND_HARDWARE_PENDING
 
-LAST COMPLETED TASK: M13 read-only replay of validated RAW captures through the actual native C++ gesture engine. Explicit thresholds and an unfinished-at-end event. See outputs/replay-guide.md. M12 engine commit 2d6dcbb. No model, classification, action or live IMU wiring.
+LAST COMPLETED TASK: M13 read-only replay of validated RAW captures through the actual native C++ gesture engine, commit eb9803a. Explicit thresholds and an unfinished-at-end event. See outputs/replay-guide.md. M12 engine commit 2d6dcbb. No model, classification, action or live IMU wiring.
 
 VALIDATION: M13 full Python suite 105 OK; both PlatformIO profiles built successfully. Read-only replay of one existing validated RAW capture accepted 200 samples and reported started/unfinished_at_end with illustrative thresholds. See reports/m13-replay-software-tests.md. No physical segmentation validation.
 

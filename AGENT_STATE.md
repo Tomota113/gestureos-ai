@@ -10,7 +10,7 @@ Les jalons logiciels M1–M13 sont préparés. Prochaine progression utile : col
 - M10 modes et macros : commit `7268b87`, rapport `reports/m10-software-validation.md`.
 - M11 menu LCD 16×2 logique : commit `b4f5665`, rapport `reports/m11-menu-software-tests.md`. Huit entrées ; la sélection ouvre une page logique, sans action matérielle.
 - M12 segmentation candidate IMU : commit `2d6dcbb`, rapport `reports/m12-gesture-segmentation-tests.md`. Début/fin par énergie et hystérésis avec seuils explicitement fournis, fenêtre bornée à 256 points, préambule de 32 points maximum, contrôle des timestamps et des valeurs. Ni modèle, ni classe, ni action. Test C++ natif et builds PlatformIO `esp32dev`/`dataset` réussis. Aucun flash ni mesure physique.
-- M13 relecture RAW en lecture seule : `src/gestureos/replay.py` valide la capture et transmet ses échantillons au vrai moteur C++ via `scripts/replay_engine.cpp`. Seuils explicitement expérimentaux ; événement `unfinished_at_end` si la capture s'arrête en cours de fenêtre. Guide `outputs/replay-guide.md`, rapport `reports/m13-replay-software-tests.md`.
+- M13 relecture RAW en lecture seule : commit `eb9803a`. `src/gestureos/replay.py` valide la capture et transmet ses échantillons au vrai moteur C++ via `scripts/replay_engine.cpp`. Seuils explicitement expérimentaux ; événement `unfinished_at_end` si la capture s'arrête en cours de fenêtre. Guide `outputs/replay-guide.md`, rapport `reports/m13-replay-software-tests.md`.
 - Dernière suite Python complète au M11 : 102 tests OK. Aucun fichier Python modifié dans M12.
 - Inventaire RAW en lecture seule le 2026-09-25 : 3 captures valides, 0 rejetée, toutes `swipe_left`, sujet `user01` sur 2 séances. Splits session/sujet bloqués faute de 3 groupes indépendants.
 
