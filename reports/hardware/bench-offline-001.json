@@ -1,0 +1,9 @@
+{
+  "passed": false,
+  "samples": 0,
+  "issues": [
+    "line 25: # ERROR imu_init: check supply, wiring, address, WHO_AM_I",
+    "Missing header or fewer than two samples"
+  ],
+  "source": "reports/hardware/bench-offline-001.serial"
+}

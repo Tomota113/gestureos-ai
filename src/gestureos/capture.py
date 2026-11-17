@@ -98,9 +98,10 @@ def receive_capture(device, request, store, *, countdown=0, clock=time.monotonic
     deadline = clock() + 10
     while clock() < deadline:
         raw = read_record(device, store)
-        if not raw.startswith(b"{"):
+        idx = raw.find(b"{")
+        if idx == -1:
             continue  # Preserve ROM boot text; only READY opens the protocol.
-        obj = message(raw)
+        obj = message(raw[idx:])
         if obj.get("type") == "error":
             raise ProtocolError(f"Device initialization failed: {obj.get('reason')}")
         if obj.get("type") == "ready":

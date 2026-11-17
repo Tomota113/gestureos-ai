@@ -68,9 +68,10 @@ def load_capture(directory, root, labels, *, include_rows=False):
     ready = False
     for line in raw.splitlines(keepends=True):
         if not ready:
-            if not line.startswith(b"{"):
+            idx = line.find(b"{")
+            if idx == -1:
                 continue  # Retain the logger's ROM boot text allowance.
-            obj = message(line)
+            obj = message(line[idx:])
             require(obj.get("type") == "ready" and obj.get("protocol") == PROTOCOL
                     and obj.get("rate_hz") == request.rate_hz, "Missing or inconsistent READY")
             ready = True

@@ -16,3 +16,6 @@ experiments/
 *.egg-info/
 build/
 dist/
+
+.env
+.env.*

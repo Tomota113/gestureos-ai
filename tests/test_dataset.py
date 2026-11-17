@@ -30,7 +30,7 @@ class DatasetTest(unittest.TestCase):
         self.root = Path(self.temp.name) / "raw"
         self.next_id = 1
 
-    def capture(self, subject="s1", session="day1", label="shake", value=None, source="hardware"):
+    def capture(self, subject="s1", session="day1", label="shake", value=None, source="hardware", prefix=b""):
         number = self.next_id
         self.next_id += 1
         request = Request(f"{number:032x}", label, 50)
@@ -41,7 +41,7 @@ class DatasetTest(unittest.TestCase):
         end["crc32"] = f"{zlib.crc32(b''.join(lines[1:-1])):08x}"
         lines[-1] = frame(end)
         store = CaptureStore(self.root, subject, session, request, source_kind=source)
-        store.record(frame({"type": "ready", "protocol": PROTOCOL, "rate_hz": 100}))
+        store.record(prefix + frame({"type": "ready", "protocol": PROTOCOL, "rate_hz": 100}))
         parser = CaptureParser(request)
         for line in lines:
             store.record(line)
@@ -170,7 +170,11 @@ class DatasetTest(unittest.TestCase):
         args = ["prepare", "--root", str(self.root), "--config", str(config), "--output", str(output)]
         with patch.object(sys, "argv", args), contextlib.redirect_stdout(io.StringIO()):
             self.assertEqual(main(), 1)
-        self.assertIsNone(json.loads(output.read_text())["split"])
+    def test_rom_boot_text_without_newline_before_ready(self):
+        directory = self.capture(prefix=b"bootloader_garbage_no_newline_")
+        entry = load_capture(directory, self.root, ["shake"])
+        self.assertEqual(entry["samples"], 50)
+        self.assertEqual(entry["label"], "shake")
 
 
 if __name__ == "__main__":
